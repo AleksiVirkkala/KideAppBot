@@ -31,10 +31,11 @@
         </v-col>
         <v-col v-if="$vuetify.breakpoint.xs" cols="12"></v-col>
         <div :class="`d-flex flex-grow-${$vuetify.breakpoint.xs ? 1 : 0} pa-0`">
-          <div style="width: 150px;">
+          <div style="width: 100px;">
             <v-select
               :items="[1, 2, 3, 4]"
-              label="Quantity"
+              v-model="variant"
+              label="Variant"
               class="pr-4"
               outlined
             ></v-select>
@@ -54,11 +55,10 @@
         </div>
       </v-row>
     </v-form>
-    <v-row class="text-h5 my-4">
-      Log
-    </v-row>
-    <v-row>
-      <Output :log-data="logData" />
+    <v-row class="mt-4">
+      <Output :log-data="logData">
+        Log data will be printed here
+      </Output>
     </v-row>
   </v-container>
 </template>
@@ -78,6 +78,7 @@ export default {
     return {
       promtToAddToken: false,
       eventUrl: '',
+      variant: 1,
       logValue: '',
       logData: [],
       botIsActive: false

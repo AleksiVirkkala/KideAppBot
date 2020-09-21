@@ -1,5 +1,8 @@
 <template>
   <v-card width="100%" min-height="200" outlined class="logFrame pa-4">
+    <p class="ma-0 text--disabled" v-if="logData.length === 0">
+      <slot />
+    </p>
     <v-fade-transition group>
       <div v-for="(logLine, i) in logData" :key="i">
         <!-- Row is title row -->
@@ -50,6 +53,6 @@ export default {
 .logFrame {
   background-color: #eeeeee;
   border-width: 1px;
-  border-color: grey;
+  border-color: #bdbdbd;
 }
 </style>
