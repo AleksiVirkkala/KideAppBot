@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="deep-purple darken-2" class="px-1" dark>
+  <v-app-bar app color="primary" class="px-1" dark>
     <div class="d-flex align-center">
       <span class="text-h6">Kide.app ticket bot</span>
     </div>
