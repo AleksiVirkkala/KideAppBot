@@ -38,7 +38,10 @@ export default {
       // Success
       else if (type === 'l') return '⌛'
       // Loading
-      else if (type === 'b') return '•' // Bullet point
+      else if (type === 'f') return '🛰️'
+      // fetch
+      else if (type === 'b') return '•'
+      // Bullet point
     }
   }
 }
