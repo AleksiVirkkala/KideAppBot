@@ -44,16 +44,8 @@
         </div>
       </v-row>
     </v-form>
-    <v-row class="mt-4">
-      <v-textarea
-        filled
-        name="ProgressLog"
-        label="Progress log"
-        v-model="logValue"
-        auto-grow
-        outlined
-        readonly
-      ></v-textarea>
+    <v-row class="text-h5 my-4">
+      Log
     </v-row>
     <v-row>
       <Output :log-data="logData" />
@@ -88,9 +80,7 @@ export default {
       this.fullLog({ msg, type, replace })
     },
     fullLog({ msg, value, type, replace }) {
-      console.log(replace)
       if (replace) this.logData.pop()
-      console.log(this.logData)
       this.logData.push({
         msg,
         value,
@@ -129,24 +119,30 @@ export default {
         console.log(err)
       }
     },
-    async logTimeOut(length) {
+    async timeoutLog(seconds) {
       this.fullLog({
-        msg: 'Waiting... ',
-        value: `${length}`,
+        msg: "Sales haven't started yet. Waiting... ",
+        value: this.secondsToPrettierPrint(seconds),
         type: 'l'
       })
-      await this.logTimeOutHelper(length)
+      await this.timeoutLogHelper(seconds)
     },
-    async logTimeOutHelper(length) {
-      if (length === 0) return true
+    async timeoutLogHelper(seconds) {
+      if (seconds === 0) return true
       await this.timeout(1000)
       this.fullLog({
-        msg: 'Waiting... ',
-        value: `${length - 1}`,
+        msg: "Sales haven't started, Waiting... ",
+        value: this.secondsToPrettierPrint(seconds - 1),
         type: 'l',
         replace: true
       })
-      await this.logTimeOutHelper(length - 1)
+      await this.timeoutLogHelper(seconds - 1)
+    },
+    secondsToPrettierPrint(timestamp) {
+      const hours = Math.floor(timestamp / 60 / 60)
+      const minutes = Math.floor(timestamp / 60) - hours * 60
+      const seconds = timestamp % 60
+      return hours + ':' + minutes + ':' + seconds
     },
     timeout(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms))
@@ -173,15 +169,10 @@ export default {
         const respJson = await this.getPageJson(productPageId)
         this.log('Succesfully fetched page info', 's')
         const timeUntilSalesStart = respJson.model.product.timeUntilSalesStart
-        if (timeUntilSalesStart !== 0) {
-          this.log('Sales are active, finding ticket options...', 'l')
+        if (timeUntilSalesStart === 0) {
+          this.log('Sales have started, finding ticket options...', 'l')
         } else {
-          this.fullLog({
-            msg: 'Time until sales start: ',
-            value: '' + timeUntilSalesStart,
-            type: 'w'
-          })
-          this.log('Waiting...', 'l')
+          await this.timeoutLog(timeUntilSalesStart)
         }
         console.log(respJson)
       } catch (err) {
