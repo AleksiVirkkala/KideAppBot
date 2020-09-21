@@ -1,11 +1,15 @@
 <template>
-  <div>
-    <h1>Settings</h1>
-  </div>
+  <v-container>
+    <v-row>
+      <span class="text-h4">Settings</span>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-export default {}
+export default {
+  name: 'Settings'
+}
 </script>
 
 <style lang="scss" scoped></style>
