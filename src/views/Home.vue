@@ -58,6 +58,8 @@
 </template>
 
 <script>
+const kideAppBaseUrl = 'https://kide.app/events/'
+
 export default {
   name: 'Home',
   data() {
@@ -69,6 +71,8 @@ export default {
     }
   },
   methods: {
+    // Logging methods
+
     log(text = '', type, replace) {
       let prefix = this.logValue ? '\n' : ''
       if (type === 'e') prefix += '❌ '
@@ -89,21 +93,39 @@ export default {
         this.log()
       }
     },
-    stopBot(msg, type) {
-      this.log(msg, type)
-      this.botIsActive = false
+
+    // Other helper methods
+
+    parsePageId() {
+      const url = this.eventUrl
+      if (!url.includes(kideAppBaseUrl)) {
+        this.stopBot('URL should start with: "' + kideAppBaseUrl + '"', 'e')
+        return
+      }
+      const idExists = !!url[kideAppBaseUrl.length]
+      if (!idExists) {
+        this.stopBot("Couldn't parse productPageId from given URL", 'e')
+        return null
+      }
+      return url.substr(
+        kideAppBaseUrl.length,
+        url.length - kideAppBaseUrl.length
+      )
     },
+
+    // Bot state modifying methods
+
     async startBot() {
       if (!this.$refs.urlField.validate()) return
       this.botIsActive = true
       this.logSeparation()
-      const url = this.eventUrl
-      const idStartIndex = url.lastIndexOf('/') + 1
-      if (idStartIndex === 0 || idStartIndex === url.length) {
-        this.log('sadf')
-        this.stopBot("Couldn't parse productPageId from given URL", 'e')
-      }
-      // const productPageId = url.substr(url.lastIndexOf('/') + 1, url.length)
+      const productPageId = this.parsePageId()
+      if (!productPageId) return
+      this.stopBot(productPageId)
+    },
+    stopBot(msg, type) {
+      this.log(msg, type)
+      this.botIsActive = false
     }
   },
   created() {
