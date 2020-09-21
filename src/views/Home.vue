@@ -17,8 +17,8 @@
       </v-col>
     </v-row>
     <v-form ref="urlField">
-      <v-row class="mt-10 flex-nowrap">
-        <div class="pr-2 flex-grow-1">
+      <v-row class="mt-10 ">
+        <v-col class="flex-grow-1 pa-0 pr-sm-4">
           <v-text-field
             label="Event URL"
             v-model="eventUrl"
@@ -28,13 +28,23 @@
             :disabled="promtToAddToken || this.botIsActive"
             :rules="[(value) => !!value || 'Enter value']"
           ></v-text-field>
-        </div>
-        <div class="pl-2">
+        </v-col>
+        <v-col v-if="$vuetify.breakpoint.xs" cols="12"></v-col>
+        <div :class="`d-flex flex-grow-${$vuetify.breakpoint.xs ? 1 : 0} pa-0`">
+          <div style="width: 150px;">
+            <v-select
+              :items="[1, 2, 3, 4]"
+              label="Quantity"
+              class="pr-4"
+              outlined
+            ></v-select>
+          </div>
+          <v-spacer v-if="$vuetify.breakpoint.xs"></v-spacer>
           <v-btn
             color="primary"
             height="56"
             width="100"
-            class="text-none text-subtitle-1 flex-shrink-1"
+            class="text-none text-subtitle-1"
             :disabled="promtToAddToken || this.botIsActive"
             elevation="0"
             @click="startBot"
@@ -95,7 +105,7 @@ export default {
       }
     },
 
-    // Other helper methods
+    // Step related methods
 
     parsePageId() {
       const url = this.eventUrl
@@ -119,6 +129,29 @@ export default {
         console.log(err)
       }
     },
+
+    logTicketVariants(variants) {
+      if (!variants || variants.length === 0) throw 'No variants available'
+      variants.forEach((variant, i) => {
+        this.fullLog({
+          msg: i + 1 + '.',
+          value: variant.name
+        })
+        this.fullLog({
+          msg: 'Availability: ',
+          value: variant.availability + ' kpl',
+          type: 'b'
+        })
+        this.fullLog({
+          msg: 'Max-order: ',
+          value: variant.productVariantMaximumReservableQuantity + ' kpl',
+          type: 'b'
+        })
+      })
+    },
+
+    // Other helper methods
+
     async timeoutLog(seconds) {
       this.fullLog({
         msg: "Sales haven't started yet. Waiting... ",
@@ -155,7 +188,7 @@ export default {
       this.botIsActive = true
       this.logSeparation()
       try {
-        this.log('1. Parsing input', 't')
+        this.log('Parsing input', 't')
         const productPageId = this.parsePageId()
         this.fullLog({
           msg: 'Parsed pageId: ',
@@ -163,18 +196,24 @@ export default {
           type: 's'
         })
         this.log('Fetching page info...', 'l')
+        const respJson = await this.getPageJson(productPageId)
+        this.log('Succesfully fetched page info', 's')
 
         // Part 2
 
-        const respJson = await this.getPageJson(productPageId)
-        this.log('Succesfully fetched page info', 's')
-        const timeUntilSalesStart = respJson.model.product.timeUntilSalesStart
-        if (timeUntilSalesStart === 0) {
-          this.log('Sales have started, finding ticket options...', 'l')
-        } else {
+        const product = respJson.model.product
+        const variants = respJson.model.variants
+
+        this.log('Checking response', 't')
+        const timeUntilSalesStart = product.timeUntilSalesStart
+        if (!variants || timeUntilSalesStart > 0) {
           await this.timeoutLog(timeUntilSalesStart)
+          // Add here page refetch
         }
-        console.log(respJson)
+        this.log('Sales have started, finding ticket options...', 'l')
+        this.logTicketVariants(variants)
+
+        this.log()
       } catch (err) {
         if (typeof err === 'object') this.fullLog({ type: 'e', ...err })
         else this.log(err, 'e')
