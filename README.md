@@ -72,6 +72,14 @@ Steps:
 
 ### Images
 
-![Home page example run](/images/HomeRequest.png)
-![Home page with navigator open](/images/HomeNavigator.png)
-![Settings page when adding token](/images/SettingsTokenSet.png)
+##### Home page example run
+
+![Home page example run](/images/homeRequest.png)
+
+##### Home page with navigator open
+
+![Home page with navigator open](/images/homeNavigator.png)
+
+##### Settings page when adding token
+
+![Settings page when adding token](/images/settingsTokenSet.png)
