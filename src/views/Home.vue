@@ -1,24 +1,24 @@
 <template>
-  <v-container class="mt-6 px-6 px-sm-10">
-    <v-row class="text-h5">
+  <v-container class="mt-6 px-4 px-sm-6">
+    <v-row class="text-h5 px-4">
       Info
     </v-row>
     <v-row>
-      <span class="text-body mt-1">
+      <span class="text-body mt-1 px-4">
         The bot will add maximum amount of tickets to your kide.app cart based
         on given event url.
       </span>
     </v-row>
     <v-row>
-      <v-col v-show="promtToAddToken" class="px-0 mt-6 mb-n4">
+      <v-col v-show="promtToAddToken" class="mt-6 mb-n4">
         <v-alert type="error" text>
           Add your bearer token in the settings first
         </v-alert>
       </v-col>
     </v-row>
     <v-form ref="urlField">
-      <v-row class="mt-10 ">
-        <v-col class="flex-grow-1 pa-0 pr-sm-4">
+      <div class="mt-10 px-1 d-flex flex-wrap-nowrap">
+        <div class="flex-grow-1 pa-0 pr-2">
           <v-text-field
             label="Event URL"
             v-model="eventUrl"
@@ -28,19 +28,8 @@
             :disabled="promtToAddToken || this.botIsActive"
             :rules="[(value) => !!value || 'Enter value']"
           ></v-text-field>
-        </v-col>
-        <v-col v-if="$vuetify.breakpoint.xs" cols="12"></v-col>
-        <div :class="`d-flex flex-grow-${$vuetify.breakpoint.xs ? 1 : 0} pa-0`">
-          <div style="width: 100px;">
-            <v-select
-              :items="[1, 2, 3, 4, 5]"
-              v-model="ticketVariant"
-              label="Variant"
-              class="pr-4"
-              outlined
-            ></v-select>
-          </div>
-          <v-spacer v-if="$vuetify.breakpoint.xs"></v-spacer>
+        </div>
+        <div class="d-flex flex-grow-0 pa-0 pl-2">
           <v-btn
             color="primary"
             height="56"
@@ -53,9 +42,9 @@
             Activate
           </v-btn>
         </div>
-      </v-row>
+      </div>
     </v-form>
-    <v-row class="mt-4">
+    <v-row class="mt-4 mb-8 px-4">
       <Output :log-data="logData">
         Log data will be printed here
       </Output>
@@ -79,10 +68,10 @@ export default {
       promtToAddToken: false,
       eventUrl: '',
       productPageId: '',
-      ticketVariant: 1,
       logValue: '',
       logData: [],
-      botIsActive: false
+      botIsActive: false,
+      startTime: null
     }
   },
   methods: {
@@ -110,11 +99,9 @@ export default {
     logTicketVariants(variants) {
       if (!variants || variants.length === 0) throw 'No variants available'
       variants.forEach((variant, i) => {
-        const isPreferredVariant = i + 1 === this.ticketVariant
         this.fullLog({
-          msg: (isPreferredVariant ? '-> ' : '') + (i + 1) + '.',
-          value: variant.name,
-          type: isPreferredVariant ? 't' : ''
+          msg: i + 1 + '.',
+          value: variant.name
         })
         this.fullLog({
           msg: 'Availability: ',
@@ -133,7 +120,7 @@ export default {
 
     async timeoutLog(seconds) {
       this.fullLog({
-        msg: "Sales haven't started yet. Waiting... ",
+        msg: 'Time until sales start... ',
         value: this.secondsToPrettierPrint(seconds),
         type: 'l'
       })
@@ -143,7 +130,7 @@ export default {
       if (seconds === 0) return true
       await this.timeout(1000)
       this.fullLog({
-        msg: "Sales haven't started, Waiting... ",
+        msg: 'Time until sales start... ',
         value: this.secondsToPrettierPrint(seconds - 1),
         type: 'l',
         replace: true
@@ -152,6 +139,16 @@ export default {
     },
     timeout(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms))
+    },
+    logElapsedTime() {
+      const currTime = new Date()
+      const elapsedMs = currTime - this.startTime
+      //const elapsedS = Math.round(elapsedMs / 1000)
+      //const prettyElapsed = this.secondsToPrettierPrint(elapsedS)
+      this.fullLog({
+        msg: 'Time elapsed:',
+        value: elapsedMs - 2000 + ' ms'
+      })
     },
     secondsToPrettierPrint(timestamp) {
       const hours = Math.floor(timestamp / 60 / 60)
@@ -184,7 +181,7 @@ export default {
         console.log(err)
       }
     },
-    async tryReserve(body, quantity) {
+    async tryReserve(body, quantity, variantName, up = false) {
       body.toCreate[0].quantity = quantity
       const token = localStorage.getItem('token')
 
@@ -202,19 +199,73 @@ export default {
       )
       const json = await response.json()
       if (json.error) {
-        if (quantity === 1) return
+        // Has iterated from down to up and reached error, shouldn't iterate more
+        if (up) {
+          return
+        }
+        if (quantity <= 1) {
+          this.fullLog({
+            msg: 'Variant sold out',
+            value: variantName,
+            type: 'e'
+          })
+          return
+        }
         this.fullLog({
           msg: 'Failed. Trying again with',
           value: quantity - 1 + ' kpl',
           type: 'e'
         })
-        await this.tryReserve(body, quantity - 1)
+        await this.tryReserve(body, quantity - 1, variantName)
+      } else {
+        this.tryReserve(body, quantity + 1, variantName, true)
       }
-      this.fullLog({
-        msg: 'Successfully reserved',
-        value: body.toCreate[0].inventoryId,
-        type: 's'
+    },
+    async logReservations() {
+      const token = localStorage.getItem('token')
+      this.log(
+        'All done, waiting a little to get accurate response from api',
+        'l'
+      )
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+      const response = await fetch('https://api.kide.app/api/reservations', {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          referer: 'https://kide.app/events/' + this.productPageId,
+          authorization: 'Bearer ' + token
+        }
       })
+      const json = await response.json()
+      const overall = json.model
+      const resArr = overall.reservations
+      this.log()
+      this.log('Reserved items:', 't')
+      console.log(json)
+      resArr.forEach((res) => {
+        this.fullLog({
+          msg: 'Variant:',
+          value: res.variantName + ' - ' + res.reservedQuantity + ' kpl',
+          type: 's'
+        })
+      })
+      this.log()
+      this.fullLog({
+        msg: '🎫 Total quantity:',
+        value: overall.reservationsCount
+      })
+      const totalPrice = overall.finalPrice + ''
+      console.log(totalPrice)
+      const formattedPrice =
+        totalPrice.slice(0, totalPrice.length - 2) +
+        '.' +
+        totalPrice.slice(totalPrice.length - 2) +
+        '€'
+      this.fullLog({
+        msg: '💲 Total price:',
+        value: formattedPrice
+      })
+      //
     },
 
     // Different stages
@@ -228,38 +279,35 @@ export default {
         value: this.productPageId,
         type: 's'
       })
-      this.log('Fetching page info...', 'l')
+      this.log('Fetching page info...', 'f')
       const respJson = await this.getPageJson(this.productPageId)
-      this.log('Succesfully fetched page info', 's')
+      this.log('Received page data', 's')
       return respJson
     },
 
-    async handlePageJson(pageJson) {
-      const product = pageJson.model.product
-      let variants = pageJson.model.variants
+    async handleDataGathering() {
+      let variants = null
+      let timeUntilSalesStart = null
 
-      this.log('Checking response', 't')
-      const timeUntilSalesStart = product.timeUntilSalesStart
-      if (!variants || timeUntilSalesStart > 0) {
-        await this.timeoutLog(timeUntilSalesStart)
-        // const pageJson = await this.handlePageFetch()
-        // variants = await this.handlePageJson(pageJson)
-        // Add here page refetch
-      }
+      do {
+        this.log()
+        const pageJson = await this.handlePageFetch()
+        this.log()
+        variants = pageJson.model.variants
+        timeUntilSalesStart = pageJson.model.product.timeUntilSalesStart
+
+        this.log('Checking response', 't')
+        if ((!variants || variants.length === 0) && timeUntilSalesStart > 0) {
+          await this.timeoutLog(timeUntilSalesStart - 1) // timeUntilSalesStart - 1
+          this.startTime = new Date()
+        }
+      } while ((!variants || variants.length === 0) && timeUntilSalesStart > 0)
       this.log()
-      this.log('Sales have started, finding ticket options...', 'l')
+      this.log('Sales have started, finding ticket variants...', 'l')
       this.log()
       this.logTicketVariants(variants)
       this.log()
 
-      if (variants.length < this.ticketVariant) {
-        this.fullLog({
-          msg: "Wanted variant doesn't exist. Falling back to",
-          value: 'variant 1',
-          type: 'w'
-        })
-        this.ticketVariant = 1
-      }
       return variants
     },
 
@@ -301,8 +349,7 @@ export default {
       this.log('Sending reservation...', 'l')
       this.log()
 
-      const resp = await this.tryReserve(body, quantity)
-      console.log(resp)
+      await this.tryReserve(body, quantity, variant.name)
     },
 
     async handleReservations(variants) {
@@ -318,23 +365,20 @@ export default {
     async runBot() {
       if (!this.$refs.urlField.validate()) return
       this.botIsActive = true
+      this.startTime = new Date()
       this.logSeparation()
       try {
-        const respJson = await this.handlePageFetch()
+        const variants = await this.handleDataGathering()
         this.log()
-
-        // Part 2
-        const variants = await this.handlePageJson(respJson)
-        this.log()
-
-        // Part 3
         await this.handleReservations(variants)
         this.log()
+        await this.logReservations()
       } catch (err) {
         if (typeof err === 'object') this.fullLog({ type: 'e', ...err })
         else this.log(err, 'e')
       }
-      this.stopBot('Process ended', 't')
+      this.stopBot('Process finished succesfully', 't')
+      this.logElapsedTime()
     },
     stopBot(msg) {
       if (!this.botIsActive) return
