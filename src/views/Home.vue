@@ -24,6 +24,7 @@
             v-model="eventUrl"
             outlined
             validate-on-blur
+            @keydown.enter.prevent="startBot"
             :disabled="promtToAddToken || this.botIsActive"
             :rules="[(value) => !!value || 'Enter value']"
           ></v-text-field>
@@ -54,14 +55,23 @@
         readonly
       ></v-textarea>
     </v-row>
+    <v-row>
+      <Output></Output>
+    </v-row>
   </v-container>
 </template>
 
 <script>
-const kideAppBaseUrl = 'https://kide.app/events/'
+import Output from '@/components/Output.vue'
+
+const KideAppUrlBase = 'https://kide.app/events/'
+const kideAppApiUrlBase = 'https://api.kide.app/api/products/'
 
 export default {
   name: 'Home',
+  components: {
+    Output
+  },
   data() {
     return {
       promtToAddToken: false,
@@ -98,19 +108,25 @@ export default {
 
     parsePageId() {
       const url = this.eventUrl
-      if (!url.includes(kideAppBaseUrl)) {
-        this.stopBot('URL should start with: "' + kideAppBaseUrl + '"', 'e')
-        return
-      }
-      const idExists = !!url[kideAppBaseUrl.length]
-      if (!idExists) {
-        this.stopBot("Couldn't parse productPageId from given URL", 'e')
-        return null
-      }
+      if (!url.includes(KideAppUrlBase))
+        throw 'URL should start with: "' + KideAppUrlBase + '"'
+
+      const idExists = !!url[KideAppUrlBase.length]
+      if (!idExists) throw "Couldn't parse productPageId from given URL"
+
       return url.substr(
-        kideAppBaseUrl.length,
-        url.length - kideAppBaseUrl.length
+        KideAppUrlBase.length,
+        url.length - KideAppUrlBase.length
       )
+    },
+    async getPageJson(url) {
+      try {
+        const res = await fetch(kideAppApiUrlBase + url)
+        const json = await res.json()
+        return json
+      } catch (err) {
+        console.log(err)
+      }
     },
 
     // Bot state modifying methods
@@ -119,9 +135,18 @@ export default {
       if (!this.$refs.urlField.validate()) return
       this.botIsActive = true
       this.logSeparation()
-      const productPageId = this.parsePageId()
-      if (!productPageId) return
-      this.stopBot(productPageId)
+      try {
+        this.log('1. Parsing input')
+        const productPageId = this.parsePageId()
+        this.log('Parsed pageId: ' + productPageId, 's')
+        this.log('Fetching page info...', 'l')
+        const respJson = await this.getPageJson(productPageId)
+        this.log('Succesfully fetched page info', 's')
+        console.log(respJson)
+      } catch (err) {
+        this.stopBot(err)
+      }
+      this.stopBot()
     },
     stopBot(msg, type) {
       this.log(msg, type)
