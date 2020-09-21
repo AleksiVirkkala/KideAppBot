@@ -1,7 +1,7 @@
 <template>
   <v-card width="100%" min-height="200" outlined class="logFrame pa-4">
     <v-fade-transition group>
-      <component :is="'div'" v-for="(logLine, i) in logData" :key="i">
+      <div v-for="(logLine, i) in logData" :key="i">
         <!-- Row is title row -->
 
         <template v-if="logLine.type === 't'">
@@ -11,12 +11,12 @@
         <!-- Row is general row -->
 
         <template v-else>
-          <p>
+          <p class="ma-0">
             {{ getPrefix(logLine.type) }} {{ logLine.msg }}
             <code v-if="!!logLine.value">{{ logLine.value }}</code>
           </p>
         </template>
-      </component>
+      </div>
     </v-fade-transition>
   </v-card>
 </template>
