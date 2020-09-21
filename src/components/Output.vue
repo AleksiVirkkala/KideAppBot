@@ -5,19 +5,11 @@
     </p>
     <v-fade-transition group>
       <div v-for="(logLine, i) in logData" :key="i">
-        <!-- Row is title row -->
-
-        <template v-if="logLine.type === 't'">
-          <h4 class="mb-3">{{ getPrefix(logLine.type) }} {{ logLine.msg }}</h4>
-        </template>
-
-        <!-- Row is general row -->
-
-        <template v-else>
-          <p class="ma-0">
+        <template>
+          <component :is="logLine.type === 't' ? 'h4' : 'p'" class="ma-0">
             {{ getPrefix(logLine.type) }} {{ logLine.msg }}
             <code v-if="!!logLine.value">{{ logLine.value }}</code>
-          </p>
+          </component>
         </template>
       </div>
     </v-fade-transition>

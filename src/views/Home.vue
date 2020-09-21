@@ -33,8 +33,8 @@
         <div :class="`d-flex flex-grow-${$vuetify.breakpoint.xs ? 1 : 0} pa-0`">
           <div style="width: 100px;">
             <v-select
-              :items="[1, 2, 3, 4]"
-              v-model="variant"
+              :items="[1, 2, 3, 4, 5]"
+              v-model="ticketVariant"
               label="Variant"
               class="pr-4"
               outlined
@@ -78,7 +78,7 @@ export default {
     return {
       promtToAddToken: false,
       eventUrl: '',
-      variant: 1,
+      ticketVariant: 1,
       logValue: '',
       logData: [],
       botIsActive: false
@@ -136,7 +136,8 @@ export default {
       variants.forEach((variant, i) => {
         this.fullLog({
           msg: i + 1 + '.',
-          value: variant.name
+          value: variant.name,
+          type: i + 1 === this.ticketVariant ? 't' : ''
         })
         this.fullLog({
           msg: 'Availability: ',
