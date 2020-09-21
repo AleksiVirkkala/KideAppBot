@@ -5,7 +5,7 @@
         <!-- Row is title row -->
 
         <template v-if="logLine.type === 't'">
-          <h4>{{ getPrefix(logLine.type) }} {{ logLine.msg }}</h4>
+          <h4 class="mb-3">{{ getPrefix(logLine.type) }} {{ logLine.msg }}</h4>
         </template>
 
         <!-- Row is general row -->
