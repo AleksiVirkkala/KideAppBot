@@ -134,10 +134,11 @@ export default {
     logTicketVariants(variants) {
       if (!variants || variants.length === 0) throw 'No variants available'
       variants.forEach((variant, i) => {
+        const isPreferredVariant = i + 1 === this.ticketVariant
         this.fullLog({
-          msg: i + 1 + '.',
+          msg: (isPreferredVariant ? '-> ' : '') + (i + 1) + '.',
           value: variant.name,
-          type: i + 1 === this.ticketVariant ? 't' : ''
+          type: isPreferredVariant ? 't' : ''
         })
         this.fullLog({
           msg: 'Availability: ',
@@ -214,6 +215,14 @@ export default {
         }
         this.log('Sales have started, finding ticket options...', 'l')
         this.logTicketVariants(variants)
+
+        this.log()
+        if (variants.length < this.ticketVariant) {
+          this.log(
+            "Wanted variant doesn't exist. Falling back to variant 1.",
+            'w'
+          )
+        }
 
         this.log()
       } catch (err) {

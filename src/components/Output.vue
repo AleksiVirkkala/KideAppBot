@@ -6,7 +6,10 @@
     <v-fade-transition group>
       <div v-for="(logLine, i) in logData" :key="i">
         <template>
-          <component :is="logLine.type === 't' ? 'h4' : 'p'" class="ma-0">
+          <component
+            :is="logLine.type === 't' ? 'h4' : 'p'"
+            :class="!!logLine.msg ? 'ma-0' : ''"
+          >
             {{ getPrefix(logLine.type) }} {{ logLine.msg }}
             <code v-if="!!logLine.value">{{ logLine.value }}</code>
           </component>
