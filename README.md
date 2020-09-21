@@ -76,6 +76,10 @@ Steps:
 
 ![Home page example run](/images/homeRequest.png)
 
+#### Event which tickets are not yet available
+
+![Event which tickets are not yet available](/images/homeRequestWaiting.png)
+
 #### Home page with navigator open
 
 ![Home page with navigator open](/images/HomeNavigator.png)
