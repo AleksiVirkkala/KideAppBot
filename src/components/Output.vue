@@ -1,5 +1,5 @@
 <template>
-  <v-card width="100%" outlined class="logFrame pa-4">
+  <v-card width="100%" min-height="200" outlined class="logFrame pa-4">
     <v-fade-transition group>
       <component :is="'div'" v-for="(logLine, i) in logData" :key="i">
         <!-- Row is title row -->
