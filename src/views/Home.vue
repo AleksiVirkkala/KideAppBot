@@ -24,7 +24,7 @@
             v-model="eventUrl"
             outlined
             validate-on-blur
-            @keydown.enter.prevent="startBot"
+            @keydown.enter.prevent="runBot"
             :disabled="promtToAddToken || this.botIsActive"
             :rules="[(value) => !!value || 'Enter value']"
           ></v-text-field>
@@ -48,7 +48,7 @@
             class="text-none text-subtitle-1"
             :disabled="promtToAddToken || this.botIsActive"
             elevation="0"
-            @click="startBot"
+            @click="runBot"
           >
             Activate
           </v-btn>
@@ -78,6 +78,7 @@ export default {
     return {
       promtToAddToken: false,
       eventUrl: '',
+      productPageId: '',
       ticketVariant: 1,
       logValue: '',
       logData: [],
@@ -103,31 +104,6 @@ export default {
         this.log()
         this.log('----------')
         this.log()
-      }
-    },
-
-    // Step related methods
-
-    parsePageId() {
-      const url = this.eventUrl
-      if (!url.includes(KideAppUrlBase))
-        throw { msg: 'URL should start with: ', value: KideAppUrlBase }
-
-      const idExists = !!url[KideAppUrlBase.length]
-      if (!idExists) throw "Couldn't parse productPageId from given URL"
-
-      return url.substr(
-        KideAppUrlBase.length,
-        url.length - KideAppUrlBase.length
-      )
-    },
-    async getPageJson(url) {
-      try {
-        const res = await fetch(kideAppApiUrlBase + url)
-        const json = await res.json()
-        return json
-      } catch (err) {
-        console.log(err)
       }
     },
 
@@ -174,56 +150,185 @@ export default {
       })
       await this.timeoutLogHelper(seconds - 1)
     },
+    timeout(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms))
+    },
     secondsToPrettierPrint(timestamp) {
       const hours = Math.floor(timestamp / 60 / 60)
       const minutes = Math.floor(timestamp / 60) - hours * 60
       const seconds = timestamp % 60
       return hours + ':' + minutes + ':' + seconds
     },
-    timeout(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms))
+
+    // Step related methods
+
+    parsePageId() {
+      const url = this.eventUrl
+      if (!url.includes(KideAppUrlBase))
+        throw { msg: 'URL should start with: ', value: KideAppUrlBase }
+
+      const idExists = !!url[KideAppUrlBase.length]
+      if (!idExists) throw "Couldn't parse productPageId from given URL"
+
+      return url.substr(
+        KideAppUrlBase.length,
+        url.length - KideAppUrlBase.length
+      )
+    },
+    async getPageJson(url) {
+      try {
+        const res = await fetch(kideAppApiUrlBase + url)
+        const json = await res.json()
+        return json
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async tryReserve(body, quantity) {
+      body.toCreate[0].quantity = quantity
+      const token = localStorage.getItem('token')
+
+      const response = await fetch(
+        'https://api.kide.app/api/reservations/batched',
+        {
+          method: 'post',
+          body: JSON.stringify(body),
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            referer: 'https://kide.app/events/' + this.productPageId,
+            authorization: 'Bearer ' + token
+          }
+        }
+      )
+      const json = await response.json()
+      if (json.error) {
+        if (quantity === 1) return
+        this.fullLog({
+          msg: 'Failed. Trying again with',
+          value: quantity - 1 + ' kpl',
+          type: 'e'
+        })
+        await this.tryReserve(body, quantity - 1)
+      }
+      this.fullLog({
+        msg: 'Successfully reserved',
+        value: body.toCreate[0].inventoryId,
+        type: 's'
+      })
     },
 
-    // Bot state modifying methods
+    // Different stages
 
-    async startBot() {
+    async handlePageFetch() {
+      this.log('Parsing input', 't')
+      this.productPageId = this.parsePageId()
+      this.log()
+      this.fullLog({
+        msg: 'Parsed pageId: ',
+        value: this.productPageId,
+        type: 's'
+      })
+      this.log('Fetching page info...', 'l')
+      const respJson = await this.getPageJson(this.productPageId)
+      this.log('Succesfully fetched page info', 's')
+      return respJson
+    },
+
+    async handlePageJson(pageJson) {
+      const product = pageJson.model.product
+      let variants = pageJson.model.variants
+
+      this.log('Checking response', 't')
+      const timeUntilSalesStart = product.timeUntilSalesStart
+      if (!variants || timeUntilSalesStart > 0) {
+        await this.timeoutLog(timeUntilSalesStart)
+        // const pageJson = await this.handlePageFetch()
+        // variants = await this.handlePageJson(pageJson)
+        // Add here page refetch
+      }
+      this.log()
+      this.log('Sales have started, finding ticket options...', 'l')
+      this.log()
+      this.logTicketVariants(variants)
+      this.log()
+
+      if (variants.length < this.ticketVariant) {
+        this.fullLog({
+          msg: "Wanted variant doesn't exist. Falling back to",
+          value: 'variant 1',
+          type: 'w'
+        })
+        this.ticketVariant = 1
+      }
+      return variants
+    },
+
+    async handleResevation(variant) {
+      const inventoryId = variant.inventoryId
+      let quantity = Math.min(
+        variant.productVariantMaximumReservableQuantity,
+        variant.availability
+      )
+
+      const body = {
+        toCreate: [
+          {
+            inventoryId: inventoryId,
+            quantity: quantity
+          }
+        ],
+        toCancel: null
+      }
+
+      this.log('Reserving ticket', 't')
+      this.log()
+
+      this.fullLog({
+        msg: 'Variant',
+        value: variant.name
+      })
+      this.fullLog({
+        msg: 'inventoryId:',
+        value: inventoryId,
+        type: 'b'
+      })
+      this.fullLog({
+        msg: 'Amount:',
+        value: quantity,
+        type: 'b'
+      })
+      this.log()
+      this.log('Sending reservation...', 'l')
+      this.log()
+
+      const resp = await this.tryReserve(body, quantity)
+      console.log(resp)
+    },
+
+    async handleReservations(variants) {
+      let reservationRequests = []
+      variants.forEach((variant) => {
+        reservationRequests.push(this.handleResevation(variant))
+      })
+      await Promise.all(reservationRequests)
+    },
+
+    // Main method
+
+    async runBot() {
       if (!this.$refs.urlField.validate()) return
       this.botIsActive = true
       this.logSeparation()
       try {
-        this.log('Parsing input', 't')
-        const productPageId = this.parsePageId()
-        this.fullLog({
-          msg: 'Parsed pageId: ',
-          value: productPageId,
-          type: 's'
-        })
-        this.log('Fetching page info...', 'l')
-        const respJson = await this.getPageJson(productPageId)
-        this.log('Succesfully fetched page info', 's')
+        const respJson = await this.handlePageFetch()
+        this.log()
 
         // Part 2
-
-        const product = respJson.model.product
-        const variants = respJson.model.variants
-
-        this.log('Checking response', 't')
-        const timeUntilSalesStart = product.timeUntilSalesStart
-        if (!variants || timeUntilSalesStart > 0) {
-          await this.timeoutLog(timeUntilSalesStart)
-          // Add here page refetch
-        }
-        this.log('Sales have started, finding ticket options...', 'l')
-        this.logTicketVariants(variants)
-
+        const variants = await this.handlePageJson(respJson)
         this.log()
-        if (variants.length < this.ticketVariant) {
-          this.log(
-            "Wanted variant doesn't exist. Falling back to variant 1.",
-            'w'
-          )
-        }
 
+        // Part 3
+        await this.handleReservations(variants)
         this.log()
       } catch (err) {
         if (typeof err === 'object') this.fullLog({ type: 'e', ...err })
