@@ -35,8 +35,12 @@ export default {
       if (!type) return ''
       if (type === 'e') return '❌'
       else if (type === 'w') return '⚠️'
+      // Warning
       else if (type === 's') return '✅'
+      // Success
       else if (type === 'l') return '⌛'
+      // Loading
+      else if (type === 'b') return '•' // Bullet point
     }
   }
 }
