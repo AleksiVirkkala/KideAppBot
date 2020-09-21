@@ -1,6 +1,6 @@
 <template>
   <v-container class="mt-6 px-6 px-sm-10">
-    <v-row class="text-h4">
+    <v-row class="text-h5">
       Settings
     </v-row>
     <v-row class="text-subtitle-1 mt-1">
@@ -23,6 +23,7 @@
           width="100"
           class="text-none text-subtitle-1 flex-shrink-1"
           @click="setBearerToken"
+          elevation="0"
         >
           Set
         </v-btn>
