@@ -56,7 +56,7 @@
       ></v-textarea>
     </v-row>
     <v-row>
-      <Output></Output>
+      <Output :log-data="logData" />
     </v-row>
   </v-container>
 </template>
@@ -77,27 +77,28 @@ export default {
       promtToAddToken: false,
       eventUrl: '',
       logValue: '',
+      logData: [],
       botIsActive: false
     }
   },
   methods: {
     // Logging methods
 
-    log(text = '', type, replace) {
-      let prefix = this.logValue ? '\n' : ''
-      if (type === 'e') prefix += '❌ '
-      else if (type === 'w') prefix += '⚠️ '
-      else if (type === 's') prefix += '✅ '
-      else if (type === 'l') prefix += '⌛ '
-
-      if (replace) {
-        this.logValue = this.logValue.substr(0, this.logValue.lastIndexOf('\n'))
-      }
-
-      this.logValue += prefix + text
+    log(msg, type, replace) {
+      this.fullLog({ msg, type, replace })
+    },
+    fullLog({ msg, value, type, replace }) {
+      console.log(replace)
+      if (replace) this.logData.pop()
+      console.log(this.logData)
+      this.logData.push({
+        msg,
+        value,
+        type
+      })
     },
     logSeparation() {
-      if (this.logValue) {
+      if (this.logData.length !== 0) {
         this.log()
         this.log('----------')
         this.log()
@@ -109,7 +110,7 @@ export default {
     parsePageId() {
       const url = this.eventUrl
       if (!url.includes(KideAppUrlBase))
-        throw 'URL should start with: "' + KideAppUrlBase + '"'
+        throw { msg: 'URL should start with: ', value: KideAppUrlBase }
 
       const idExists = !!url[KideAppUrlBase.length]
       if (!idExists) throw "Couldn't parse productPageId from given URL"
@@ -128,6 +129,28 @@ export default {
         console.log(err)
       }
     },
+    async logTimeOut(length) {
+      this.fullLog({
+        msg: 'Waiting... ',
+        value: `${length}`,
+        type: 'l'
+      })
+      await this.logTimeOutHelper(length)
+    },
+    async logTimeOutHelper(length) {
+      if (length === 0) return true
+      await this.timeout(1000)
+      this.fullLog({
+        msg: 'Waiting... ',
+        value: `${length - 1}`,
+        type: 'l',
+        replace: true
+      })
+      await this.logTimeOutHelper(length - 1)
+    },
+    timeout(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms))
+    },
 
     // Bot state modifying methods
 
@@ -136,20 +159,41 @@ export default {
       this.botIsActive = true
       this.logSeparation()
       try {
-        this.log('1. Parsing input')
+        this.log('1. Parsing input', 't')
         const productPageId = this.parsePageId()
-        this.log('Parsed pageId: ' + productPageId, 's')
+        this.fullLog({
+          msg: 'Parsed pageId: ',
+          value: productPageId,
+          type: 's'
+        })
         this.log('Fetching page info...', 'l')
+
+        // Part 2
+
         const respJson = await this.getPageJson(productPageId)
         this.log('Succesfully fetched page info', 's')
+        const timeUntilSalesStart = respJson.model.product.timeUntilSalesStart
+        if (timeUntilSalesStart !== 0) {
+          this.log('Sales are active, finding ticket options...', 'l')
+        } else {
+          this.fullLog({
+            msg: 'Time until sales start: ',
+            value: '' + timeUntilSalesStart,
+            type: 'w'
+          })
+          this.log('Waiting...', 'l')
+        }
         console.log(respJson)
       } catch (err) {
-        this.stopBot(err)
+        if (typeof err === 'object') this.fullLog({ type: 'e', ...err })
+        else this.log(err, 'e')
       }
-      this.stopBot()
+      this.stopBot('Process ended', 't')
     },
-    stopBot(msg, type) {
-      this.log(msg, type)
+    stopBot(msg) {
+      if (!this.botIsActive) return
+      this.log()
+      this.log(msg, 't')
       this.botIsActive = false
     }
   },
