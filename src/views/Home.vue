@@ -168,7 +168,7 @@ export default {
     },
     async scrollLog() {
       await this.timeout(100)
-      this.$refs?.outputWrapper?.lastElementChild?.lastElementChild?.scrollIntoView(
+      this.$refs?.outputWrapper?.lastElementChild?.lastElementChild?.lastElementChild?.scrollIntoView(
         { behavior: 'smooth', block: 'end' }
       )
     },
