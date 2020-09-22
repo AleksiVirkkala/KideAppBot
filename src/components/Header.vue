@@ -75,8 +75,10 @@ export default {
     }
   },
   mounted() {
+    // Not that brilliant solution
     this.$nextTick(this.reSetSafeArea)
-    console.log(this.safeAreaTop)
+    setTimeout(this.reSetSafeArea, 1000)
+    setTimeout(this.reSetSafeArea, 2000)
   }
 }
 </script>
