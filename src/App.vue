@@ -1,10 +1,7 @@
 <template>
   <v-app>
     <Header />
-    <v-main
-      ref="main"
-      style="-webkit-overflow-scrolling: touch; height: 100vh; overflow: scroll;"
-    >
+    <v-main ref="main">
       <router-view></router-view>
     </v-main>
   </v-app>
@@ -27,3 +24,15 @@ export default {
   }
 }
 </script>
+
+<style>
+.v-main {
+  -webkit-overflow-scrolling: touch;
+  height: 0px; /* Magic number. Works properly only with 0px */
+  overflow: scroll;
+}
+.v-main__wrap {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+</style>
