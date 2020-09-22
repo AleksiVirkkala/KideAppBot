@@ -5,6 +5,7 @@
 - Ticket bying bot for https://kide.app/ site
 - Progressive Web Application
 - Build with Vue 2 and Vuetify using Vue CLI
+- [Demo page](https://ambitious-dune-0b2f4e403.azurestaticapps.net/)
 
 #### Home page example run
 
