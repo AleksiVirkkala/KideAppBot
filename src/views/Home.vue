@@ -1,7 +1,7 @@
 <template>
   <v-container
-    class="pt-6 px-4 pb-12 px-sm-6 d-flex flex-column"
-    style="height: 100%;"
+    class="pt-6 px-4 px-sm-6 d-flex flex-column"
+    style="height: 100%; padding-bottom: max(calc(env(safe-area-inset-bottom) + 12px), 24px)"
   >
     <v-container class="flex-grow-0 pa-0">
       <v-row class="text-h5 px-4">
@@ -14,7 +14,7 @@
         </span>
       </v-row>
       <v-row>
-        <v-col v-show="promtToAddToken" class="mt-6 mb-n4">
+        <v-col v-show="promtToAddToken" class="mt-6 mb-n10">
           <v-alert type="error" text>
             Add your bearer token in the settings first
           </v-alert>
@@ -50,7 +50,7 @@
       </v-form>
     </v-container>
 
-    <v-row class="px-4 flex-grow-1">
+    <v-row class="px-4 mt-4 flex-grow-1">
       <div
         style="overflow: hidden; position: relative; width: 100%;"
         ref="outputWrapper"

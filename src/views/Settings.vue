@@ -1,5 +1,8 @@
 <template>
-  <v-container class="pt-6 px-8 px-sm-10 pb-12">
+  <v-container
+    class="pt-6 px-8 px-sm-10"
+    style="padding-bottom: max(calc(env(safe-area-inset-bottom) + 12px), 24px)"
+  >
     <v-row class="text-h5">Settings</v-row>
     <v-row class="text-subtitle-1 mt-1">
       Define your bearer token here, it will be saved to local storage for later
