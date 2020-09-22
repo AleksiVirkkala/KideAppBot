@@ -1,5 +1,5 @@
 <template>
-  <v-card width="100%" min-height="200" outlined class="logFrame pa-4">
+  <v-card outlined class="logFrame pa-4">
     <p class="ma-0 text--disabled" v-if="logData.length === 0">
       <slot />
     </p>
@@ -52,5 +52,12 @@ export default {
   background-color: #eeeeee;
   border-width: 1px;
   border-color: #bdbdbd;
+  overflow: scroll;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 </style>

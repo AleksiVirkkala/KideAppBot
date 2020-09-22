@@ -1,53 +1,64 @@
 <template>
-  <v-container class="mt-6 px-4 px-sm-6">
-    <v-row class="text-h5 px-4">
-      Info
-    </v-row>
-    <v-row>
-      <span class="text-body mt-1 px-4">
-        The bot will add maximum amount of tickets to your kide.app cart based
-        on given event url.
-      </span>
-    </v-row>
-    <v-row>
-      <v-col v-show="promtToAddToken" class="mt-6 mb-n4">
-        <v-alert type="error" text>
-          Add your bearer token in the settings first
-        </v-alert>
-      </v-col>
-    </v-row>
-    <v-form ref="urlField">
-      <div class="mt-10 px-1 d-flex flex-wrap-nowrap">
-        <div class="flex-grow-1 pa-0 pr-2">
-          <v-text-field
-            label="Event URL"
-            v-model="eventUrl"
-            outlined
-            validate-on-blur
-            @keydown.enter.prevent="runBot"
-            :disabled="promtToAddToken || this.botIsActive"
-            :rules="[(value) => !!value || 'Enter value']"
-          ></v-text-field>
+  <v-container
+    class="pt-6 px-4 px-sm-6 d-flex flex-column"
+    style="height: 100%;"
+  >
+    <v-container class="flex-grow-0 pa-0">
+      <v-row class="text-h5 px-4">
+        Info
+      </v-row>
+      <v-row>
+        <span class="text-body mt-1 px-4">
+          The bot will add maximum amount of tickets to your kide.app cart based
+          on given event url.
+        </span>
+      </v-row>
+      <v-row>
+        <v-col v-show="promtToAddToken" class="mt-6 mb-n4">
+          <v-alert type="error" text>
+            Add your bearer token in the settings first
+          </v-alert>
+        </v-col>
+      </v-row>
+      <v-form ref="urlField">
+        <div class="mt-10 px-1 d-flex flex-wrap-nowrap">
+          <div class="flex-grow-1 pa-0 pr-2">
+            <v-text-field
+              label="Event URL"
+              v-model="eventUrl"
+              outlined
+              validate-on-blur
+              @keydown.enter.prevent="runBot"
+              :disabled="promtToAddToken || this.botIsActive"
+              :rules="[(value) => !!value || 'Enter value']"
+            ></v-text-field>
+          </div>
+          <div class="d-flex flex-grow-0 pa-0 pl-2">
+            <v-btn
+              color="primary"
+              height="56"
+              width="100"
+              class="text-none text-subtitle-1"
+              :disabled="promtToAddToken || this.botIsActive"
+              elevation="0"
+              @click="runBot"
+            >
+              Activate
+            </v-btn>
+          </div>
         </div>
-        <div class="d-flex flex-grow-0 pa-0 pl-2">
-          <v-btn
-            color="primary"
-            height="56"
-            width="100"
-            class="text-none text-subtitle-1"
-            :disabled="promtToAddToken || this.botIsActive"
-            elevation="0"
-            @click="runBot"
-          >
-            Activate
-          </v-btn>
-        </div>
+      </v-form>
+    </v-container>
+
+    <v-row class="px-4 flex-grow-1">
+      <div
+        style="overflow: scroll; position: relative; width: 100%;"
+        ref="outputWrapper"
+      >
+        <Output :log-data="logData">
+          Log data will be printed here
+        </Output>
       </div>
-    </v-form>
-    <v-row class="mt-4 mb-8 px-4">
-      <Output :log-data="logData">
-        Log data will be printed here
-      </Output>
     </v-row>
   </v-container>
 </template>
@@ -87,6 +98,7 @@ export default {
         value,
         type
       })
+      this.scrollLog()
     },
     logSeparation() {
       if (this.logData.length !== 0) {
@@ -143,8 +155,6 @@ export default {
     logElapsedTime() {
       const currTime = new Date()
       const elapsedMs = currTime - this.startTime
-      //const elapsedS = Math.round(elapsedMs / 1000)
-      //const prettyElapsed = this.secondsToPrettierPrint(elapsedS)
       this.fullLog({
         msg: 'Time elapsed:',
         value: elapsedMs - 2000 + ' ms'
@@ -155,6 +165,12 @@ export default {
       const minutes = Math.floor(timestamp / 60) - hours * 60
       const seconds = timestamp % 60
       return hours + ':' + minutes + ':' + seconds
+    },
+    async scrollLog() {
+      await this.timeout(100)
+      this.$refs?.outputWrapper?.lastElementChild?.lastElementChild?.scrollIntoView(
+        { behavior: 'smooth', block: 'end' }
+      )
     },
 
     // Step related methods
@@ -227,7 +243,7 @@ export default {
         'All done, waiting a little to get accurate response from api',
         'l'
       )
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      await this.timeout(2000)
       const response = await fetch('https://api.kide.app/api/reservations', {
         method: 'get',
         headers: {
