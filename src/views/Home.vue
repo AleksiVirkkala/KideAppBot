@@ -271,7 +271,6 @@ export default {
         value: overall.reservationsCount
       })
       const totalPrice = overall.finalPrice + ''
-      console.log(totalPrice)
       const formattedPrice =
         totalPrice.slice(0, totalPrice.length - 2) +
         '.' +
