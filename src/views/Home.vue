@@ -1,6 +1,6 @@
 <template>
   <v-container
-    class="pt-6 px-4 px-sm-6 d-flex flex-column"
+    class="pt-6 px-4 pb-12 px-sm-6 d-flex flex-column"
     style="height: 100%;"
   >
     <v-container class="flex-grow-0 pa-0">
@@ -52,7 +52,7 @@
 
     <v-row class="px-4 flex-grow-1">
       <div
-        style="overflow: scroll; position: relative; width: 100%;"
+        style="overflow: hidden; position: relative; width: 100%;"
         ref="outputWrapper"
       >
         <Output :log-data="logData">

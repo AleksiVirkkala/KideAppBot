@@ -52,7 +52,7 @@ export default {
   background-color: #eeeeee;
   border-width: 1px;
   border-color: #bdbdbd;
-  overflow: scroll;
+  overflow-y: scroll;
   position: relative;
   height: 100%;
   width: 100%;
