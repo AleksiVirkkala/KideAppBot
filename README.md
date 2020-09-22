@@ -6,6 +6,14 @@
 - Progressive Web Application
 - Build with Vue 2 and Vuetify using Vue CLI
 
+#### Home page example run
+
+![Home page example run](/images/homeRequest.png)
+
+#### Event which tickets are not yet available
+
+![Event which tickets are not yet available](/images/homeRequestWaiting.png)
+
 ## Purpose
 
 It has always been hard to get tickets for student parties in Tampere Finland. I decided to test my coding skills by building PWA application that acts as a bot that reserves maximum amount of tickets for given event.
@@ -18,6 +26,16 @@ This app works with kide.app and it requires your kide.app bearer token. Apart f
 - Reserves smartly maximum amount of tickets of each ticket variant for given event
 - Handles automatically waiting for ticket sale to begin if it hasn't yet and does previous step on time
 - Doesn't bloat the kide.app api with unnecessary requests
+
+### Common problems
+
+#### Finding your bearer token
+
+1. Navigate to https://kide.app, sign in, right click anywhere on the page and select `inspect`
+2. Select `Application` tab
+3. Open `Local Storage` and under it `https://kide.app`
+4. Your bearer token will be _Value_ of _Key_ `authorization.token`. Exclude apostrophes
+   ![Bearer token steps](/images/bearertoken.png)
 
 ### Usage
 
@@ -71,14 +89,6 @@ Steps:
    - Program will inform "Process finished succesfully" and below that log the time it took from the point where tickets were available untill they had been reserved succesfully
 
 ### Images
-
-#### Home page example run
-
-![Home page example run](/images/homeRequest.png)
-
-#### Event which tickets are not yet available
-
-![Event which tickets are not yet available](/images/homeRequestWaiting.png)
 
 #### Home page with navigator open
 
