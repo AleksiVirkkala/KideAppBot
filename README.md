@@ -35,7 +35,8 @@ This app works with kide.app and it requires your kide.app bearer token. Apart f
 2. Select `Application` tab
 3. Open `Local Storage` and under it `https://kide.app`
 4. Your bearer token will be _Value_ of _Key_ `authorization.token`. Exclude apostrophes
-   ![Bearer token steps](/images/bearertoken.png)
+
+![Bearer token steps](/images/bearertoken.png)
 
 ### Usage
 
