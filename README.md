@@ -78,7 +78,7 @@ Steps:
 
 #### Event which tickets are not yet available
 
-![Event which tickets are not yet available](/images/homeRequestWaiting2.PNG)
+![Event which tickets are not yet available](/images/homeRequestWaiting.png)
 
 #### Home page with navigator open
 
