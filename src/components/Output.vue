@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined class="logFrame pa-4">
+  <v-card outlined class="logFrame pa-4" ref="logFrame">
     <p class="ma-0 text--disabled" v-if="logData.length === 0">
       <slot />
     </p>
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { disableBodyScroll } from 'body-scroll-lock'
+
 export default {
   name: 'Output',
   props: {
@@ -43,6 +45,9 @@ export default {
       else if (type === 'b') return '•'
       // Bullet point
     }
+  },
+  mounted() {
+    disableBodyScroll(this.$refs.logFrame.$el)
   }
 }
 </script>
