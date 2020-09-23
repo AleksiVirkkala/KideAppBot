@@ -30,9 +30,7 @@ export default {
   -webkit-overflow-scrolling: touch;
   height: 0px; /* Magic number. Works properly only with 0px */
   overflow-y: scroll;
-}
-.v-main__wrap {
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
+  padding-left: env(safe-area-inset-left) !important;
+  padding-right: env(safe-area-inset-right) !important;
 }
 </style>
