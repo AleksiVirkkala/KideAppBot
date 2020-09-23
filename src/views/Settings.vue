@@ -5,7 +5,9 @@
   >
     <v-row class="text-h5" align="center">
       Settings
-      <span class="ml-auto text-body-1 text--disabled">v1.2.0</span>
+      <span class="ml-auto text-body-1 text--disabled">{{
+        versionNumber
+      }}</span>
     </v-row>
     <v-row class="text-subtitle-1 mt-1">
       Define your bearer token here, it will be saved to local storage for later
@@ -110,6 +112,8 @@
 </template>
 
 <script>
+import { version } from '../../package.json'
+
 export default {
   name: 'Settings',
   data() {
@@ -119,7 +123,8 @@ export default {
         show: false,
         type: 'success',
         content: ''
-      }
+      },
+      versionNumber: version
     }
   },
   methods: {
