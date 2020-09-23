@@ -204,6 +204,14 @@ export default {
       return json
     },
     async tryReserve(body, quantity, variantName, up = false) {
+      if (quantity === 0) {
+        this.fullLog({
+          msg: 'Variant sold out',
+          value: variantName,
+          type: 'e'
+        })
+        return
+      }
       body.toCreate[0].quantity = quantity
       const token = localStorage.getItem('token')
       let gotSuccesfulResponse = false
@@ -224,9 +232,7 @@ export default {
               }
             }
           )
-          window.res = response
           json = await response.json()
-          window.json = json
           if (json.error) throw json.error
           gotSuccesfulResponse = true
         } catch (err) {
@@ -255,37 +261,45 @@ export default {
               value: variantName,
               type: 'e'
             })
-          } else if (err.type === 18) {
+          } else if (err.type === 18 || err.type === 14) {
             this.fullLog({
               msg: 'Qnt too high',
-              value: variantName + ' - ' + quantity,
+              value: variantName + ' - ' + quantity + ' [code' + err.type + ']',
               type: 'e'
             })
             break
+          } else if (err.type === 13) {
+            this.fullLog({
+              msg: 'Variant not available',
+              value: variantName,
+              type: 'e'
+            })
+            return
+          } else if (err.type === 46) {
+            this.fullLog({
+              msg: 'Only one variant can be selected',
+              value: variantName,
+              type: 'e'
+            })
+            return
           }
           await this.timeout(TIMEOUTS.FAILEDTORESERVE)
         }
       }
 
-      if (json.error && json.error.type === 18) {
+      if (json.error && (json.error.type === 18 || json.error.type === 14)) {
         // Has iterated from down to up and reached error, shouldn't iterate more
         if (up) {
           return
         }
-        if (quantity <= 1) {
+        if (quantity > 1) {
           this.fullLog({
-            msg: 'Variant sold out',
-            value: variantName,
+            msg: 'Failed. Trying again with',
+            value: quantity - 1 + ' kpl',
             type: 'e'
           })
-          return
+          await this.tryReserve(body, quantity - 1, variantName)
         }
-        this.fullLog({
-          msg: 'Failed. Trying again with',
-          value: quantity - 1 + ' kpl',
-          type: 'e'
-        })
-        await this.tryReserve(body, quantity - 1, variantName)
       } else {
         await this.tryReserve(body, quantity + 1, variantName, true)
       }
@@ -304,6 +318,10 @@ export default {
       const overall = json.model
       const resArr = overall.reservations
       this.log()
+
+      if (!resArr || resArr.length === 0)
+        throw { msg: "Couldn't reserve any tickets", type: 'e' }
+
       this.log('Reserved items:', 't')
       resArr.forEach((res) => {
         this.fullLog({
@@ -352,6 +370,8 @@ export default {
     async handleDataGathering() {
       let variants = null
       let timeUntilSalesStart = null
+      let salesEnded = null
+
       do {
         let pageJson
         this.log()
@@ -381,8 +401,13 @@ export default {
         }
         this.silentLog = false
         this.log()
+
         variants = pageJson?.model?.variants
         timeUntilSalesStart = pageJson?.model?.product?.timeUntilSalesStart
+        salesEnded = pageJson?.model?.product?.salesEnded
+
+        if (salesEnded) throw { msg: 'Sales have ended', type: 'e' }
+
         this.log('Checking response', 't')
         if (!variants || variants.length === 0) {
           this.fullLog({
