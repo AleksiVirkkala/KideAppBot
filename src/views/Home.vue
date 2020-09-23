@@ -69,6 +69,13 @@ import Output from '@/components/Output.vue'
 const KideAppUrlBase = 'https://kide.app/events/'
 const kideAppApiUrlBase = 'https://api.kide.app/api/products/'
 
+const TIMEOUTS = {
+  NOEVENTSTIMEOUT: 300,
+  PAGEFETCHFAIL: 300,
+  LOGSCROLL: 100,
+  FAILEDTORESERVE: 200
+}
+
 export default {
   name: 'Home',
   components: {
@@ -81,6 +88,7 @@ export default {
       productPageId: '',
       logValue: '',
       logData: [],
+      silentLog: false,
       botIsActive: false,
       startTime: null
     }
@@ -91,7 +99,8 @@ export default {
     log(msg, type, replace) {
       this.fullLog({ msg, type, replace })
     },
-    fullLog({ msg, value, type, replace }) {
+    fullLog({ msg, value, type, replace, force }) {
+      if (!force && this.silentLog) return
       if (replace) this.logData.pop()
       this.logData.push({
         msg,
@@ -157,7 +166,7 @@ export default {
       const elapsedMs = currTime - this.startTime
       this.fullLog({
         msg: 'Time elapsed:',
-        value: elapsedMs - 2000 + ' ms'
+        value: elapsedMs + ' ms'
       })
     },
     secondsToPrettierPrint(timestamp) {
@@ -167,7 +176,7 @@ export default {
       return hours + ':' + minutes + ':' + seconds
     },
     async scrollLog() {
-      await this.timeout(100)
+      await this.timeout(TIMEOUTS.LOGSCROLL)
       this.$refs?.outputWrapper?.lastElementChild?.lastElementChild?.lastElementChild?.scrollIntoView(
         { behavior: 'smooth', block: 'end' }
       )
@@ -189,32 +198,76 @@ export default {
       )
     },
     async getPageJson(url) {
-      try {
-        const res = await fetch(kideAppApiUrlBase + url)
-        const json = await res.json()
-        return json
-      } catch (err) {
-        console.log(err)
-      }
+      const res = await fetch(url)
+      if (res.status !== 200) throw { message: 'Request Failed' }
+      const json = await res.json()
+      return json
     },
     async tryReserve(body, quantity, variantName, up = false) {
       body.toCreate[0].quantity = quantity
       const token = localStorage.getItem('token')
+      let gotSuccesfulResponse = false
+      let response
+      let json
 
-      const response = await fetch(
-        'https://api.kide.app/api/reservations/batched',
-        {
-          method: 'post',
-          body: JSON.stringify(body),
-          headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
-            referer: 'https://kide.app/events/' + this.productPageId,
-            authorization: 'Bearer ' + token
+      while (!gotSuccesfulResponse) {
+        try {
+          response = await fetch(
+            'https://api.kide.app/api/reservations/batched',
+            {
+              method: 'post',
+              body: JSON.stringify(body),
+              headers: {
+                'Content-Type': 'application/json;charset=UTF-8',
+                referer: 'https://kide.app/events/' + this.productPageId,
+                authorization: 'Bearer ' + token
+              }
+            }
+          )
+          window.res = response
+          json = await response.json()
+          window.json = json
+          if (json.error) throw json.error
+          gotSuccesfulResponse = true
+        } catch (err) {
+          if (!err) throw err
+          if (err.message === 'Failed to fetch') {
+            this.fullLog({
+              msg: 'Failed to send reservation for',
+              value: variantName,
+              type: 'e'
+            })
+          } else if (err.message === 'Request Failed') {
+            this.fullLog({
+              msg: 'Failed to reserve',
+              value: variantName,
+              type: 'e'
+            })
+          } else if (err.message === 'Unexpected end of JSON input') {
+            this.fullLog({
+              msg: 'Response body missing',
+              value: variantName,
+              type: 'e'
+            })
+          } else if (err.type === 3) {
+            this.fullLog({
+              msg: 'False inventoryId',
+              value: variantName,
+              type: 'e'
+            })
+          } else if (err.type === 18) {
+            this.fullLog({
+              msg: 'Qnt too high',
+              value: variantName + ' - ' + quantity,
+              type: 'e'
+            })
+            break
           }
+          await this.timeout(TIMEOUTS.FAILEDTORESERVE)
         }
-      )
-      const json = await response.json()
-      if (json.error) {
+      }
+
+      if (json.error && json.error.type === 18) {
         // Has iterated from down to up and reached error, shouldn't iterate more
         if (up) {
           return
@@ -234,16 +287,11 @@ export default {
         })
         await this.tryReserve(body, quantity - 1, variantName)
       } else {
-        this.tryReserve(body, quantity + 1, variantName, true)
+        await this.tryReserve(body, quantity + 1, variantName, true)
       }
     },
     async logReservations() {
       const token = localStorage.getItem('token')
-      this.log(
-        'All done, waiting a little to get accurate response from api',
-        'l'
-      )
-      await this.timeout(2000)
       const response = await fetch('https://api.kide.app/api/reservations', {
         method: 'get',
         headers: {
@@ -257,7 +305,6 @@ export default {
       const resArr = overall.reservations
       this.log()
       this.log('Reserved items:', 't')
-      console.log(json)
       resArr.forEach((res) => {
         this.fullLog({
           msg: 'Variant:',
@@ -295,28 +342,67 @@ export default {
         type: 's'
       })
       this.log('Fetching page info...', 'f')
-      const respJson = await this.getPageJson(this.productPageId)
-      this.log('Received page data', 's')
+      const respJson = await this.getPageJson(
+        kideAppApiUrlBase + this.productPageId
+      )
+      this.log('Received response', 's')
       return respJson
     },
 
     async handleDataGathering() {
       let variants = null
       let timeUntilSalesStart = null
-
       do {
+        let pageJson
         this.log()
-        const pageJson = await this.handlePageFetch()
+        try {
+          pageJson = await this.handlePageFetch()
+        } catch (err) {
+          if (!err) throw err
+          if (err.message === 'Request Failed') {
+            // Possibly wrong url
+            err.message = 'Failed to fetch event data'
+          } else if (err.message === 'Unexpected end of JSON input') {
+            // Possibly resp body is missing
+          } else if (err.message === 'Failed to fetch') {
+            // Possibly offline
+          } else {
+            throw err
+          }
+          this.fullLog({
+            msg: err.message,
+            value: new Date().toGMTString(),
+            type: 'e',
+            force: true
+          })
+          await this.timeout(TIMEOUTS.PAGEFETCHFAIL)
+          this.silentLog = true
+          continue
+        }
+        this.silentLog = false
         this.log()
-        variants = pageJson.model.variants
-        timeUntilSalesStart = pageJson.model.product.timeUntilSalesStart
-
+        variants = pageJson?.model?.variants
+        timeUntilSalesStart = pageJson?.model?.product?.timeUntilSalesStart
         this.log('Checking response', 't')
-        if ((!variants || variants.length === 0) && timeUntilSalesStart > 0) {
+        if (!variants || variants.length === 0) {
+          this.fullLog({
+            msg: 'No variants available',
+            value: new Date().toGMTString(),
+            type: 'w',
+            force: true
+          })
+          this.timeout(TIMEOUTS.NOEVENTSTIMEOUT) // Wait 100ms before retrying to retrieve variants
+        }
+        if (timeUntilSalesStart > 0) {
           await this.timeoutLog(timeUntilSalesStart - 1) // timeUntilSalesStart - 1
           this.startTime = new Date()
         }
-      } while ((!variants || variants.length === 0) && timeUntilSalesStart > 0)
+        this.silentLog = true
+      } while (
+        (!variants || variants.length === 0) &&
+        (!timeUntilSalesStart || timeUntilSalesStart > 0)
+      )
+      this.silentLog = false
       this.log()
       this.log('Sales have started, finding ticket variants...', 'l')
       this.log()
@@ -389,10 +475,28 @@ export default {
         this.log()
         await this.logReservations()
       } catch (err) {
-        if (typeof err === 'object') this.fullLog({ type: 'e', ...err })
-        else this.log(err, 'e')
+        if (!err) this.log('Undefined error', 'e')
+        // Network error
+        else if (err.message) {
+          this.fullLog({
+            msg: err.message,
+            type: 'e',
+            force: true
+          })
+        }
+        // Custom error
+        else if (typeof err === 'object')
+          this.fullLog({ type: 'e', ...err, force: true })
+        else {
+          this.fullLog({
+            msg: err,
+            type: 'e',
+            force: true
+          })
+        }
       }
       this.stopBot('Process finished succesfully', 't')
+      // window.open('https://kide.app/checkout', '_blank')
       this.logElapsedTime()
     },
     stopBot(msg) {
