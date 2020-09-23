@@ -8,6 +8,7 @@
     dark
     v-resize="reSetSafeArea"
     :height="56 + safeAreaTop"
+    style="z-index: 100;"
   >
     <div class="d-flex fill-height flex-grow-1 align-end mx-n4 mx-sm-n2">
       <div class="d-flex flex-grow-1">
