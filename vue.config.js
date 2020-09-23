@@ -7,7 +7,7 @@ module.exports = {
     appleMobileWebAppStatusBarStyle: 'black-translucent',
     manifestOptions: {
       name: 'Kide.app Bot',
-      short_name: 'KideAppBot'
+      short_name: 'Kide.app Bot'
     }
   }
 }
