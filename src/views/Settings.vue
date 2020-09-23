@@ -3,7 +3,10 @@
     class="pt-6 px-8 px-sm-10"
     style="padding-bottom: max(calc(env(safe-area-inset-bottom) + 12px), 24px)"
   >
-    <v-row class="text-h5">Settings</v-row>
+    <v-row class="text-h5" align="center">
+      Settings
+      <span class="ml-auto text-body-1 text--disabled">v1.1.0</span>
+    </v-row>
     <v-row class="text-subtitle-1 mt-1">
       Define your bearer token here, it will be saved to local storage for later
       use
@@ -32,9 +35,9 @@
     <v-row>
       <v-col class="pa-0">
         <v-fade-transition>
-          <v-alert :type="alert.type" v-show="alert.show">{{
-            alert.content
-          }}</v-alert>
+          <v-alert :type="alert.type" v-show="alert.show">
+            {{ alert.content }}
+          </v-alert>
         </v-fade-transition>
       </v-col>
     </v-row>
@@ -90,8 +93,7 @@
                 color="primary"
                 outlined
               >
-                <v-icon>mdi-github</v-icon>
-                github
+                <v-icon>mdi-github</v-icon>github
               </v-btn>
             </div>
             <v-img
