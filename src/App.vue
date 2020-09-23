@@ -29,7 +29,7 @@ export default {
 .v-main {
   -webkit-overflow-scrolling: touch;
   height: 0px; /* Magic number. Works properly only with 0px */
-  overflow: scroll;
+  overflow-y: scroll;
 }
 .v-main__wrap {
   padding-left: env(safe-area-inset-left);
