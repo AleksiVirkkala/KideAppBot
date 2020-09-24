@@ -22,7 +22,7 @@
       </v-row>
       <v-form ref="urlField">
         <div class="mt-10 px-1 d-flex flex-wrap-nowrap">
-          <div class="flex-grow-1 pa-0 pr-2">
+          <div class="flex-grow-1 pa-0 pr-4 pr-xl-10">
             <v-text-field
               label="Event URL"
               v-model="eventUrl"
@@ -33,17 +33,24 @@
               :rules="[(value) => !!value || 'Enter value']"
             ></v-text-field>
           </div>
-          <div class="d-flex flex-grow-0 pa-0 pl-2">
+          <div class="d-flex flex-grow-0 pa-0 pl-4 pr-2 pr-md-0">
             <v-btn
-              color="primary"
+              :color="botIsActive ? 'error' : 'primary'"
               height="56"
-              width="100"
+              :width="$vuetify.breakpoint.lgAndDown ? 56 : 100"
+              :outlined="botIsActive"
               class="text-none text-subtitle-1"
-              :disabled="promtToAddToken || this.botIsActive"
+              :disabled="promtToAddToken"
               elevation="0"
-              @click="runBot"
+              :fab="$vuetify.breakpoint.lgAndDown"
+              @click="botIsActive ? (stopRequested = true) : runBot()"
             >
-              Activate
+              <!--               <v-icon size="30"></v-icon>
+ -->
+              <v-icon
+                size="30"
+                v-text="botIsActive ? 'mdi-close' : 'mdi-play'"
+              ></v-icon>
             </v-btn>
           </div>
         </div>
@@ -86,11 +93,12 @@ export default {
       promtToAddToken: false,
       eventUrl: '',
       productPageId: '',
-      logValue: '',
       logData: [],
       silentLog: false,
       botIsActive: false,
-      startTime: null
+      startTime: null,
+      inventoryIds: [],
+      stopRequested: false
     }
   },
   methods: {
@@ -100,6 +108,7 @@ export default {
       this.fullLog({ msg, type, replace })
     },
     fullLog({ msg, value, type, replace, force }) {
+      this.stopIfRequested()
       if (!force && this.silentLog) return
       if (replace) this.logData.pop()
       this.logData.push({
@@ -181,6 +190,13 @@ export default {
         { behavior: 'smooth', block: 'end' }
       )
     },
+    stopIfRequested() {
+      if (this.stopRequested) {
+        this.stopRequested = false
+        this.stopBot()
+        throw { msg: 'Process terminated by user', type: 't' }
+      }
+    },
 
     // Step related methods
 
@@ -210,6 +226,7 @@ export default {
           value: variantName,
           type: 'e'
         })
+        this.log()
         return
       }
       body.toCreate[0].quantity = quantity
@@ -316,7 +333,10 @@ export default {
       })
       const json = await response.json()
       const overall = json.model
-      const resArr = overall.reservations
+      const resArr = overall.reservations.filter(
+        (res) => this.inventoryIds.indexOf(res.inventoryId) !== -1
+      )
+      console.log(overall.reservations)
       this.log()
 
       if (!resArr || resArr.length === 0)
@@ -363,7 +383,11 @@ export default {
       const respJson = await this.getPageJson(
         kideAppApiUrlBase + this.productPageId
       )
-      this.log('Received response', 's')
+      this.fullLog({
+        msg: 'Received response',
+        value: respJson?.model?.product?.name,
+        type: 's'
+      })
       return respJson
     },
 
@@ -371,6 +395,7 @@ export default {
       let variants = null
       let timeUntilSalesStart = null
       let salesEnded = null
+      let silentLogUpper = false
 
       do {
         let pageJson
@@ -399,7 +424,7 @@ export default {
           this.silentLog = true
           continue
         }
-        this.silentLog = false
+        this.silentLog = silentLogUpper
         this.log()
 
         variants = pageJson?.model?.variants
@@ -409,19 +434,25 @@ export default {
         if (salesEnded) throw { msg: 'Sales have ended', type: 'e' }
 
         this.log('Checking response', 't')
-        if (!variants || variants.length === 0) {
-          this.fullLog({
-            msg: 'No variants available',
-            value: new Date().toGMTString(),
-            type: 'w',
-            force: true
-          })
-          this.timeout(TIMEOUTS.NOEVENTSTIMEOUT) // Wait 100ms before retrying to retrieve variants
-        }
+
         if (timeUntilSalesStart > 0) {
           await this.timeoutLog(timeUntilSalesStart - 1) // timeUntilSalesStart - 1
           this.startTime = new Date()
+        } else if (!variants || variants.length === 0) {
+          this.fullLog({
+            msg: 'No variants available',
+            type: 'w'
+          })
+          this.fullLog({
+            msg: 'Last response received',
+            value: new Date().toISOString(),
+            type: 'f',
+            replace: this.silentLog,
+            force: true
+          })
+          await this.timeout(TIMEOUTS.NOEVENTSTIMEOUT) // Wait 100ms before retrying to retrieve variants
         }
+        silentLogUpper = true
         this.silentLog = true
       } while (
         (!variants || variants.length === 0) &&
@@ -439,6 +470,7 @@ export default {
 
     async handleResevation(variant) {
       const inventoryId = variant.inventoryId
+      this.inventoryIds.push(inventoryId)
       let quantity = Math.min(
         variant.productVariantMaximumReservableQuantity,
         variant.availability
@@ -490,14 +522,16 @@ export default {
 
     async runBot() {
       if (!this.$refs.urlField.validate()) return
+      if (this.logData.length > 0) {
+        this.logData = []
+        await this.timeout(500)
+      }
       this.botIsActive = true
       this.startTime = new Date()
       this.logSeparation()
       try {
         const variants = await this.handleDataGathering()
-        this.log()
         await this.handleReservations(variants)
-        this.log()
         await this.logReservations()
       } catch (err) {
         if (!err) this.log('Undefined error', 'e')
@@ -520,15 +554,19 @@ export default {
           })
         }
       }
+
       this.stopBot('Process finished succesfully', 't')
+
       // window.open('https://kide.app/checkout', '_blank')
       this.logElapsedTime()
+      console.log(this.inventoryIds)
     },
     stopBot(msg) {
       if (!this.botIsActive) return
       this.log()
       this.log(msg, 't')
       this.botIsActive = false
+      this.silentLog = false
     }
   },
   created() {
