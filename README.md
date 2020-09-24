@@ -1,21 +1,13 @@
 # Kide.app Ticket Bot
 
+![Use cases](/images/scalability.png)
+
 ## Brief
 
 - Ticket bying bot for https://kide.app/ site
 - Progressive Web Application
 - Build with Vue 2 and Vuetify using Vue CLI
 - [Demo page](https://ambitious-dune-0b2f4e403.azurestaticapps.net/)
-
-#### Home page example run
-
-![Home page example run](/images/homeRequest.png)
-
-#### Event which tickets are not yet available
-
-![Event which tickets are not yet available](/images/homeRequestWaiting.png)
-
-## Purpose
 
 It has always been hard to get tickets for student parties in Tampere Finland. I decided to test my coding skills by building PWA application that acts as a bot that reserves maximum amount of tickets for given event.
 
@@ -37,7 +29,7 @@ This app works with kide.app and it requires your kide.app bearer token. Apart f
 3. Open `Local Storage` and under it `https://kide.app`
 4. Your bearer token will be _Value_ of _Key_ `authorization.token`. Exclude apostrophes
 
-![Bearer token steps](/images/bearertoken.png)
+![Bearer token steps](/images/bearerToken.png)
 
 ### Usage
 
