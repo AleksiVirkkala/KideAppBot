@@ -83,7 +83,7 @@
                 <v-icon>mdi-github</v-icon>github
               </v-btn>
             </div>
-            <v-img eager src="@/assets/bearerToken.png"></v-img>
+            <v-img eager src="@/assets/bearertoken.png"></v-img>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
