@@ -14,14 +14,14 @@
         </span>
       </v-row>
       <v-row>
-        <v-col v-show="promtToAddToken" class="mt-6 mb-n10">
+        <v-col v-if="promtToAddToken" class="mt-5 mb-n7">
           <v-alert type="error" text>
             Add your bearer token in the settings first
           </v-alert>
         </v-col>
       </v-row>
       <v-form ref="urlField">
-        <div class="mt-10 px-1 d-flex flex-wrap-nowrap">
+        <div class="mt-8 px-1 d-flex flex-wrap-nowrap">
           <div class="flex-grow-1 pa-0 pr-4 pr-xl-10">
             <v-text-field
               label="Event URL"
@@ -33,12 +33,12 @@
               :rules="[(value) => !!value || 'Enter value']"
             ></v-text-field>
           </div>
-          <div class="d-flex flex-grow-0 pa-0 pl-4 pr-2 pr-md-0">
+          <div class="d-flex flex-grow-0 pa-0 pl-2 pl-sm-4 pr-2 pr-md-0">
             <v-btn
               :color="botIsActive ? 'error' : 'primary'"
               height="56"
               :width="$vuetify.breakpoint.lgAndDown ? 56 : 100"
-              :outlined="botIsActive"
+              :outlined="botIsActive || promtToAddToken"
               class="text-none text-subtitle-1"
               :disabled="promtToAddToken"
               elevation="0"
@@ -57,7 +57,7 @@
       </v-form>
     </v-container>
 
-    <v-row class="px-4 mt-4 flex-grow-1">
+    <v-row class="px-4 mt-2 flex-grow-1">
       <div
         style="overflow: hidden; position: relative; width: 100%;"
         ref="outputWrapper"
