@@ -1,6 +1,6 @@
 <template>
   <v-card outlined class="logFrame pa-4" ref="logFrame">
-    <p class="ma-0 text--disabled" v-if="logData.length === 0">
+    <p class="mx-0 mt-4 text--disabled" v-if="logData.length === 0">
       <slot />
     </p>
     <v-fade-transition group>
