@@ -1,26 +1,15 @@
 <template>
-  <v-container
-    class="pt-6 px-8 px-sm-10"
-    style="padding-bottom: max(calc(env(safe-area-inset-bottom) + 12px), 24px)"
-  >
+  <v-container class="pt-6 px-8 px-sm-10" style="padding-bottom: max(calc(env(safe-area-inset-bottom) + 12px), 24px)">
     <v-row class="text-h5" align="center">
       Settings
-      <span class="ml-auto text-body-1 text--disabled">{{
-        versionNumber
-      }}</span>
+      <span class="ml-auto text-body-1 text--disabled">{{ versionNumber }}</span>
     </v-row>
     <v-row class="text-subtitle-1 mt-1">
-      Define your bearer token here, it will be saved to local storage for later
-      use
+      Define your bearer token here, it will be saved to local storage for later use
     </v-row>
     <v-row class="mt-8 flex-nowrap">
       <div class="pr-2 flex-grow-1">
-        <v-text-field
-          label="Token"
-          outlined
-          v-model="tokenFieldValue"
-          type="password"
-        ></v-text-field>
+        <v-text-field label="Token" outlined v-model="tokenFieldValue" type="password"></v-text-field>
       </div>
       <div class="pl-2">
         <v-btn
@@ -46,24 +35,20 @@
     <v-row class="pa-0 mx-n8">
       <v-expansion-panels flat>
         <v-expansion-panel>
-          <v-expansion-panel-header class="text-h5"
-            >What is this?</v-expansion-panel-header
-          >
-          <v-expansion-panel-content>
+          <v-expansion-panel-header class="text-h5">What is this?</v-expansion-panel-header>
+          <v-expansion-panel-content eager>
             <div class="text-h6 mt-5">What is a bearer token?</div>
             <div>
-              In short, bearer token is a key that acts as an identifier to tell
-              the Kide.app server who is asking to reserve tickets. It is
-              therefore mandatory so that the bot will be able to reserve
-              tickets to your account
+              In short, bearer token is a key that acts as an identifier to tell the Kide.app server who is asking to
+              reserve tickets. It is therefore mandatory so that the bot will be able to reserve tickets to your account
             </div>
             <div class="text-h6 mt-5">How do I find my bearer token?</div>
             <div>
               <ol>
                 <li>
                   Navigate to
-                  <a href="https://kide.app" rel="nofollow">https://kide.app</a
-                  >, sign in, right click anywhere on the page and select
+                  <a href="https://kide.app" rel="nofollow">https://kide.app</a>, sign in, right click anywhere on the
+                  page and select
                   <code>inspect</code>
                 </li>
                 <li>
@@ -98,12 +83,7 @@
                 <v-icon>mdi-github</v-icon>github
               </v-btn>
             </div>
-            <v-img
-              src="@/assets/bearertoken.png"
-              transition="v-fade-transition"
-              eager
-              class="mt-8"
-            ></v-img>
+            <v-img eager src="@/assets/bearerToken.png"></v-img>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -153,8 +133,7 @@ export default {
     }
   },
   mounted() {
-    if (window.localStorage && localStorage.getItem('token'))
-      this.tokenFieldValue = localStorage.getItem('token')
+    if (window.localStorage && localStorage.getItem('token')) this.tokenFieldValue = localStorage.getItem('token')
   }
 }
 </script>
