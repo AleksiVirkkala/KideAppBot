@@ -81,13 +81,3 @@ Steps:
    - Below those is total quantity of tickets and total price of cart
 5. Process finished
    - Program will inform "Process finished succesfully" and below that log the time it took from the point where tickets were available untill they had been reserved succesfully
-
-### Images
-
-#### Home page with navigator open
-
-![Home page with navigator open](/images/HomeNavigator.png)
-
-#### Settings page when adding token
-
-![Settings page when adding token](/images/settingsTokenSet.png)
