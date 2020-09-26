@@ -1,16 +1,16 @@
 <template>
   <v-container
     class="pt-6 px-4 px-sm-6 d-flex flex-column"
-    style="height: 100%; padding-bottom: max(calc(env(safe-area-inset-bottom) + 12px), 24px)"
+    style="
+      height: 100%;
+      padding-bottom: max(calc(env(safe-area-inset-bottom) + 12px), 24px);
+    "
   >
     <v-container class="flex-grow-0 pa-0">
-      <v-row class="text-h5 px-4">
-        Info
-      </v-row>
+      <v-row class="text-h5 px-4"> Info </v-row>
       <v-row>
         <span class="text-body mt-1 px-4">
-          The bot will add maximum amount of tickets to your kide.app cart based
-          on given event url.
+          The bot will add maximum amount of tickets to your kide.app cart based on given event url.
         </span>
       </v-row>
       <v-row>
@@ -47,10 +47,7 @@
             >
               <!--               <v-icon size="30"></v-icon>
  -->
-              <v-icon
-                size="30"
-                v-text="botIsActive ? 'mdi-close' : 'mdi-play'"
-              ></v-icon>
+              <v-icon size="30" v-text="botIsActive ? 'mdi-close' : 'mdi-play'"></v-icon>
             </v-btn>
           </div>
         </div>
@@ -58,13 +55,8 @@
     </v-container>
 
     <v-row class="px-4 mt-2 flex-grow-1">
-      <div
-        style="overflow: hidden; position: relative; width: 100%;"
-        ref="outputWrapper"
-      >
-        <Output :log-data="logData">
-          Log data will be printed here
-        </Output>
+      <div style="overflow: hidden; position: relative; width: 100%" ref="outputWrapper">
+        <Output :log-data="logData"> Log data will be printed here </Output>
       </div>
     </v-row>
   </v-container>
@@ -80,7 +72,8 @@ const TIMEOUTS = {
   NOEVENTSTIMEOUT: 300,
   PAGEFETCHFAIL: 300,
   LOGSCROLL: 100,
-  FAILEDTORESERVE: 200
+  FAILEDTORESERVE: 200,
+  CLEARINGLOG: 500
 }
 
 export default {
@@ -186,9 +179,10 @@ export default {
     },
     async scrollLog() {
       await this.timeout(TIMEOUTS.LOGSCROLL)
-      this.$refs?.outputWrapper?.lastElementChild?.lastElementChild?.lastElementChild?.scrollIntoView(
-        { behavior: 'smooth', block: 'end' }
-      )
+      this.$refs?.outputWrapper?.lastElementChild?.lastElementChild?.lastElementChild?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end'
+      })
     },
     stopIfRequested() {
       if (this.stopRequested) {
@@ -202,16 +196,12 @@ export default {
 
     parsePageId() {
       const url = this.eventUrl
-      if (!url.includes(KideAppUrlBase))
-        throw { msg: 'URL should start with: ', value: KideAppUrlBase }
+      if (!url.includes(KideAppUrlBase)) throw { msg: 'URL should start with: ', value: KideAppUrlBase }
 
       const idExists = !!url[KideAppUrlBase.length]
       if (!idExists) throw "Couldn't parse productPageId from given URL"
 
-      return url.substr(
-        KideAppUrlBase.length,
-        url.length - KideAppUrlBase.length
-      )
+      return url.substr(KideAppUrlBase.length, url.length - KideAppUrlBase.length)
     },
     async getPageJson(url) {
       const res = await fetch(url)
@@ -237,18 +227,15 @@ export default {
 
       while (!gotSuccesfulResponse) {
         try {
-          response = await fetch(
-            'https://api.kide.app/api/reservations/batched',
-            {
-              method: 'post',
-              body: JSON.stringify(body),
-              headers: {
-                'Content-Type': 'application/json;charset=UTF-8',
-                referer: 'https://kide.app/events/' + this.productPageId,
-                authorization: 'Bearer ' + token
-              }
+          response = await fetch('https://api.kide.app/api/reservations/batched', {
+            method: 'post',
+            body: JSON.stringify(body),
+            headers: {
+              'Content-Type': 'application/json;charset=UTF-8',
+              referer: 'https://kide.app/events/' + this.productPageId,
+              authorization: 'Bearer ' + token
             }
-          )
+          })
           json = await response.json()
           if (json.error) throw json.error
           gotSuccesfulResponse = true
@@ -333,14 +320,11 @@ export default {
       })
       const json = await response.json()
       const overall = json.model
-      const resArr = overall.reservations.filter(
-        (res) => this.inventoryIds.indexOf(res.inventoryId) !== -1
-      )
+      const resArr = overall.reservations.filter((res) => this.inventoryIds.indexOf(res.inventoryId) !== -1)
       console.log(overall.reservations)
       this.log()
 
-      if (!resArr || resArr.length === 0)
-        throw { msg: "Couldn't reserve any tickets", type: 'e' }
+      if (!resArr || resArr.length === 0) throw { msg: "Couldn't reserve any tickets", type: 'e' }
 
       this.log('Reserved items:', 't')
       resArr.forEach((res) => {
@@ -357,10 +341,7 @@ export default {
       })
       const totalPrice = overall.finalPrice + ''
       const formattedPrice =
-        totalPrice.slice(0, totalPrice.length - 2) +
-        '.' +
-        totalPrice.slice(totalPrice.length - 2) +
-        '€'
+        totalPrice.slice(0, totalPrice.length - 2) + '.' + totalPrice.slice(totalPrice.length - 2) + '€'
       this.fullLog({
         msg: '💲 Total price:',
         value: formattedPrice
@@ -380,9 +361,7 @@ export default {
         type: 's'
       })
       this.log('Fetching page info...', 'f')
-      const respJson = await this.getPageJson(
-        kideAppApiUrlBase + this.productPageId
-      )
+      const respJson = await this.getPageJson(kideAppApiUrlBase + this.productPageId)
       this.fullLog({
         msg: 'Received response',
         value: respJson?.model?.product?.name,
@@ -454,10 +433,7 @@ export default {
         }
         silentLogUpper = true
         this.silentLog = true
-      } while (
-        (!variants || variants.length === 0) &&
-        (!timeUntilSalesStart || timeUntilSalesStart > 0)
-      )
+      } while ((!variants || variants.length === 0) && (!timeUntilSalesStart || timeUntilSalesStart > 0))
       this.silentLog = false
       this.log()
       this.log('Sales have started, finding ticket variants...', 'l')
@@ -471,10 +447,7 @@ export default {
     async handleResevation(variant) {
       const inventoryId = variant.inventoryId
       this.inventoryIds.push(inventoryId)
-      let quantity = Math.min(
-        variant.productVariantMaximumReservableQuantity,
-        variant.availability
-      )
+      let quantity = Math.min(variant.productVariantMaximumReservableQuantity, variant.availability)
 
       const body = {
         toCreate: [
@@ -511,10 +484,7 @@ export default {
     },
 
     async handleReservations(variants) {
-      let reservationRequests = []
-      variants.forEach((variant) => {
-        reservationRequests.push(this.handleResevation(variant))
-      })
+      let reservationRequests = variants.map((variant) => this.handleResevation(variant))
       await Promise.all(reservationRequests)
     },
 
@@ -524,7 +494,7 @@ export default {
       if (!this.$refs.urlField.validate()) return
       if (this.logData.length > 0) {
         this.logData = []
-        await this.timeout(500)
+        await this.timeout(TIMEOUTS.CLEARINGLOG)
       }
       this.botIsActive = true
       this.startTime = new Date()
@@ -544,8 +514,7 @@ export default {
           })
         }
         // Custom error
-        else if (typeof err === 'object')
-          this.fullLog({ type: 'e', ...err, force: true })
+        else if (typeof err === 'object') this.fullLog({ type: 'e', ...err, force: true })
         else {
           this.fullLog({
             msg: err,
@@ -570,8 +539,7 @@ export default {
     }
   },
   created() {
-    if (window.localStorage && !localStorage.getItem('token'))
-      this.promtToAddToken = true
+    if (window.localStorage && !localStorage.getItem('token')) this.promtToAddToken = true
   }
 }
 </script>
