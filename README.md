@@ -53,31 +53,6 @@ This app works with kide.app and it requires your kide.app bearer token. Apart f
 
 ### Deeper details
 
-##### Outputted data
+#### Activity diagram
 
-Rows should be pretty self explained
-
-Steps:
-
-1. Parsing input
-   - Checks input url and finds `pageId` from it. This means the part after last `/` in event url
-2. Checking response
-   - Checks what data api gave when requesting with previus `pageId`
-   - This determines if sales have started yet or not
-     - If they have
-       - Lists all different ticket `variants`, their availability and `max-order` amounts
-       - Continues to reserving tickets immediately
-     - If they have not
-       - Starts a timer based on time that is left for sales to start
-       - Automatically fetches data again as many times until tickets are available starting from one second before timer runs out
-       - Once again ticket variations are found, continues to reserving tickets
-3. Reserving ticket
-   - Previous step found ticket variants. They have a property `inventoryId` which is required to add ticket to cart
-   - We also know how many tickets are in stock and how many are allowed to reserve. Based on these we will do initial reservation request
-     - If it fails, program will automatically iterate down till zero
-     - If it succeeds and quantity was lower that max allowed quantity it will try to iterate upwards since sometimes server gives availability quantity too low
-4. Reserved items
-   - Requests info from api of currently reserved items (event variants) which will be listed with name and quantity
-   - Below those is total quantity of tickets and total price of cart
-5. Process finished
-   - Program will inform "Process finished succesfully" and below that log the time it took from the point where tickets were available untill they had been reserved succesfully
+[Bot activity diagram](/images/botactivitydiagram.pdf)
