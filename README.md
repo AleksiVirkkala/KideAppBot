@@ -55,4 +55,4 @@ This app works with kide.app and it requires your kide.app bearer token. Apart f
 
 #### Activity diagram
 
-[Bot activity diagram](/images/botactivitydiagram.pdf)
+![Bot activity diagram](/images/botactivitydiagram.jpg)
