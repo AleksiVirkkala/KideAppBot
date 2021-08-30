@@ -1,0 +1,3 @@
+[submodule "src/mixins/KideAppBotLogic"]
+	path = src/mixins/KideAppBotLogic
+	url = git@github.com:AleksiVirkkala/KideAppBotLogic.git

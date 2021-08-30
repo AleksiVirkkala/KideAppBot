@@ -64,7 +64,7 @@
 
 <script>
 import Output from '@/components/Output.vue'
-import botMixin from '../mixins/botMixin'
+import botMixin from '../mixins/KideAppBotLogic/botMixin'
 
 export default {
   name: 'Home',
