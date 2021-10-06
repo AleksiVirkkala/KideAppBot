@@ -2,6 +2,15 @@
 
 ![Use cases](/images/scalability.png)
 
+-----
+
+## Update
+I have decided to move code related to the bot-logic to [private submodule](https://github.com/AleksiVirkkala/KideAppBot/tree/master/src/mixins) to avoid it spreading uncontrollably. Running the local environment as explained below will cause errors. 
+
+I might make a public version available later which would communicate with api managed by me. That way it'd be possible to shut it down if necessary. I don't have time for that atm though.
+
+-----
+
 ## Brief
 
 - Ticket bying bot for https://kide.app/ site
@@ -33,9 +42,10 @@ This app works with kide.app and it requires your kide.app bearer token. Apart f
 ### Usage
 
 1. Running the app
-   1. Clone repo
-   2. requires node.js, run form root directory with `npm run serve`
-   3. Navigate to http://localhost:8080/ with browser
+   1. Clone repo **with submodules**
+       - **IMPORTANT** I have decided to move code related to the bot-logic to [private submodule](https://github.com/AleksiVirkkala/KideAppBot/tree/master/src/mixins) to avoid it spreading uncontrollably
+   3. requires node.js, run form root directory with `npm run serve`
+   4. Navigate to http://localhost:8080/ with browser
 2. Click tree dots from top right corner and select settings
 3. find your bearer token
    1. At https://kide.app/ (when logged in) open web inspector
