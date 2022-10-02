@@ -4,7 +4,12 @@ const PageBackground = (props: { children?: JSX.Element }) => {
   return (
     <Box
       flexGrow="1"
-      sx={{ backgroundColor: 'white', border: '4px solid red' }}
+      sx={{
+        backgroundColor: 'white',
+        border: '4px solid red',
+        display: 'flex',
+        overflowY: 'hidden'
+      }}
     >
       {props.children}
     </Box>

@@ -2,47 +2,55 @@ import { TextField, Button, Box } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { socket } from '../config/socket';
+import LogEntry from './LogEntry';
 
-interface Log {
+export interface Log {
   msg?: string;
-  value?: string | number;
-  type?: string;
+  value?: string;
+  type: string;
 }
 
 const Bot = () => {
-  const [eventID, setEventID] = useState('');
+  const [eventUrl, setEventUrl] = useState('');
   const [token, setToken] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [logData, setLogData] = useState<Log[]>([]);
 
   useEffect(() => {
-    socket.on('logsChanged', log => {
+    socket.on('newLog', log => {
       console.log(log);
       setLogData(logs => [...logs, log]);
-      // setLogData([...logData, log]);
     });
     socket.on('isRunningChanged', newValue => {
       setIsRunning(newValue);
     });
     return () => {
-      socket.off('logsChanged');
+      socket.off('newLog');
       socket.off('isRunningChanged');
     };
   }, []);
 
   const runBot = () => {
-    socket.emit('reserve', { eventID, token });
+    setLogData([]);
+    socket.emit('reserve', { eventUrl, token });
   };
   const stopBot = () => {
-    socket.emit('stop', { eventID });
+    socket.emit('stop', { eventUrl });
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        border: '5px solid green',
+        flexGrow: 1,
+        display: 'flex',
+        flexDirection: 'column'
+      }}
+    >
       <Box m={10} display="flex" alignContent="center" justifyContent="center">
         <TextField
-          label="Event ID"
-          onChange={e => setEventID(e.target.value)}
+          label="Event URL"
+          onChange={e => setEventUrl(e.target.value)}
         />
         <TextField
           label="Bearer Token"
@@ -56,11 +64,21 @@ const Bot = () => {
           Stop
         </Button>
       </Box>
-      <Box>
+      <Box
+        mx="20px"
+        my="20px"
+        py="20px"
+        px="20px"
+        sx={{
+          borderRadius: '5px',
+          border: '2px solid #e0e0e0',
+          backgroundColor: '#eeeeee',
+          overflow: 'scroll',
+          flexGrow: 1
+        }}
+      >
         {logData.map((log, index) => (
-          <Box key={index}>
-            {log.msg} {log.value} {log.type}
-          </Box>
+          <LogEntry log={log} />
         ))}
       </Box>
     </Box>
