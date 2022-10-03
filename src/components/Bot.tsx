@@ -3,6 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import { socket } from '../config/socket';
 import LogEntry from './LogEntry';
 
+const TOKEN_STORAGE_KEY = 'token';
+const LOG_SCROLL_DELAY = 100;
+
 export interface Log {
   msg?: string;
   value?: string;
@@ -16,6 +19,14 @@ const Bot = () => {
   const [logData, setLogData] = useState<Log[]>([]);
   const logOutputRef = useRef<HTMLElement | null>(null);
 
+  // Restore token value
+  useEffect(() => {
+    const savedToken = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (typeof savedToken === 'string') {
+      setToken(savedToken);
+    }
+  });
+  // Init socket
   useEffect(() => {
     socket.on('newLog', log => {
       console.log(log);
@@ -30,6 +41,14 @@ const Bot = () => {
       socket.off('isRunningChanged');
     };
   }, []);
+
+  const onTokenInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const token = e.target.value;
+    localStorage.setItem(TOKEN_STORAGE_KEY, token);
+    setToken(token);
+  };
 
   const runBot = () => {
     setLogData([]);
@@ -46,7 +65,7 @@ const Bot = () => {
           block: 'end'
         });
       }
-    }, 100);
+    }, LOG_SCROLL_DELAY);
   };
 
   return (
@@ -78,8 +97,9 @@ const Bot = () => {
             <TextField
               label="Bearer Token"
               fullWidth
+              value={token}
               type="password"
-              onChange={e => setToken(e.target.value)}
+              onChange={onTokenInput}
               sx={{ marginRight: '12px', maxWidth: '500px' }}
             />
             <Button
