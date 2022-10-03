@@ -6,8 +6,9 @@ const PageBackground = (props: { children?: JSX.Element }) => {
       flexGrow="1"
       sx={{
         backgroundColor: 'white',
-        border: '4px solid red',
+        // border: '4px solid red',
         display: 'flex',
+        justifyContent: 'center',
         overflowY: 'hidden'
       }}
     >

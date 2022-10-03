@@ -1,5 +1,4 @@
 import { TextField, Button, Box } from '@mui/material';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { socket } from '../config/socket';
 import LogEntry from './LogEntry';
@@ -41,44 +40,58 @@ const Bot = () => {
   return (
     <Box
       sx={{
-        border: '5px solid green',
+        // border: '5px solid green',
         flexGrow: 1,
+        justifySelf: 'start',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        maxWidth: '1000px'
       }}
+      m={3}
     >
-      <Box m={10} display="flex" alignContent="center" justifyContent="center">
-        <TextField
-          label="Event URL"
-          onChange={e => setEventUrl(e.target.value)}
-        />
-        <TextField
-          label="Bearer Token"
-          type="password"
-          onChange={e => setToken(e.target.value)}
-        />
-        <Button onClick={runBot} disabled={isRunning}>
-          Run
-        </Button>
-        <Button onClick={stopBot} disabled={!isRunning}>
-          Stop
-        </Button>
+      <Box mb={3}>
+        <Box sx={{ typography: 'h6' }}>Info</Box>
+        <Box mb={3} sx={{ typography: 'body1' }}>
+          The bot will add maximum amount of tickets to your kide.app cart based
+          on given event url.
+        </Box>
+        <Box>
+          <Box display="flex" alignContent="center" justifyContent="center">
+            <TextField
+              label="Event URL"
+              fullWidth
+              onChange={e => setEventUrl(e.target.value)}
+              sx={{ marginRight: '12px', maxWidth: '500px' }}
+            />
+            <TextField
+              label="Bearer Token"
+              fullWidth
+              type="password"
+              onChange={e => setToken(e.target.value)}
+              sx={{ marginRight: '12px', maxWidth: '500px' }}
+            />
+            <Button
+              onClick={isRunning ? stopBot : runBot}
+              variant={isRunning ? 'outlined' : 'contained'}
+              sx={{ marginLeft: 'auto', width: '80px' }}
+            >
+              {isRunning ? 'Stop' : 'Run'}
+            </Button>
+          </Box>
+        </Box>
       </Box>
       <Box
-        mx="20px"
-        my="20px"
-        py="20px"
-        px="20px"
+        p="20px"
         sx={{
           borderRadius: '5px',
           border: '2px solid #e0e0e0',
           backgroundColor: '#eeeeee',
-          overflow: 'scroll',
+          overflowY: 'scroll',
           flexGrow: 1
         }}
       >
         {logData.map((log, index) => (
-          <LogEntry log={log} />
+          <LogEntry log={log} key={index} />
         ))}
       </Box>
     </Box>
