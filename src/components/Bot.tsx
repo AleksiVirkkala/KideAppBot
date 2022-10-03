@@ -1,5 +1,5 @@
 import { TextField, Button, Box } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { socket } from '../config/socket';
 import LogEntry from './LogEntry';
 
@@ -14,11 +14,13 @@ const Bot = () => {
   const [token, setToken] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [logData, setLogData] = useState<Log[]>([]);
+  const logOutputRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     socket.on('newLog', log => {
       console.log(log);
       setLogData(logs => [...logs, log]);
+      scrollLog();
     });
     socket.on('isRunningChanged', newValue => {
       setIsRunning(newValue);
@@ -35,6 +37,16 @@ const Bot = () => {
   };
   const stopBot = () => {
     socket.emit('stop', { eventUrl });
+  };
+  const scrollLog = async () => {
+    setTimeout(() => {
+      if (logOutputRef.current) {
+        logOutputRef.current.lastElementChild?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'end'
+        });
+      }
+    }, 100);
   };
 
   return (
@@ -82,6 +94,7 @@ const Bot = () => {
       </Box>
       <Box
         p="20px"
+        ref={logOutputRef}
         sx={{
           borderRadius: '5px',
           border: '2px solid #e0e0e0',
