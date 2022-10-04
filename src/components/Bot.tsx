@@ -27,6 +27,14 @@ const Bot = () => {
       setToken(savedToken);
     }
   });
+
+  useEffect(() => {
+    if (token) {
+      // Gets logs of running bot from server
+      socket.emit('restoreSession', { token });
+    }
+  }, [token]);
+
   // Init socket
   useEffect(() => {
     socket.on('newLog', (log: Log) => {
