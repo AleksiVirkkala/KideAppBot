@@ -10,6 +10,7 @@ export interface Log {
   msg?: string;
   value?: string;
   type: string;
+  replace: boolean;
 }
 
 const Bot = () => {
@@ -28,9 +29,16 @@ const Bot = () => {
   });
   // Init socket
   useEffect(() => {
-    socket.on('newLog', log => {
+    socket.on('newLog', (log: Log) => {
       console.log(log);
-      setLogData(logs => [...logs, log]);
+
+      setLogData(logs => {
+        if (log.replace) {
+          logs.pop();
+        }
+        return [...logs, log];
+      });
+
       scrollLog();
     });
     socket.on('isRunningChanged', newValue => {
