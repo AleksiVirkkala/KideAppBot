@@ -1,21 +1,25 @@
 # Kide.app Ticket Bot
 
+Note: Images of the UI are currently outdated. However the functionality is the same.
+
 ![Use cases](/images/scalability.png)
 
------
+## Public version!
 
-## Update
-I have decided to move code related to the bot-logic to [private submodule](https://github.com/AleksiVirkkala/KideAppBot/tree/master/src/mixins) to avoid it spreading uncontrollably. Running the local environment as explained below will cause errors. 
+Woohoo!! there's a public release ready for testing:
 
-I might make a public version available later which would communicate with api managed by me. That way it'd be possible to shut it down if necessary. I don't have time for that atm though.
+- [https://AleksiVirkkala.com](https://AleksiVirkkala.com)
+- **NOTE: This new version sends your bearer token to my server that then uses it to reserve tickets from KideApp.** I will never store your bearer token nor use it for anything else than reserving the tickets. By using the bot you agree to this
 
------
+---
 
 ## Brief
 
 - Ticket bying bot for https://kide.app/ site
 - Progressive Web Application
-- Build with Vue 2 and Vuetify using Vue CLI
+- Frontend build with React and MUI
+- Backend build with Express + Typescript
+- Realtime communication between Frontend and Backend using Socket.IO
 
 It has always been hard to get tickets for student parties in Tampere Finland. I decided to test my coding skills by building PWA application that acts as a bot that reserves maximum amount of tickets for given event.
 
@@ -41,24 +45,29 @@ This app works with kide.app and it requires your kide.app bearer token. Apart f
 
 ### Usage
 
-1. Running the app
-   1. Clone repo **with submodules**
-       - **IMPORTANT** I have decided to move code related to the bot-logic to [private submodule](https://github.com/AleksiVirkkala/KideAppBot/tree/master/src/mixins) to avoid it spreading uncontrollably
-   3. requires node.js, run form root directory with `npm run serve`
-   4. Navigate to http://localhost:8080/ with browser
-2. Click tree dots from top right corner and select settings
-3. find your bearer token
+#### Easy way
+
+1. Head to [https://AleksiVirkkala.com](https://AleksiVirkkala.com)
+2. find your bearer token
    1. At https://kide.app/ (when logged in) open web inspector
    2. Application tab > Local Storage > https://kide.app
    3. Copy the value of row that has key _"authorization.token"_, excluding apostrophes
-4. Set your kide.app bearing token in app settings.
+3. Set your kide.app bearing token in app settings.
    - The value will be saved to local storage which means that you won't have to set it again as long as the url stays the same and you are using that same device.
    - Green prompt will inform of succesfull saving
-5. Switch to home page
-   - Fields should now be enabled
-6. Copy event url from https://kide.app/
+4. Copy event url from https://kide.app/
    - Each event should start with https://kide.app/events/
-7. Press _"Activate"_ button and watch the bot go
+5. Press _"Run"_ button and watch the bot go
+
+#### Running locally
+
+Note: If you want to only use the bot this section is unnecessary for you
+
+1. Clone the repo and install with `npm install`
+   1. requires node.js,
+2. Run from root directory with `npm run dev`
+3. Navigate to http://localhost:8080/ with browser
+4. Follow the instructions in the **[easy way](#easy-way)** section
 
 ### Deeper details
 
