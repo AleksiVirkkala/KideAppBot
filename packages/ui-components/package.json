@@ -1,0 +1,36 @@
+{
+  "name": "ui-components",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "license": "MIT",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
+    "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "devDependencies": {
+    "@common/types": "workspace:*",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.8.0",
+    "@mui/material": "^5.11.13",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.4",
+    "eslint": "^8.15.0",
+    "eslint-config-base": "workspace:*",
+    "react": "^18.1.0",
+    "tsconfig": "workspace:*",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

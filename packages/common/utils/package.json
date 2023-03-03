@@ -1,0 +1,7 @@
+{
+  "name": "@common/utils",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "type": "module",
+  "private": true
+}

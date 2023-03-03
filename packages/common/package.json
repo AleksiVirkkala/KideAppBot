@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "@types/node": "^18.15.0",
+    "tsconfig": "workspace:*"
+  }
+}

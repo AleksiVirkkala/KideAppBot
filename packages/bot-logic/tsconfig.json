@@ -1,0 +1,16 @@
+{
+  "extends": "tsconfig/node-library.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "module": "ESNext",
+    "target": "ESNext",
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src"],
+  "references": []
+}
