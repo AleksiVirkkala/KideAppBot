@@ -117,6 +117,8 @@ describe('bot tests', () => {
 
     beforeEach(() => {
       bot = new KideAppBot(KIDE_TOKEN);
+      bot.setOnLog(vi.fn());
+      bot.setOnIsActiveChanged(vi.fn());
     });
 
     describe('getProductData', () => {
@@ -182,6 +184,7 @@ describe('bot tests', () => {
           rest.get(eventSalesNotStarted.apiUrl, reqHandlerVariantsMissing),
           rest.get(eventSalesNotStarted.apiUrl, reqHandlerVariantsExist)
         );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const spy = vi.spyOn(bot, 'timeoutLog');
         const eventUrl = eventSalesNotStarted.eventUrl;
@@ -313,6 +316,8 @@ describe('bot tests', () => {
 
     beforeEach(() => {
       bot = new KideAppBot(KIDE_TOKEN);
+      bot.setOnLog(vi.fn());
+      bot.setOnIsActiveChanged(vi.fn());
     });
     it('Should survive without errors', async () => {
       const eventUrl = eventFull.eventUrl;

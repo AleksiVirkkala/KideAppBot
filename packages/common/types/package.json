@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "main": "index.ts",
   "type": "module",
-  "private": true
+  "private": true,
+  "scripts": {
+    "lint": "eslint ."
+  }
 }

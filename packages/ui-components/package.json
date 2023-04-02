@@ -12,7 +12,7 @@
   "scripts": {
     "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
     "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
-    "lint": "eslint \"src/**/*.ts*\"",
+    "lint": "eslint src",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
@@ -23,12 +23,18 @@
     "@mui/material": "^5.11.13",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
-    "eslint": "^8.15.0",
     "eslint-config-base": "workspace:*",
     "react": "^18.1.0",
     "tsconfig": "workspace:*",
     "tsup": "^6.7.0",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "eslint-import-resolver-typescript": "^3.5.3",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0"
   },
   "publishConfig": {
     "access": "public"

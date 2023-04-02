@@ -14,3 +14,10 @@ export class FatalBotError extends Error {
 }
 
 export class BotError extends FatalBotError {}
+
+export class NotImplementedError extends Error {
+  constructor(msg: string) {
+    super(msg);
+    this.name = 'NotImplementedError';
+  }
+}

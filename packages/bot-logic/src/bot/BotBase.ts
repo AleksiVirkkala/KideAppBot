@@ -8,7 +8,11 @@ import {
   secondsToPrettierPrint,
   timeout
 } from '@common/utils';
-import { BotError, FatalBotError } from '@/utils/errorUtils';
+import {
+  BotError,
+  FatalBotError,
+  NotImplementedError
+} from '@/utils/errorUtils';
 import {
   Variant,
   ReservationsPostResponse,
@@ -30,10 +34,10 @@ export abstract class BotBase {
   abstract fetchProductData: FetchProductDataFn;
 
   // State
-  protected _botIsActive: boolean = false;
-  protected silentLog: boolean = false;
+  protected _botIsActive = false;
+  protected silentLog = false;
   protected startTime: number | null = null;
-  protected stopRequested: boolean = false;
+  protected stopRequested = false;
 
   constructor(protected token: string) {}
 
@@ -109,7 +113,7 @@ export abstract class BotBase {
   }
 
   protected async reserveTicketVariants(variants: Variant[]) {
-    let reservationRequests = variants.map(async variant => {
+    const reservationRequests = variants.map(async variant => {
       try {
         return await this.tryReserveTicketVariant(variant);
       } catch (e) {
@@ -133,12 +137,16 @@ export abstract class BotBase {
     this.onIsActiveChanged(value);
   }
 
-  protected onIsActiveChanged: (newValue: boolean) => void = () => {};
+  protected onIsActiveChanged: (newValue: boolean) => void = () => {
+    throw new NotImplementedError("onIsActiveChanged hasn't been set");
+  };
   public setOnIsActiveChanged(handler: (newValue: boolean) => void) {
     this.onIsActiveChanged = handler;
   }
 
-  protected onLog: (log: Log) => void = () => {};
+  protected onLog: (log: Log) => void = () => {
+    throw new NotImplementedError("onLog hasn't been set");
+  };
   public setOnLog(handler: (log: Log) => void) {
     this.onLog = handler;
   }

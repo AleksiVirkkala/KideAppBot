@@ -9,7 +9,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "coverage": "vitest run --coverage",
-    "lint": "eslint *.ts*"
+    "lint": "eslint src"
   },
   "author": "Aleksi Virkkala",
   "license": "UNLICENSED",
@@ -33,6 +33,6 @@
     "tsup": "^6.7.0",
     "tsup-config-base": "workspace:*",
     "typescript": "^5.0.2",
-    "vitest": "^0.29.2"
+    "vitest": "^0.29.8"
   }
 }
