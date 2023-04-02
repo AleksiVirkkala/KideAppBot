@@ -1,4 +1,3 @@
-import '@/config/dotenv';
 import { startServer } from './server';
 import { isDev } from '@common/utils';
 import type { AppRouter } from './server/routes';

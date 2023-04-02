@@ -1,4 +1,3 @@
-import '@/utils/configureDotenv';
 import { BotError, FatalBotError } from '@/utils/errorUtils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
