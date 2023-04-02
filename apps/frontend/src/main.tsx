@@ -4,7 +4,6 @@ import { createRoot } from 'react-dom/client';
 import TrpcWrapper from './components/TrpcWrapper';
 
 import App from './components/App';
-import './config/socket';
 import './index.css';
 
 // eslint-disable-next-line

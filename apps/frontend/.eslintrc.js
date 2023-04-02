@@ -1,4 +1,4 @@
-{
+module.exports = {
   "root": true,
   "extends": [
     "base",
@@ -19,7 +19,8 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "project": ["./tsconfig.json"]
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": __dirname
   },
   "env": {
     "es6": true,
