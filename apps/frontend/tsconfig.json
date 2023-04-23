@@ -1,5 +1,0 @@
-{
-  "extends": "tsconfig/frontend.json",
-  "exclude": ["node_modules"],
-  "include": ["src", "./.eslintrc.js"]
-}

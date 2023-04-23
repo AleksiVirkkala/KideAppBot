@@ -2,7 +2,7 @@
 
 This package contains the logic for the bot.
 
-Notice that you must set `IMPLEMENTATION_PAT` in `.env` file to make the `KideAppBot` class work properly.
+Notice that you must set `IMPLEMENTATION_PATH` in `.env` file to make the `KideAppBot` class work properly.
 
 See `src/bot/index.ts` for more information.
 

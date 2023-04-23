@@ -1,6 +1,6 @@
-import { BotBase } from './BotBase';
-import { fetchProductDataFn, tryReserveFn } from '@/private';
+import { BotBase } from './BotBase'
+import { fetchProductDataFn, tryReserveFn } from '@/private'
 export class KideAppBot extends BotBase {
-  fetchProductData = fetchProductDataFn;
-  tryReserve = tryReserveFn;
+  fetchProductData = fetchProductDataFn
+  tryReserve = tryReserveFn
 }

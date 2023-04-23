@@ -1,38 +1,32 @@
 {
-  "name": "kideappbot",
+  "private": true,
+  "name": "kideappbot-monorepo",
+  "author": "Aleksi Virkkala",
+  "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "https://github.com/aleksivirkkala/kideappbot.git"
   },
-  "version": "2.0.0",
-  "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "packages/common/*",
-    "packages/configs/*"
-  ],
+  "version": "3.0.0",
   "scripts": {
     "build": "turbo run build",
-    "dev": "dotenv -- turbo run dev",
+    "dev": "dotenv -- turbo run dev --concurrency 14",
     "lint": "turbo run lint",
+    "clean": "turbo run clean",
     "test": "turbo run test",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\""
   },
-  "author": "Aleksi Virkkala",
-  "license": "UNLICENSED",
   "devDependencies": {
-    "eslint": "^8.36.0",
+    "dotenv-cli": "^7.1.0",
+    "eslint": "^8.39.0",
     "eslint-config-base": "workspace:*",
     "pnpm": "^8.1.0",
     "prettier": "^2.8.7",
-    "turbo": "1.8.3"
+    "prettier-plugin-tailwindcss": "^0.2.8",
+    "turbo": "1.9.3"
   },
   "engines": {
-    "node": ">=19.0.0"
+    "node": ">=18"
   },
-  "packageManager": "pnpm@8.1.0",
-  "dependencies": {
-    "dotenv-cli": "^7.1.0"
-  }
+  "packageManager": "pnpm@8.4.0"
 }

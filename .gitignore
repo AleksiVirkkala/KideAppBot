@@ -1,4 +1,7 @@
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+private
 
 # dependencies
 node_modules
@@ -10,9 +13,11 @@ coverage
 
 # build
 dist
-
-private
-.env
+.next/
+out/
+storybook-static/
+build/
+.swc/
 
 # misc
 .DS_Store
@@ -25,10 +30,15 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env
+.env*.local
 
 # turbo
 .turbo
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

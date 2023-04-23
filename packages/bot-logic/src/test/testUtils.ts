@@ -1,5 +1,5 @@
-import { Variant } from '@/types/KideAppTypes';
-import { eventFull } from '@/private/pageData';
+import { Variant } from '@/types/KideAppTypes'
+import { eventFull } from '@/private/pageData'
 import {
   AsyncResponseResolverReturnType,
   MockedResponse,
@@ -7,25 +7,22 @@ import {
   ResponseComposition,
   RestContext,
   RestRequest
-} from 'msw';
+} from 'msw'
 
 export type RestResponseResolver = (
   req: RestRequest<never, PathParams<string>>,
   res: ResponseComposition<any>,
   ctx: RestContext
-) => AsyncResponseResolverReturnType<MockedResponse>;
+) => AsyncResponseResolverReturnType<MockedResponse>
 
-const variants = eventFull.product.allVariants.model.variants;
+const variants = eventFull.product.allVariants.model.variants
 
 export const findVariantByInventoryId = (id: string) => {
-  return variants.find(v => v.inventoryId === id) as Variant;
-};
+  return variants.find(v => v.inventoryId === id) as Variant
+}
 
-export const createSuccesReservationByInventoryId = (
-  id: string,
-  count: number
-) => {
-  const variant = findVariantByInventoryId(id);
+export const createSuccesReservationByInventoryId = (id: string, count: number) => {
+  const variant = findVariantByInventoryId(id)
   return {
     model: {
       reservations: [
@@ -37,5 +34,5 @@ export const createSuccesReservationByInventoryId = (
       ]
     },
     reservationsCount: count
-  };
-};
+  }
+}

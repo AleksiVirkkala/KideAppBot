@@ -1,6 +1,12 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local", ".env", "tsconfig.json"],
+  "globalDependencies": [
+    "**/.env.*local",
+    ".env",
+    "tsconfig.json",
+    "**/.eslintrc.*",
+    ".prettier.config.js"
+  ],
   "globalEnv": ["NODE_ENV", "ALLOWED_ORIGINS", "PORT"],
   "pipeline": {
     "build": {
@@ -10,13 +16,13 @@
     "test": {
       "outputs": ["coverage/**"]
     },
-    "lint": {
-      "outputs": []
-    },
+    "lint": {},
     "dev": {
       "cache": false,
-      "persistent": true,
-      "outputs": ["dist/**"]
+      "persistent": true
+    },
+    "clean": {
+      "cache": false
     }
   }
 }
