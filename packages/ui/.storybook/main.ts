@@ -14,6 +14,18 @@ const config: StorybookConfig = {
   },
   docs: {
     autodocs: true
+  },
+  webpackFinal: async config => {
+    // This is used to make turbo logs much shorter.
+    return {
+      ...config,
+      stats: 'errors-warnings',
+      plugins: [
+        ...config.plugins?.filter(plugin => {
+          return plugin.constructor.name !== 'ProgressPlugin'
+        })
+      ]
+    }
   }
 }
 export default config
