@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { within, userEvent } from '@storybook/testing-library'
+import { MainContainer } from '../helpers/Content/MainContainer'
+import { Default } from '../helpers/Content/MainContainer.stories'
 
 import { Page } from './Page'
 
@@ -8,6 +10,9 @@ const meta: Meta<typeof Page> = {
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'fullscreen'
+  },
+  args: {
+    children: <MainContainer {...Default.args} />
   }
 }
 

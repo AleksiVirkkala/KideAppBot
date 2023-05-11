@@ -36,6 +36,7 @@
     "eslint-config-base": "workspace:*",
     "eslint-config-next": "13.4.1",
     "eslint-plugin-storybook": "^0.6.12",
+    "interactjs": "^1.10.17",
     "storybook": "^7.0.9",
     "tailwind-config": "workspace:*",
     "tsconfig": "workspace:*"
