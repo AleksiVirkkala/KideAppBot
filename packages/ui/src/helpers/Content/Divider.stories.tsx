@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Divider } from './Divider'
 import { SampleContent } from './SampleContent'
-import { ContentContainer } from './ContentContainer'
 
 const meta: Meta<typeof Divider> = {
   component: Divider

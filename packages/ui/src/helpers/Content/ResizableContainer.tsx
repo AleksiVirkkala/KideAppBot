@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import interact from 'interactjs'
 import type { ResizeEvent } from '@interactjs/actions/resize/plugin'
+import { twMerge } from 'tailwind-merge'
 
 interface ResizableContainerProps {
   children: React.ReactNode
@@ -25,6 +26,7 @@ export const ResizableContainer = ({
   fullSize = false,
   containerClassName
 }: ResizableContainerProps) => {
+  const [isResizing, setIsResizing] = useState(false)
   const containerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -34,6 +36,9 @@ export const ResizableContainer = ({
     if (initialWidth) container.style.width = `${initialWidth}px`
 
     const interactable = initInteract(container, minWidth)
+      .on('resizestart', () => setIsResizing(true))
+      .on('resizeend', () => setIsResizing(false))
+
     return () => {
       interactable.unset()
     }

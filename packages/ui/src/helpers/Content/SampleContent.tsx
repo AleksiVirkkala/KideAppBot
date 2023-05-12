@@ -20,7 +20,7 @@ export const SampleContent: FC<Props> = ({
   return (
     <div
       className={twMerge(
-        'relative overflow-auto rounded-xl border border-dashed border-gray-400 opacity-75',
+        'relative h-40 overflow-auto rounded-xl border border-dashed border-gray-400 opacity-75',
         className
       )}
     >

@@ -16,15 +16,14 @@ type Story = StoryObj<typeof MainContainer>
 
 export const Default: Story = {
   args: {
-    className: 'h-[500px] flex flex-col',
     children: (
       <>
-        <ContentContainer className="flex-1">
-          <SampleContent className="h-full" />
+        <ContentContainer>
+          <SampleContent />
         </ContentContainer>
         <Divider />
-        <ContentContainer className="flex-1">
-          <SampleContent className="h-full" />
+        <ContentContainer>
+          <SampleContent />
         </ContentContainer>
       </>
     )
@@ -33,15 +32,15 @@ export const Default: Story = {
 
 export const WithHighlighting: Story = {
   args: {
-    className: 'h-[500px] bg-green-200 flex flex-col',
+    className: 'bg-green-200',
     children: (
       <>
-        <ContentContainer className="flex-1 bg-red-200">
-          <SampleContent className="h-full" />
+        <ContentContainer className="bg-red-200">
+          <SampleContent />
         </ContentContainer>
         <Divider className="z-10 bg-slate-500" />
-        <ContentContainer className="flex-1 bg-red-200">
-          <SampleContent className="h-full" />
+        <ContentContainer className="bg-red-200">
+          <SampleContent />
         </ContentContainer>
       </>
     )

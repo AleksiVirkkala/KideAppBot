@@ -5,7 +5,7 @@ import { SampleContent } from './SampleContent'
 const meta: Meta<typeof ContentContainer> = {
   component: ContentContainer,
   args: {
-    className: 'h-72 bg-green-200',
+    className: 'bg-green-200',
     children: <SampleContent />
   }
 }
