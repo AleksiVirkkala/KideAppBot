@@ -1,19 +1,31 @@
 import { FC } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 interface Props {
   className?: string
   disableStripes?: boolean
+  label?: string
   children?: React.ReactNode
 }
 
 /**
  * A sample content component that can be used to see how a component looks when there is content inside of it.
  */
-export const SampleContent: FC<Props> = ({ className = '', disableStripes = false, children }) => {
+export const SampleContent: FC<Props> = ({
+  className,
+  disableStripes = false,
+  children,
+  label
+}) => {
   return (
     <div
-      className={`relative overflow-auto rounded-xl border border-dashed border-gray-400 opacity-75 ${className}`}
+      className={twMerge(
+        'relative overflow-auto rounded-xl border border-dashed border-gray-400 opacity-75',
+        className
+      )}
     >
+      <div className="absolute top-3 left-4 text-sm">{label}</div>
+
       {!disableStripes && (
         <svg className="absolute inset-0 h-full w-full stroke-gray-900/10" fill="none">
           <defs>

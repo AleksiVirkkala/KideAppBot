@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import interact from 'interactjs'
 import type { ResizeEvent } from '@interactjs/actions/resize/plugin'
 
@@ -23,7 +23,7 @@ export const ResizableContainer = ({
   initialWidth,
   minWidth = 100,
   fullSize = false,
-  containerClassName = ''
+  containerClassName
 }: ResizableContainerProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
 
@@ -42,9 +42,12 @@ export const ResizableContainer = ({
   return (
     <div ref={containerRef} className="flex">
       <div
-        className={`w-full overflow-auto rounded-md border-2 shadow-sm ${
-          fullSize ? '' : 'p-4'
-        } ${containerClassName}`}
+        className={twMerge(
+          'w-full overflow-hidden rounded-lg ring-1 ring-slate-900/10',
+          isResizing && 'pointer-events-none',
+          !fullSize && 'p-4',
+          containerClassName
+        )}
       >
         {children}
       </div>
