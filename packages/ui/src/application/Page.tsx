@@ -1,5 +1,3 @@
-'use client'
-
 import { FC } from 'react'
 import { Navbar } from './Navbar'
 import { MainContainer } from '../helpers/Content/MainContainer'

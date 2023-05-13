@@ -21,12 +21,4 @@ type Story = StoryObj<typeof Page>
 export const LoggedOut: Story = {}
 
 // More on interaction testing: https://storybook.js.org/docs/react/writing-tests/interaction-testing
-export const LoggedIn: Story = {
-  play: ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-    const loginButton = canvas.getByRole('button', {
-      name: /Log in/i
-    })
-    userEvent.click(loginButton)
-  }
-}
+export const LoggedIn: Story = {}

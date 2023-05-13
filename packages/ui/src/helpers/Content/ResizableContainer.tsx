@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+'use client'
+
+import { FC, useEffect, useRef, useState } from 'react'
 import interact from 'interactjs'
 import type { ResizeEvent } from '@interactjs/actions/resize/plugin'
 import { twMerge } from 'tailwind-merge'
@@ -19,13 +21,13 @@ interface ResizableContainerProps {
  * Unfortunately because Storybook sets it inside the iframe that contains the story,
  * Resizing the container will not trigger css breakpoints.
  */
-export const ResizableContainer = ({
+export const ResizableContainer: FC<ResizableContainerProps> = ({
   children,
   initialWidth,
   minWidth = 100,
   fullSize = false,
   containerClassName
-}: ResizableContainerProps) => {
+}) => {
   const [isResizing, setIsResizing] = useState(false)
   const containerRef = useRef<HTMLDivElement | null>(null)
 
