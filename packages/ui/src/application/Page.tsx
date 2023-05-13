@@ -1,9 +1,9 @@
-import { FC } from 'react'
-import { Navbar } from './Navbar'
-import { MainContainer } from '../helpers/Content/MainContainer'
+import { FC } from 'react';
+import { Navbar } from './Navbar';
+import { MainContainer } from '../helpers/Content/MainContainer';
 
 interface Props {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export const Page: FC<Props> = ({ children }) => {
@@ -12,5 +12,5 @@ export const Page: FC<Props> = ({ children }) => {
       <Navbar />
       <MainContainer>{children}</MainContainer>
     </article>
-  )
-}
+  );
+};

@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { Divider } from './Divider'
-import { SampleContent } from './SampleContent'
+import type { Meta, StoryObj } from '@storybook/react';
+import { Divider } from './Divider';
+import { SampleContent } from './SampleContent';
 
 const meta: Meta<typeof Divider> = {
   component: Divider
-}
+};
 
-export default meta
-type Story = StoryObj<typeof Divider>
+export default meta;
+type Story = StoryObj<typeof Divider>;
 
 export const Horizontal: Story = {
   decorators: [
@@ -19,7 +19,7 @@ export const Horizontal: Story = {
       </div>
     )
   ]
-}
+};
 export const Vertical: Story = {
   args: {
     vertical: true
@@ -33,4 +33,4 @@ export const Vertical: Story = {
       </div>
     )
   ]
-}
+};

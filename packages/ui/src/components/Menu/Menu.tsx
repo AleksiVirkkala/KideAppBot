@@ -1,17 +1,17 @@
-'use client'
-import { Menu as HeadlessMenu, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
+'use client';
+import { Menu as HeadlessMenu, Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
 const alignments = {
   left: 'left-0 origin-top-left',
   right: 'right-0 origin-top-right'
-} as const
+} as const;
 
 interface MenuProps {
-  label: string
-  children: React.ReactNode
-  align?: keyof typeof alignments
+  label: string;
+  children: React.ReactNode;
+  align?: keyof typeof alignments;
 }
 
 export const Menu = ({ label, children, align = 'right' }: MenuProps) => {
@@ -39,5 +39,5 @@ export const Menu = ({ label, children, align = 'right' }: MenuProps) => {
         </HeadlessMenu.Items>
       </Transition>
     </HeadlessMenu>
-  )
-}
+  );
+};

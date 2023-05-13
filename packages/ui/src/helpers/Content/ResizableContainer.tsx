@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
-import { FC, useEffect, useRef, useState } from 'react'
-import interact from 'interactjs'
-import type { ResizeEvent } from '@interactjs/actions/resize/plugin'
-import { twMerge } from 'tailwind-merge'
+import { FC, useEffect, useRef, useState } from 'react';
+import interact from 'interactjs';
+import type { ResizeEvent } from '@interactjs/actions/resize/plugin';
+import { twMerge } from 'tailwind-merge';
 
 interface ResizableContainerProps {
-  children: React.ReactNode
-  initialWidth?: number
-  minWidth?: number
-  fullSize?: boolean
-  containerClassName?: string
+  children: React.ReactNode;
+  initialWidth?: number;
+  minWidth?: number;
+  fullSize?: boolean;
+  containerClassName?: string;
 }
 
 /**
@@ -28,23 +28,23 @@ export const ResizableContainer: FC<ResizableContainerProps> = ({
   fullSize = false,
   containerClassName
 }) => {
-  const [isResizing, setIsResizing] = useState(false)
-  const containerRef = useRef<HTMLDivElement | null>(null)
+  const [isResizing, setIsResizing] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return
-    const container = containerRef.current
+    if (!containerRef.current) return;
+    const container = containerRef.current;
 
-    if (initialWidth) container.style.width = `${initialWidth}px`
+    if (initialWidth) container.style.width = `${initialWidth}px`;
 
     const interactable = initInteract(container, minWidth)
       .on('resizestart', () => setIsResizing(true))
-      .on('resizeend', () => setIsResizing(false))
+      .on('resizeend', () => setIsResizing(false));
 
     return () => {
-      interactable.unset()
-    }
-  }, [initialWidth, minWidth])
+      interactable.unset();
+    };
+  }, [initialWidth, minWidth]);
 
   return (
     <div ref={containerRef} className="flex">
@@ -62,8 +62,8 @@ export const ResizableContainer: FC<ResizableContainerProps> = ({
         <div className="h-8 w-1.5 rounded-full bg-slate-400"></div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const initInteract = (container: HTMLElement, minWidth: number) => {
   return interact(container).resizable({
@@ -73,7 +73,7 @@ const initInteract = (container: HTMLElement, minWidth: number) => {
         Object.assign(event.target.style, {
           width: `${event.rect.width}px`,
           height: `${event.rect.height}px`
-        })
+        });
       }
     },
     modifiers: [
@@ -86,5 +86,5 @@ const initInteract = (container: HTMLElement, minWidth: number) => {
         min: { width: minWidth, height: 50 }
       })
     ]
-  })
-}
+  });
+};

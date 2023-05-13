@@ -1,11 +1,11 @@
-import { FC } from 'react'
-import { twMerge } from 'tailwind-merge'
+import { FC } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface Props {
-  className?: string
-  disableStripes?: boolean
-  label?: string
-  children?: React.ReactNode
+  className?: string;
+  disableStripes?: boolean;
+  label?: string;
+  children?: React.ReactNode;
 }
 
 /**
@@ -24,7 +24,7 @@ export const SampleContent: FC<Props> = ({
         className
       )}
     >
-      <div className="absolute top-3 left-4 text-sm">{label}</div>
+      <div className="absolute left-4 top-3 text-sm">{label}</div>
 
       {!disableStripes && (
         <svg className="absolute inset-0 h-full w-full stroke-gray-900/10" fill="none">
@@ -40,10 +40,10 @@ export const SampleContent: FC<Props> = ({
               <path d="M-3 13 15-5M-5 5l18-18M-1 21 17 3"></path>
             </pattern>
           </defs>
-          <rect fill="url(#pattern-diagonal-lines)" className="stroke-none h-full w-full"></rect>
+          <rect fill="url(#pattern-diagonal-lines)" className="h-full w-full stroke-none"></rect>
         </svg>
       )}
       {children}
     </div>
-  )
-}
+  );
+};

@@ -2,144 +2,144 @@
  * Bot that works together with the backend
  */
 
-import { Log, LogType } from '@common/types'
-import { accurateInterval, secondsToPrettierPrint, timeout } from '@common/utils'
-import { BotError, FatalBotError, NotImplementedError } from '@/utils/errorUtils'
-import { Variant, ReservationsPostResponse, PageResponse } from '@/types/KideAppTypes'
+import { Log, LogType } from '@common/types';
+import { accurateInterval, secondsToPrettierPrint, timeout } from '@common/utils';
+import { BotError, FatalBotError, NotImplementedError } from '@/utils/errorUtils';
+import { Variant, ReservationsPostResponse, PageResponse } from '@/types/KideAppTypes';
 import {
   getUniqueReservations,
   getTotalQuantityFromReservations,
   getTotalPriceFromReservations,
   tryGetNewReservationQuantity
-} from '@/utils'
-import { KIDE_APP_URL_BASE, TIMEOUTS } from '@common/constants'
-import { AxiosError } from 'axios'
-import { FetchProductDataFn, TryReserveFn } from '@/types/cbTypes'
+} from '@/utils';
+import { KIDE_APP_URL_BASE, TIMEOUTS } from '@common/constants';
+import { AxiosError } from 'axios';
+import { FetchProductDataFn, TryReserveFn } from '@/types/cbTypes';
 
 export abstract class BotBase {
   // These must be implemented by the child class
-  abstract tryReserve: TryReserveFn
-  abstract fetchProductData: FetchProductDataFn
+  abstract tryReserve: TryReserveFn;
+  abstract fetchProductData: FetchProductDataFn;
 
   // State
-  protected _botIsActive = false
-  protected silentLog = false
-  protected startTime: number | null = null
-  protected stopRequested = false
+  protected _botIsActive = false;
+  protected silentLog = false;
+  protected startTime: number | null = null;
+  protected stopRequested = false;
 
   constructor(protected token: string) {}
 
   public async runBot(eventUrl: string) {
-    this.botIsActive = true
-    this.startTime = Date.now()
+    this.botIsActive = true;
+    this.startTime = Date.now();
 
     try {
-      const variants = await this.getTicketVariants(eventUrl)
-      this.logTicketVariants(variants)
-      const reservationResponses = await this.reserveTicketVariants(variants)
-      this.logReservations(reservationResponses)
+      const variants = await this.getTicketVariants(eventUrl);
+      this.logTicketVariants(variants);
+      const reservationResponses = await this.reserveTicketVariants(variants);
+      this.logReservations(reservationResponses);
     } catch (err) {
-      if (!err) this.log('Undefined error', 'e')
+      if (!err) this.log('Undefined error', 'e');
       else if (err instanceof BotError) {
         this.fullLog({
           msg: err.message,
           // TODO
           // type: err.type,
           force: true
-        })
+        });
       } else if (err instanceof Error) {
         this.fullLog({
           msg: err.message,
           type: 'e',
           force: true
-        })
+        });
       } else {
-        throw err
+        throw err;
       }
     }
 
-    this.stopBot('Process finished succesfully')
-    this.logElapsedTime()
+    this.stopBot('Process finished succesfully');
+    this.logElapsedTime();
   }
 
   protected async getTicketVariants(eventUrl: string) {
     // TODO: There is currently no retry for fetching product data
-    const productData = await this.getProductData(eventUrl)
-    const { timeUntilSalesStart } = productData.model.product
+    const productData = await this.getProductData(eventUrl);
+    const { timeUntilSalesStart } = productData.model.product;
 
-    this.log()
-    this.log('Checking response', 't')
-    this.log()
+    this.log();
+    this.log('Checking response', 't');
+    this.log();
 
     // --- Wait until sales start ----------------------------
 
     if (timeUntilSalesStart > 0) {
       // TODO make better
-      await this.timeoutLog(timeUntilSalesStart - 1)
-      this.startTime = Date.now()
+      await this.timeoutLog(timeUntilSalesStart - 1);
+      this.startTime = Date.now();
     }
 
-    this.log('Sales have started, finding ticket variants...', 'l')
+    this.log('Sales have started, finding ticket variants...', 'l');
 
-    const { variants } = productData.model
+    const { variants } = productData.model;
 
     // --- If variants exist, already, return them -----------
 
     if (variants.length > 0) {
-      this.silentLog = false
-      return variants
+      this.silentLog = false;
+      return variants;
     }
 
     // --- Fetch product data until variants exist -----------
 
-    const productDataWithVariants = await this.getProductDataWithVariants(eventUrl)
+    const productDataWithVariants = await this.getProductDataWithVariants(eventUrl);
 
-    this.silentLog = false
-    return productDataWithVariants.model.variants
+    this.silentLog = false;
+    return productDataWithVariants.model.variants;
   }
 
   protected async reserveTicketVariants(variants: Variant[]) {
     const reservationRequests = variants.map(async variant => {
       try {
-        return await this.tryReserveTicketVariant(variant)
+        return await this.tryReserveTicketVariant(variant);
       } catch (e) {
         if (e instanceof BotError) {
-          this.log(e.message, e.type)
+          this.log(e.message, e.type);
         }
       }
-    })
-    const resolvedResponses = await Promise.all(reservationRequests)
+    });
+    const resolvedResponses = await Promise.all(reservationRequests);
     const succesfullResponses = resolvedResponses.filter(
       (v): v is ReservationsPostResponse => v !== undefined
-    )
-    return succesfullResponses
+    );
+    return succesfullResponses;
   }
 
   get botIsActive() {
-    return this._botIsActive
+    return this._botIsActive;
   }
   set botIsActive(value: boolean) {
-    this._botIsActive = value
-    this.onIsActiveChanged(value)
+    this._botIsActive = value;
+    this.onIsActiveChanged(value);
   }
 
   protected onIsActiveChanged: (newValue: boolean) => void = () => {
-    throw new NotImplementedError("onIsActiveChanged hasn't been set")
-  }
+    throw new NotImplementedError("onIsActiveChanged hasn't been set");
+  };
   public setOnIsActiveChanged(handler: (newValue: boolean) => void) {
-    this.onIsActiveChanged = handler
+    this.onIsActiveChanged = handler;
   }
 
   protected onLog: (log: Log) => void = () => {
-    throw new NotImplementedError("onLog hasn't been set")
-  }
+    throw new NotImplementedError("onLog hasn't been set");
+  };
   public setOnLog(handler: (log: Log) => void) {
-    this.onLog = handler
+    this.onLog = handler;
   }
 
   // Logging methods
   protected log(msg?: string, type?: LogType, replace?: boolean) {
-    this.fullLog({ msg, type, replace })
+    this.fullLog({ msg, type, replace });
   }
 
   protected fullLog({
@@ -149,66 +149,66 @@ export abstract class BotBase {
     replace,
     force
   }: {
-    msg?: string
-    value?: string
-    type?: LogType
-    replace?: boolean
-    force?: boolean
+    msg?: string;
+    value?: string;
+    type?: LogType;
+    replace?: boolean;
+    force?: boolean;
   }) {
-    this.stopIfRequested()
-    if (!force && this.silentLog) return
-    this.onLog({ msg, value, type, replace })
+    this.stopIfRequested();
+    if (!force && this.silentLog) return;
+    this.onLog({ msg, value, type, replace });
   }
 
   // TODO: Diagnose if works properly
   protected stopIfRequested() {
     if (this.stopRequested) {
-      this.stopRequested = false
-      this.stopBot()
-      throw new FatalBotError('Process terminated by user', 't')
+      this.stopRequested = false;
+      this.stopBot();
+      throw new FatalBotError('Process terminated by user', 't');
     }
   }
 
   // TODO: Find if used at all?
   public requestStop() {
-    if (!this.botIsActive) return
-    this.stopRequested = true
+    if (!this.botIsActive) return;
+    this.stopRequested = true;
   }
 
   public stopBot(msg?: string) {
-    if (!this.botIsActive) return
-    this.log()
-    this.log(msg, 't')
-    this.botIsActive = false
-    this.silentLog = false
+    if (!this.botIsActive) return;
+    this.log();
+    this.log(msg, 't');
+    this.botIsActive = false;
+    this.silentLog = false;
   }
 
   protected logTicketVariants(variants: Variant[]) {
     // TODO: Poop
     if (variants.length === 0) {
-      throw new BotError('No variants available')
+      throw new BotError('No variants available');
     }
 
-    this.log()
+    this.log();
 
     variants.forEach((variant, i) => {
       this.fullLog({
         msg: i + 1 + '.',
         value: variant.name
-      })
+      });
       this.fullLog({
         msg: 'Availability: ',
         value: variant.availability + ' kpl',
         type: 'b'
-      })
+      });
       this.fullLog({
         msg: 'Max-order: ',
         value: variant.productVariantMaximumReservableQuantity + ' kpl',
         type: 'b'
-      })
-    })
+      });
+    });
 
-    this.log()
+    this.log();
   }
 
   // Other helper methods
@@ -217,12 +217,12 @@ export abstract class BotBase {
       msg: 'Time until sales start... ',
       value: secondsToPrettierPrint(seconds),
       type: 'l'
-    })
-    await this.timeoutLogHelper(seconds)
+    });
+    await this.timeoutLogHelper(seconds);
   }
 
   protected async timeoutLogHelper(seconds: number) {
-    if (seconds === 0) return
+    if (seconds === 0) return;
 
     return new Promise((resolve, reject) => {
       accurateInterval(stop => {
@@ -232,76 +232,76 @@ export abstract class BotBase {
             value: secondsToPrettierPrint(--seconds),
             type: 'l',
             replace: true
-          })
+          });
           if (seconds <= 0) {
-            stop()
-            resolve(undefined)
+            stop();
+            resolve(undefined);
           }
         } catch (e) {
-          stop()
-          reject(e)
+          stop();
+          reject(e);
         }
-      }, 1000)
-    })
+      }, 1000);
+    });
   }
 
   protected logElapsedTime() {
-    const currTime = Date.now()
-    const elapsedMs = currTime - (this.startTime || 0)
+    const currTime = Date.now();
+    const elapsedMs = currTime - (this.startTime || 0);
     this.fullLog({
       msg: 'Time elapsed:',
       value: elapsedMs + ' ms'
-    })
+    });
   }
 
   protected logReservations(reservationResponses: ReservationsPostResponse[]) {
-    const allReservations = reservationResponses.map(r => r.model.reservations).flat()
-    const reservations = getUniqueReservations(allReservations)
-    const totalQuantity = getTotalQuantityFromReservations(reservations)
-    const totalPrice = getTotalPriceFromReservations(reservations)
+    const allReservations = reservationResponses.map(r => r.model.reservations).flat();
+    const reservations = getUniqueReservations(allReservations);
+    const totalQuantity = getTotalQuantityFromReservations(reservations);
+    const totalPrice = getTotalPriceFromReservations(reservations);
 
     if (reservations.length === 0) {
-      throw new BotError("Couldn't reserve any tickets")
+      throw new BotError("Couldn't reserve any tickets");
     }
 
-    this.log()
-    this.log('Items in shopping cart', 't')
-    this.log()
+    this.log();
+    this.log('Items in shopping cart', 't');
+    this.log();
 
     reservations.forEach(res => {
       this.fullLog({
         msg: 'Variant:',
         value: res.variantName + ' - ' + res.reservedQuantity + ' kpl',
         type: 's'
-      })
-    })
-    this.log()
+      });
+    });
+    this.log();
     this.fullLog({
       msg: '🎫 Total quantity:',
       value: totalQuantity.toString()
-    })
-    const totalPriceStr = totalPrice + ''
+    });
+    const totalPriceStr = totalPrice + '';
     const formattedPrice =
       totalPriceStr.slice(0, totalPriceStr.length - 2) +
       '.' +
       totalPriceStr.slice(totalPriceStr.length - 2) +
-      '€'
+      '€';
     this.fullLog({
       msg: '💲 Total price:',
       value: formattedPrice
-    })
+    });
   }
 
   // TODO
   protected parsePageId(eventUrl: string) {
-    const startsCorrectly = eventUrl.startsWith(KIDE_APP_URL_BASE)
-    const containsMoreThanBase = eventUrl.length > KIDE_APP_URL_BASE.length
+    const startsCorrectly = eventUrl.startsWith(KIDE_APP_URL_BASE);
+    const containsMoreThanBase = eventUrl.length > KIDE_APP_URL_BASE.length;
 
     if (!(startsCorrectly && containsMoreThanBase)) {
-      throw new BotError("Couldn't parse productPageId from given URL")
+      throw new BotError("Couldn't parse productPageId from given URL");
     }
 
-    return eventUrl.substring(KIDE_APP_URL_BASE.length)
+    return eventUrl.substring(KIDE_APP_URL_BASE.length);
   }
 
   // TODO
@@ -310,11 +310,11 @@ export abstract class BotBase {
     while (true) {
       try {
         // TODO: Log replace
-        const productData: PageResponse = await this.getProductData(eventUrl)
-        const variantsExist: boolean = productData.model.variants.length > 0
+        const productData: PageResponse = await this.getProductData(eventUrl);
+        const variantsExist: boolean = productData.model.variants.length > 0;
 
         if (variantsExist) {
-          return productData
+          return productData;
         }
       } catch (e) {
         if (e instanceof BotError) {
@@ -324,103 +324,103 @@ export abstract class BotBase {
             value: new Date().toISOString(), // TODO check if this is correct
             type: 'e',
             force: true
-          })
-          await timeout(TIMEOUTS.PAGE_FETCH_FAILED)
-          this.silentLog = true
-          continue
+          });
+          await timeout(TIMEOUTS.PAGE_FETCH_FAILED);
+          this.silentLog = true;
+          continue;
         }
-        throw e
+        throw e;
       }
     }
   }
 
   async getProductData(eventUrl: string) {
-    this.log('Parsing input', 't')
+    this.log('Parsing input', 't');
 
-    const productPageId = this.parsePageId(eventUrl)
+    const productPageId = this.parsePageId(eventUrl);
 
-    this.log()
+    this.log();
     this.fullLog({
       msg: 'Parsed pageId: ',
       value: productPageId,
       type: 's'
-    })
-    this.log('Fetching page info...', 'f')
+    });
+    this.log('Fetching page info...', 'f');
 
     try {
-      const data = await this.fetchProductData(productPageId)
+      const data = await this.fetchProductData(productPageId);
 
       this.fullLog({
         msg: 'Received response',
         value: data.model.product.name,
         type: 's'
-      })
+      });
 
       // --- If not on sale, no need to go forward -------------
 
-      const { salesEnded } = data.model.product
+      const { salesEnded } = data.model.product;
 
       if (salesEnded) {
-        throw new FatalBotError('Sales have ended') // TODO: Check if works this way
+        throw new FatalBotError('Sales have ended'); // TODO: Check if works this way
       }
 
-      return data
+      return data;
     } catch (e) {
       if (e instanceof AxiosError) {
-        throw new BotError(e.message)
+        throw new BotError(e.message);
       }
-      throw e
+      throw e;
     }
   }
 
   async tryReserveTicketVariant(variant: Variant) {
-    const { productVariantMaximumReservableQuantity, availability, inventoryId } = variant
+    const { productVariantMaximumReservableQuantity, availability, inventoryId } = variant;
 
-    let quantity = Math.min(productVariantMaximumReservableQuantity, availability)
+    let quantity = Math.min(productVariantMaximumReservableQuantity, availability);
 
     // ---- Setting timeout ------------------------------
 
-    let timeLimitExceeded = false
+    let timeLimitExceeded = false;
 
     setTimeout(() => {
-      timeLimitExceeded = true
-    }, 20000)
+      timeLimitExceeded = true;
+    }, 20000);
 
     // ---- Logging --------------------------------------
 
-    this.log('Reserving ticket', 't')
-    this.log()
+    this.log('Reserving ticket', 't');
+    this.log();
 
     this.fullLog({
       msg: 'Variant',
       value: variant.name
-    })
+    });
     this.fullLog({
       msg: 'inventoryId:',
       value: inventoryId.toString(),
       type: 'b'
-    })
+    });
     this.fullLog({
       msg: 'Amount:',
       value: quantity.toString(),
       type: 'b'
-    })
-    this.log()
-    this.log('Sending reservation...', 'l')
-    this.log()
+    });
+    this.log();
+    this.log('Sending reservation...', 'l');
+    this.log();
 
     // ---- Reservation loop -----------------------------
 
     while (!timeLimitExceeded) {
       try {
-        const { data } = await this.tryReserve(variant.inventoryId, quantity, this.token)
-        return data
+        const { data } = await this.tryReserve(variant.inventoryId, quantity, this.token);
+        return data;
       } catch (e) {
         if (!(e instanceof AxiosError)) {
-          console.log(e)
-          throw new BotError('Unhandled error while reserving tickets')
+          console.log(e);
+          throw new BotError('Unhandled error while reserving tickets');
         }
-        quantity = tryGetNewReservationQuantity(e, quantity)
+        quantity = tryGetNewReservationQuantity(e, quantity);
 
         // TODO: Currently not climbing up
         // TODO: Add variant name to error messages?

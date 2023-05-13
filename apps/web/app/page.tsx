@@ -1,4 +1,4 @@
-import { ContentContainer, Divider, SampleContent } from 'ui'
+import { ContentContainer, Divider, SampleContent } from 'ui';
 
 export default function Home() {
   return (
@@ -11,5 +11,5 @@ export default function Home() {
         <SampleContent />
       </ContentContainer>
     </>
-  )
+  );
 }

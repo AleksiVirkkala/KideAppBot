@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { Menu } from './Menu'
+import type { Meta, StoryObj } from '@storybook/react';
+import { Menu } from './Menu';
 import {
   PencilIcon,
   DocumentDuplicateIcon,
   ArrowTopRightOnSquareIcon,
   TrashIcon
-} from '@heroicons/react/20/solid'
-import { MenuItem } from './MenuItem'
-import { userEvent, within } from '@storybook/testing-library'
+} from '@heroicons/react/20/solid';
+import { MenuItem } from './MenuItem';
+import { userEvent, within } from '@storybook/testing-library';
 
 const meta: Meta<typeof Menu> = {
   component: Menu,
@@ -30,15 +30,15 @@ const meta: Meta<typeof Menu> = {
       </div>
     )
   ]
-}
+};
 
-export default meta
-type Story = StoryObj<typeof Menu>
+export default meta;
+type Story = StoryObj<typeof Menu>;
 
 export const Default: Story = {
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-    const button = canvas.getByRole('button')
-    await userEvent.click(button)
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button');
+    await userEvent.click(button);
   }
-}
+};

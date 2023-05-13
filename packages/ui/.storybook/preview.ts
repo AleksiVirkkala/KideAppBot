@@ -1,5 +1,5 @@
-import 'tailwind-config/load.css'
-import type { Preview } from '@storybook/react'
+import 'tailwind-config/load.css';
+import type { Preview } from '@storybook/react';
 
 const preview: Preview = {
   parameters: {
@@ -14,6 +14,6 @@ const preview: Preview = {
       appDirectory: true
     }
   }
-}
+};
 
-export default preview
+export default preview;

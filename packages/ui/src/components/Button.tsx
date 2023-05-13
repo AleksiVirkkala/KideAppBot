@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  label: string
-  disabled?: boolean
+  label: string;
+  disabled?: boolean;
 }
 
 export const Button = ({ label, disabled = false, ...buttonProps }: ButtonProps) => {
@@ -14,5 +14,5 @@ export const Button = ({ label, disabled = false, ...buttonProps }: ButtonProps)
     >
       {label}
     </button>
-  )
-}
+  );
+};

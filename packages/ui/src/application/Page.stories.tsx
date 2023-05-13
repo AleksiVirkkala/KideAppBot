@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { within, userEvent } from '@storybook/testing-library'
-import { Default } from '../helpers/Content/MainContainer.stories'
+import type { Meta, StoryObj } from '@storybook/react';
+import { within, userEvent } from '@storybook/testing-library';
+import { Default } from '../helpers/Content/MainContainer.stories';
 
-import { Page } from './Page'
+import { Page } from './Page';
 
 const meta: Meta<typeof Page> = {
   component: Page,
@@ -13,12 +13,12 @@ const meta: Meta<typeof Page> = {
   args: {
     children: Default.args.children
   }
-}
+};
 
-export default meta
-type Story = StoryObj<typeof Page>
+export default meta;
+type Story = StoryObj<typeof Page>;
 
-export const LoggedOut: Story = {}
+export const LoggedOut: Story = {};
 
 // More on interaction testing: https://storybook.js.org/docs/react/writing-tests/interaction-testing
-export const LoggedIn: Story = {}
+export const LoggedIn: Story = {};

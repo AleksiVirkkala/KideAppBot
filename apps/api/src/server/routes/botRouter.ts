@@ -1,15 +1,15 @@
-import { z } from 'zod'
-import { observable } from '@trpc/server/observable'
-import { procedure, router } from '@/server/trpc-shared'
-import KideAppBot from 'kideappbot'
+import { z } from 'zod';
+import { observable } from '@trpc/server/observable';
+import { procedure, router } from '@/server/trpc-shared';
+import KideAppBot from 'kideappbot';
 
-import { EventEmitter } from 'events'
-import jwtDecode, { InvalidTokenError } from 'jwt-decode'
-import { Log } from '@common/types'
-import { TRPCError } from '@trpc/server'
+import { EventEmitter } from 'events';
+import jwtDecode, { InvalidTokenError } from 'jwt-decode';
+import { Log } from '@common/types';
+import { TRPCError } from '@trpc/server';
 // create a global event emitter (could be replaced by redis, etc)
-const ee = new EventEmitter()
-const botInstances: Record<string, KideAppBot> = {}
+const ee = new EventEmitter();
+const botInstances: Record<string, KideAppBot> = {};
 
 export const botRouter = router({
   createPost: procedure
@@ -24,20 +24,20 @@ export const botRouter = router({
       return {
         id: `${Math.random()}`,
         ...input
-      }
+      };
     }),
   randomNumber: procedure.subscription(opts => {
-    console.log(opts.ctx)
+    console.log(opts.ctx);
     return observable<{ randomNumber: number }>(emit => {
       const timer = setInterval(() => {
         // emits a number every second
-        emit.next({ randomNumber: Math.random() })
-      }, 200)
+        emit.next({ randomNumber: Math.random() });
+      }, 200);
 
       return () => {
-        clearInterval(timer)
-      }
-    })
+        clearInterval(timer);
+      };
+    });
   }),
   // restoreSession: authProcedure.
   reserve: procedure
@@ -48,37 +48,37 @@ export const botRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      const { token, eventUrl } = input
+      const { token, eventUrl } = input;
 
       try {
-        jwtDecode(token)
+        jwtDecode(token);
       } catch (e) {
         if (e instanceof InvalidTokenError) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: 'Invalid Bearer Token'
-          })
+          });
         }
       }
 
       if (botInstances[token]) {
-        botInstances[token].requestStop()
+        botInstances[token].requestStop();
       }
-      const bot = new KideAppBot(token)
+      const bot = new KideAppBot(token);
 
       bot.setOnLog(log => {
-        console.log(`newLog-${token}`, log)
-        ee.emit(`newLog-${token}`, log)
-      })
+        console.log(`newLog-${token}`, log);
+        ee.emit(`newLog-${token}`, log);
+      });
       bot.setOnIsActiveChanged(newValue => {
-        console.log(`isRunningChanged-${token}`, newValue)
-        ee.emit(`isRunningChanged-${token}`, newValue)
-      })
+        console.log(`isRunningChanged-${token}`, newValue);
+        ee.emit(`isRunningChanged-${token}`, newValue);
+      });
 
-      botInstances[token] = bot
-      botInstances[token].runBot(eventUrl)
+      botInstances[token] = bot;
+      botInstances[token].runBot(eventUrl);
 
-      return 'OK'
+      return 'OK';
     }),
   newLog: procedure
     .input(
@@ -87,15 +87,15 @@ export const botRouter = router({
       })
     )
     .subscription(({ input }) => {
-      const { token } = input
+      const { token } = input;
       return observable<Log>(emit => {
         ee.on(`newLog-${token}`, (log: Log) => {
-          emit.next(log)
-        })
+          emit.next(log);
+        });
         return () => {
           // ee.removeAllListeners(`newLog-${token}`);
-        }
-      })
+        };
+      });
     }),
   isRunningChanged: procedure
     .input(
@@ -104,15 +104,15 @@ export const botRouter = router({
       })
     )
     .subscription(({ input }) => {
-      const { token } = input
+      const { token } = input;
       return observable<boolean>(emit => {
         ee.on(`isRunningChanged-${token}`, (isRunning: boolean) => {
-          emit.next(isRunning)
-        })
+          emit.next(isRunning);
+        });
         return () => {
           //ee.removeAllListeners(`isRunningChanged-${token}`);
-        }
-      })
+        };
+      });
     }),
   stop: procedure
     .input(
@@ -121,12 +121,12 @@ export const botRouter = router({
       })
     )
     .mutation(({ input }) => {
-      const { token } = input
+      const { token } = input;
 
-      const bot = botInstances[token]
+      const bot = botInstances[token];
       if (bot) {
-        console.log('Stopping bot!')
-        bot.requestStop()
+        console.log('Stopping bot!');
+        bot.requestStop();
       }
     })
-})
+});

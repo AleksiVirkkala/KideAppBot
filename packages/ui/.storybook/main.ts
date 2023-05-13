@@ -1,4 +1,4 @@
-import type { StorybookConfig } from '@storybook/nextjs'
+import type { StorybookConfig } from '@storybook/nextjs';
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
@@ -22,10 +22,10 @@ const config: StorybookConfig = {
       stats: 'errors-warnings',
       plugins: [
         ...config.plugins?.filter(plugin => {
-          return plugin.constructor.name !== 'ProgressPlugin'
+          return plugin.constructor.name !== 'ProgressPlugin';
         })
       ]
-    }
+    };
   }
-}
-export default config
+};
+export default config;

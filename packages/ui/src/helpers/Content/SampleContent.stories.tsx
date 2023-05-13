@@ -1,26 +1,26 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { SampleContent } from './SampleContent'
+import type { Meta, StoryObj } from '@storybook/react';
+import { SampleContent } from './SampleContent';
 
 const meta: Meta<typeof SampleContent> = {
   component: SampleContent
-}
+};
 
-export default meta
-type Story = StoryObj<typeof SampleContent>
+export default meta;
+type Story = StoryObj<typeof SampleContent>;
 
-export const Default: Story = {}
+export const Default: Story = {};
 
 export const WithoutStripes: Story = {
   args: {
     disableStripes: true
   }
-}
+};
 
 export const WithCustomStyling: Story = {
   args: {
     className: 'h-72 border-red-500 border-4 rounded-none bg-slate-300'
   }
-}
+};
 
 export const WithCustomContent: Story = {
   args: {
@@ -31,4 +31,4 @@ export const WithCustomContent: Story = {
       </div>
     )
   }
-}
+};

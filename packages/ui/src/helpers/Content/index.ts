@@ -1,10 +1,10 @@
 // Containers
-export { MainContainer } from './MainContainer'
-export { ContentContainer } from './ContentContainer'
-export { ResizableContainer } from './ResizableContainer'
+export { MainContainer } from './MainContainer';
+export { ContentContainer } from './ContentContainer';
+export { ResizableContainer } from './ResizableContainer';
 
 // Layout components
-export { Divider } from './Divider'
+export { Divider } from './Divider';
 
 // Helper components
-export { SampleContent } from './SampleContent'
+export { SampleContent } from './SampleContent';

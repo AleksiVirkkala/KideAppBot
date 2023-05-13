@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import { Menu as HeadlessMenu } from '@headlessui/react'
+import { Menu as HeadlessMenu } from '@headlessui/react';
 
 interface MenuItemProps {
-  label: string
-  Icon?: React.ElementType
-  onClick?: () => void
+  label: string;
+  Icon?: React.ElementType;
+  onClick?: () => void;
 }
 
 export const MenuItem = ({ label, Icon, onClick }: MenuItemProps) => {
@@ -29,5 +29,5 @@ export const MenuItem = ({ label, Icon, onClick }: MenuItemProps) => {
         </button>
       )}
     </HeadlessMenu.Item>
-  )
-}
+  );
+};

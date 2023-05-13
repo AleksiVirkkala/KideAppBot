@@ -1,4 +1,4 @@
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/20/solid'
+import { PhotoIcon, UserCircleIcon } from '@heroicons/react/20/solid';
 
 export const SettingsForm = () => {
   return (
@@ -377,5 +377,5 @@ export const SettingsForm = () => {
         </button>
       </div>
     </form>
-  )
-}
+  );
+};
