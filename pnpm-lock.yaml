@@ -14,8 +14,8 @@ importers:
         specifier: workspace:*
         version: link:packages/configs/eslint-config-base
       pnpm:
-        specifier: ^8.1.0
-        version: 8.1.0
+        specifier: ^8.5.0
+        version: 8.5.0
       prettier:
         specifier: ^2.8.7
         version: 2.8.7
@@ -9068,8 +9068,8 @@ packages:
       - typescript
     dev: true
 
-  /pnpm@8.1.0:
-    resolution: {integrity: sha512-e2H73wTRxmc5fWF/6QJqbuwU6O3NRVZC1G1WFXG8EqfN/+ZBu8XVHJZwPH6Xh0DxbEoZgw8/wy2utgCDwPu4Sg==}
+  /pnpm@8.5.0:
+    resolution: {integrity: sha512-eGki4/2GIMFivfbKHIDo1mP1vFvMi39Mh9TxcBHZcFWj09zGzCYD04e05j/60sUkJ1yyzSAszkchBxp9PSL7Ew==}
     engines: {node: '>=16.14'}
     hasBin: true
     dev: true

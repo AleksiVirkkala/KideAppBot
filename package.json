@@ -20,7 +20,7 @@
     "dotenv-cli": "^7.1.0",
     "eslint": "^8.39.0",
     "eslint-config-base": "workspace:*",
-    "pnpm": "^8.1.0",
+    "pnpm": "^8.5.0",
     "prettier": "^2.8.7",
     "prettier-plugin-tailwindcss": "^0.2.8",
     "turbo": "1.9.3"
@@ -28,5 +28,5 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "pnpm@8.4.0"
+  "packageManager": "pnpm@8.5.0"
 }
