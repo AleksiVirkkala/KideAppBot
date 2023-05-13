@@ -14,7 +14,7 @@ const meta: Meta<typeof MainContainer> = {
 export default meta
 type Story = StoryObj<typeof MainContainer>
 
-export const Default: Story = {
+export const Default = {
   args: {
     children: (
       <>
@@ -28,9 +28,9 @@ export const Default: Story = {
       </>
     )
   }
-}
+} satisfies Story
 
-export const WithHighlighting: Story = {
+export const WithHighlighting = {
   args: {
     className: 'bg-green-200',
     children: (
@@ -45,4 +45,4 @@ export const WithHighlighting: Story = {
       </>
     )
   }
-}
+} satisfies Story

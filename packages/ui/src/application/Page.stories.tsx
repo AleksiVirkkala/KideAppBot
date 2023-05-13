@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { within, userEvent } from '@storybook/testing-library'
-import { MainContainer } from '../helpers/Content/MainContainer'
 import { Default } from '../helpers/Content/MainContainer.stories'
 
 import { Page } from './Page'
@@ -12,7 +11,7 @@ const meta: Meta<typeof Page> = {
     layout: 'fullscreen'
   },
   args: {
-    children: <MainContainer {...Default.args} />
+    children: Default.args.children
   }
 }
 
