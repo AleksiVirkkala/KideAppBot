@@ -10,6 +10,34 @@ export default function Home() {
       <ContentContainer>
         <SampleContent />
       </ContentContainer>
+      <Divider />
+      <ContentContainer>
+        <SampleContent />
+      </ContentContainer>
+      <Divider />
+      <ContentContainer>
+        <SampleContent />
+      </ContentContainer>
+      <Divider />
+      <ContentContainer>
+        <SampleContent />
+      </ContentContainer>
+      <Divider />
+      <ContentContainer>
+        <SampleContent />
+      </ContentContainer>
+      <Divider />
+      <ContentContainer>
+        <SampleContent />
+      </ContentContainer>
+      <Divider />
+      <ContentContainer>
+        <SampleContent />
+      </ContentContainer>
+      <Divider />
+      <ContentContainer>
+        <SampleContent />
+      </ContentContainer>
     </>
   );
 }
