@@ -15,6 +15,7 @@
     "eslint": "^8.39.0",
     "eslint-config-next": "13.4.1",
     "next": "13.4.1",
+    "nextjs-config": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "5.0.4",

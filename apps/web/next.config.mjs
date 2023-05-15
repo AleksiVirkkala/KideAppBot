@@ -1,7 +1,8 @@
+import NextjsConfig from 'nextjs-config';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  ...NextjsConfig,
   transpilePackages: ['ui']
-}
+};
 
-export default nextConfig
+export default nextConfig;
