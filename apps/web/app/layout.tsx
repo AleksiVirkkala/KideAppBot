@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import 'tailwind-config/load.css';
 import { Inter } from 'next/font/google';
 import { MainContainer, Navbar, Page } from 'ui';
