@@ -1,6 +1,6 @@
 export { Button } from './components/Button';
 export { Menu, MenuItem } from './components/Menu';
-export { Navbar } from './application/Navbar';
+export { AppBar } from './application/AppBar';
 export { Page } from './application/Page';
 export {
   ContentContainer,

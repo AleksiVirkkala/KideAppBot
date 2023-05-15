@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Navbar } from './Navbar';
+import { AppBar } from './AppBar';
 import { MainContainer } from '../helpers/Content/MainContainer';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 export const Page: FC<Props> = ({ children }) => {
   return (
     <article>
-      <Navbar />
+      <AppBar navigationOptions={[]} />
       <MainContainer>{children}</MainContainer>
     </article>
   );
