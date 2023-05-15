@@ -9,3 +9,4 @@ export {
   ResizableContainer,
   SampleContent
 } from './helpers/Content';
+export { AppShell } from './application/AppShell';
