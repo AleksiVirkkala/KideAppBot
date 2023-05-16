@@ -12,6 +12,7 @@
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
     "autoprefixer": "^10.4.14",
+    "framer-motion": "^10.12.11",
     "next": "13.4.1",
     "nextjs-config": "workspace:*",
     "postcss": "^8.4.23",

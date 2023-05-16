@@ -6,6 +6,7 @@ import { Disclosure } from '@headlessui/react';
 import Link from 'next/link';
 import { ElementType, FC, Fragment } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export interface NavigationOption {
   label: string;
@@ -78,7 +79,18 @@ const MobileNavigation: FC<{ options: NavigationOption[]; className?: string }> 
   options,
   className
 }) => (
-  <Disclosure.Panel className={className}>
+  <Disclosure.Panel
+    static
+    as={motion.div}
+    className={className}
+    initial="collapsed"
+    animate="open"
+    exit="collapsed"
+    variants={{
+      open: { opacity: 1, height: 'auto' },
+      collapsed: { opacity: 0, height: 0 }
+    }}
+  >
     <div className="space-y-1 px-2 pb-3 pt-2">
       {options.map(option => (
         <Disclosure.Button
@@ -144,7 +156,14 @@ export const AppBar = ({
                   <GitHubLink />
                 </NavRight>
               </div>
-              <MobileNavigation options={navigationOptions} className="sm:hidden" />
+              <AnimatePresence initial={false}>
+                {open && (
+                  <MobileNavigation
+                    options={navigationOptions}
+                    className="overflow-y-hidden sm:hidden"
+                  />
+                )}
+              </AnimatePresence>
             </>
           )}
         </Disclosure>
