@@ -1,14 +1,17 @@
 import { FC, SVGProps } from 'react';
 import { twMerge } from 'tailwind-merge';
+import * as AccessibleIcon from '@radix-ui/react-accessible-icon';
 
 // I definitely don't like this method but I want the SVG to be stylable and included in the bundle.
 // Unfortunately to achieve this in a simple way I found this to be the best solution. *
 
 export const BotLogo = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 183 248.3" {...props}>
-    <polygon points="35.3 22.2 19.2 0 0 22.2 0 123.8 36.2 85 35.3 22.2" />
-    <path d="m87.1,58.5L0,145.7v80.5l16.5,22,19.7-21.7v-34.8l53.1,54,93.6-92.3L87.1,58.5Zm-36.6,92.3l37.8-37.8,40.7,40.3-38.2,37.8-40.3-40.4Z" />
-  </svg>
+  <AccessibleIcon.Root label="Bot Logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 183 248.3" {...props}>
+      <polygon points="35.3 22.2 19.2 0 0 22.2 0 123.8 36.2 85 35.3 22.2" />
+      <path d="m87.1,58.5L0,145.7v80.5l16.5,22,19.7-21.7v-34.8l53.1,54,93.6-92.3L87.1,58.5Zm-36.6,92.3l37.8-37.8,40.7,40.3-38.2,37.8-40.3-40.4Z" />
+    </svg>
+  </AccessibleIcon.Root>
 );
 
 const BotLogoText: FC<React.HTMLProps<HTMLSpanElement>> = ({ className, ...props }) => (
