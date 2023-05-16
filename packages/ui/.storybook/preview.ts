@@ -1,22 +1,10 @@
 import 'tailwind-config/load.css';
 import type { Preview } from '@storybook/react';
-import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
+import { viewports } from './viewports';
+import { motionGlobals, withMotion } from './withMotion';
 
-const customViewports = {
-  fullHD: {
-    name: 'Full HD',
-    styles: {
-      width: '1920px',
-      height: '1080px'
-    }
-  },
-  highResolution: {
-    name: 'High resolution',
-    styles: {
-      width: '2560px',
-      height: '1440px'
-    }
-  }
+export const globalTypes = {
+  motion: motionGlobals
 };
 
 const preview: Preview = {
@@ -32,12 +20,10 @@ const preview: Preview = {
       appDirectory: true
     },
     viewport: {
-      viewports: {
-        ...INITIAL_VIEWPORTS,
-        ...customViewports
-      }
+      viewports
     }
-  }
+  },
+  decorators: [withMotion]
 };
 
 export default preview;
