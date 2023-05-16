@@ -187,6 +187,12 @@ importers:
       '@types/node':
         specifier: ^18.15.0
         version: 18.15.0
+      '@types/react':
+        specifier: 18.2.6
+        version: 18.2.6
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
       tsconfig:
         specifier: workspace:*
         version: link:../configs/tsconfig
@@ -256,6 +262,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@common/utils':
+        specifier: workspace:*
+        version: link:../common/utils
       '@headlessui/react':
         specifier: ^1.7.14
         version: 1.7.14(react-dom@18.2.0)(react@18.2.0)
