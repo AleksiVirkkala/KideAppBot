@@ -1,18 +1,25 @@
 'use client';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  label: string;
+import { motion } from 'framer-motion';
+import { twMerge } from 'tailwind-merge';
+
+interface ButtonProps {
+  children: React.ReactNode;
   disabled?: boolean;
+  className?: string;
 }
 
-export const Button = ({ label, disabled = false, ...buttonProps }: ButtonProps) => {
+export const Button = ({ children, disabled = false, className }: ButtonProps) => {
   return (
-    <button
+    <motion.button
       disabled={disabled}
-      className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-gray-300 disabled:text-gray-500"
-      {...buttonProps}
+      whileTap={!disabled ? { scale: 0.95 } : undefined}
+      className={twMerge(
+        'select-none rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 disabled:bg-gray-300 disabled:text-gray-500',
+        className
+      )}
     >
-      {label}
-    </button>
+      {children}
+    </motion.button>
   );
 };

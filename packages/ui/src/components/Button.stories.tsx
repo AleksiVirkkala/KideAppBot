@@ -4,7 +4,7 @@ import { Button } from './Button';
 const meta: Meta<typeof Button> = {
   component: Button,
   args: {
-    label: 'Button',
+    children: 'Button',
     disabled: false
   }
 };
