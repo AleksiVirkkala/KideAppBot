@@ -13,6 +13,7 @@
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
     "@radix-ui/react-accessible-icon": "^1.0.2",
+    "@radix-ui/react-collapsible": "^1.0.2",
     "autoprefixer": "^10.4.14",
     "framer-motion": "^10.12.11",
     "next": "13.4.1",
