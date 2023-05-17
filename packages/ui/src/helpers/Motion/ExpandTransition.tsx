@@ -6,6 +6,7 @@ import {
   Variants
 } from 'framer-motion';
 import { FC } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 type Mode = AnimatePresenceProps['mode'];
 
@@ -13,12 +14,14 @@ interface ExpandTransitionProps {
   children: React.ReactNode;
   expanded: boolean;
   mode?: Mode;
+  className?: string;
 }
 
 export const ExpandTransition: FC<ExpandTransitionProps> = ({
   children,
   expanded,
-  mode: modeProp
+  mode: modeProp,
+  className
 }) => {
   const prefersReducedMotion = useReducedMotionConfig();
   const mode: Mode = modeProp || (prefersReducedMotion ? 'popLayout' : undefined);
@@ -37,7 +40,7 @@ export const ExpandTransition: FC<ExpandTransitionProps> = ({
       <AnimatePresence mode={mode}>
         {expanded && (
           <motion.div
-            className="overflow-hidden"
+            className={twMerge('overflow-hidden', className)}
             initial="collapsed"
             animate="expanded"
             exit="collapsed"

@@ -24,28 +24,36 @@ interface AppBarShellProps {
  */
 export const AppBarShell: React.FC<AppBarShellProps> = ({
   children: Children,
-  as: Wrapper = 'div',
+  as: Wrapper = 'header',
   className,
   collapsibleContent: Content
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <Wrapper
-      className={twMerge('sticky inset-x-0 top-0 z-50 border-b-[1px] backdrop-blur-sm', className)}
-    >
-      <Collapsible.Root asChild open={isExpanded} onOpenChange={setIsExpanded}>
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-          <Children isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
+    <Collapsible.Root asChild open={isExpanded} onOpenChange={setIsExpanded}>
+      <Wrapper className="sticky inset-x-0 top-0 z-50">
+        {/* Static blocking content */}
+        <div className={className}>
+          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+            <Children isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
+          </div>
+        </div>
+        {/* Border will be visible even when menu is closed */}
+        <div className={twMerge('absolute inset-x-0 border-b-[1px]', className)}>
+          {/* Dynamically shown "floating" content */}
           {Content && (
-            <ExpandTransition expanded={isExpanded}>
+            <ExpandTransition
+              expanded={isExpanded}
+              className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8"
+            >
               <Collapsible.Content asChild>
                 <Content isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
               </Collapsible.Content>
             </ExpandTransition>
           )}
         </div>
-      </Collapsible.Root>
-    </Wrapper>
+      </Wrapper>
+    </Collapsible.Root>
   );
 };

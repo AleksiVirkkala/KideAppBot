@@ -67,11 +67,11 @@ const DesktopNavigation: FC<{ options: NavigationOption[]; className?: string }>
   className
 }) => (
   <div className={twMerge('ml-6', className)}>
-    <div className="flex space-x-4">
+    <nav className="flex space-x-4">
       {options.map(option => (
         <NavItem key={option.label} option={option} />
       ))}
-    </div>
+    </nav>
   </div>
 );
 const MobileNavigation: FC<{ options: NavigationOption[]; className?: string }> = ({
@@ -79,11 +79,11 @@ const MobileNavigation: FC<{ options: NavigationOption[]; className?: string }> 
   className
 }) => (
   <div className={className}>
-    <div className="space-y-1 px-2 pb-3 pt-2">
+    <nav className="space-y-1 px-2 pb-3 pt-2">
       {options.map(option => (
         <NavItem key={option.label} option={option} className="block" />
       ))}
-    </div>
+    </nav>
   </div>
 );
 
@@ -105,7 +105,7 @@ export const AppBar = ({
   );
 
   return (
-    <AppBarShell collapsibleContent={collapsibleContent}>
+    <AppBarShell collapsibleContent={collapsibleContent} className="backdrop-blur-sm">
       {({ isExpanded }) => (
         <div className="relative flex h-16 items-center justify-between">
           <NavLeft>
