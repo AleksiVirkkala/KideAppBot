@@ -2,7 +2,7 @@
 
 Note: Images of the UI are currently outdated. However the functionality is the same.
 
-![Use cases](/docs/images/scalability.png)
+![Use cases](/.github/images/scalability.png)
 
 ## Public version!
 
@@ -43,7 +43,7 @@ This app works with kide.app and it requires your kide.app bearer token. Apart f
 3. Open `Local Storage` and under it `https://kide.app`
 4. Your bearer token will be _Value_ of _Key_ `authorization.token`. Exclude apostrophes
 
-![Bearer token steps](/docs/images/bearertoken.png)
+![Bearer token steps](/.github/images/bearertoken.png)
 
 ### Usage
 
@@ -76,11 +76,11 @@ Here is some information about how the project is structured and how the bot wor
 
 #### Project structure
 
-![Project graph](/docs/images/project-graph.png)
+![Project graph](/.github/images/project-graph.png)
 
 #### Activity diagram
 
-![Bot activity diagram](/docs/images/botactivitydiagram.jpg)
+![Bot activity diagram](/.github/images/botactivitydiagram.jpg)
 
 ## Contribution
 
