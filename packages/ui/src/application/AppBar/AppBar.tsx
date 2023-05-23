@@ -98,21 +98,26 @@ interface AppBarProps {
 export const AppBar = ({
   navigationOptions,
   versionNumber,
-  logo: Logo = <AppLogoLink />
+  logo = <AppLogoLink />,
+  as,
+  className
 }: AppBarProps) => {
   const collapsibleContent: AppBarContent = () => (
     <MobileNavigation options={navigationOptions} className="sm:hidden" />
   );
-
   return (
-    <AppBarShell collapsibleContent={collapsibleContent} className="backdrop-blur-sm">
+    <AppBarShell
+      as={as}
+      collapsibleContent={collapsibleContent}
+      className={twMerge('backdrop-blur-sm', className)}
+    >
       {({ isExpanded }) => (
         <div className="relative flex h-16 items-center justify-between">
           <NavLeft>
             <MenuButton isOpen={isExpanded} />
           </NavLeft>
           <NavMain>
-            {Logo}
+            {logo}
             <DesktopNavigation options={navigationOptions} className="hidden sm:block" />
           </NavMain>
           <NavRight>
