@@ -289,6 +289,9 @@ importers:
       '@radix-ui/react-collapsible':
         specifier: ^1.0.2
         version: 1.0.2(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-slot':
+        specifier: ^1.0.1
+        version: 1.0.1(react@18.2.0)
       autoprefixer:
         specifier: ^10.4.14
         version: 10.4.14(postcss@8.4.23)

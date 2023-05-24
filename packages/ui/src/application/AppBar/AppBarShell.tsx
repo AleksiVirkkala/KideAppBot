@@ -2,7 +2,8 @@ import { Collapsible, CollapsibleContent } from '@radix-ui/react-collapsible';
 import { Dispatch, SetStateAction, createContext, useContext, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { ExpandTransition } from '../../helpers/Motion/ExpandTransition';
-import { useOnClickOutside } from 'usehooks-ts';
+import { useEventListener, useOnClickOutside } from 'usehooks-ts';
+import { Slot } from '@radix-ui/react-slot';
 
 export const AppBarContext = createContext<{
   isExpanded: boolean;
@@ -62,3 +63,23 @@ export const AppBarShell = ({
     </AppBarContext.Provider>
   );
 };
+
+interface TriggerProps {
+  className?: string;
+  children: React.ReactNode;
+}
+
+const CloseTrigger = ({ children, className }: TriggerProps) => {
+  const { setIsExpanded } = useContext(AppBarContext);
+
+  const childRef = useRef<HTMLElement>(null);
+  useEventListener('click', () => setIsExpanded(false), childRef);
+
+  return (
+    <Slot className={className} ref={childRef}>
+      {children}
+    </Slot>
+  );
+};
+
+AppBarShell.CloseTrigger = CloseTrigger;
