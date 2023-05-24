@@ -14,10 +14,12 @@ export interface NavigationOption {
   isActive: boolean;
 }
 
-const AppLogoLink = () => (
-  <AppBarShell.CloseTrigger>
+const AppLogoLink = () => {
+  const { setIsExpanded } = useContext(AppBarContext);
+  return (
     <Link
       href="/"
+      onClick={() => setIsExpanded(false)}
       className="flex items-center space-x-3 rounded-md px-2 focus:outline-none focus:ring-2 focus:ring-zinc-900/10"
     >
       <AccessibleIcon label="Bot Logo">
@@ -25,8 +27,8 @@ const AppLogoLink = () => (
       </AccessibleIcon>
       <BotLogo.Text className="hidden sm:block" />
     </Link>
-  </AppBarShell.CloseTrigger>
-);
+  );
+};
 const GitHubLink = () => (
   <a
     href="https://github.com/AleksiVirkkala/KideAppBot"
@@ -53,10 +55,12 @@ const VersionNumber: FC<{ children: React.ReactNode }> = ({ children }) => (
   <span className="font-mono text-sm text-zinc-700 opacity-50">{children}</span>
 );
 
-const NavItem: FC<{ option: NavigationOption; className?: string }> = ({ option, className }) => (
-  <AppBarShell.CloseTrigger>
+const NavItem: FC<{ option: NavigationOption; className?: string }> = ({ option, className }) => {
+  const { setIsExpanded } = useContext(AppBarContext);
+  return (
     <Link
       href={option.href}
+      onClick={() => setIsExpanded(false)}
       className={twMerge(
         option.isActive
           ? 'bg-zinc-500/10'
@@ -68,8 +72,8 @@ const NavItem: FC<{ option: NavigationOption; className?: string }> = ({ option,
     >
       {option.label}
     </Link>
-  </AppBarShell.CloseTrigger>
-);
+  );
+};
 
 const DesktopNavigation: FC<{ options: NavigationOption[]; className?: string }> = ({
   options,
