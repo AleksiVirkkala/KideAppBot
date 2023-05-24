@@ -2,7 +2,7 @@
 
 import { BotLogo, GitHubLogo } from '../../assets/Logos';
 import Link from 'next/link';
-import { ElementType, FC, useContext } from 'react';
+import { ElementType, FC, forwardRef, useContext } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { MenuButton } from './MenuButton';
 import { AppBarContext, AppBarShell } from './AppBarShell';
@@ -77,18 +77,24 @@ const DesktopNavigation: FC<{ options: NavigationOption[]; className?: string }>
     </nav>
   </div>
 );
-const MobileNavigation: FC<{ options: NavigationOption[]; className?: string }> = ({
-  options,
-  className
-}) => (
-  <div className={className}>
-    <nav className="space-y-1 px-2 pb-3 pt-2">
-      {options.map(option => (
-        <NavItem key={option.label} option={option} className="block" />
-      ))}
-    </nav>
-  </div>
+
+interface MobileNavigationProps {
+  options: NavigationOption[];
+  className?: string;
+}
+
+const MobileNavigation = forwardRef<HTMLDivElement, MobileNavigationProps>(
+  ({ options, className }, ref) => (
+    <div className={className} ref={ref}>
+      <nav className="space-y-1 px-2 pb-3 pt-2">
+        {options.map(option => (
+          <NavItem key={option.label} option={option} className="block" />
+        ))}
+      </nav>
+    </div>
+  )
 );
+MobileNavigation.displayName = 'MobileNavigation';
 
 interface AppBarProps {
   navigationOptions: NavigationOption[];
