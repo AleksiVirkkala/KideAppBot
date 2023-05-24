@@ -1,6 +1,6 @@
 {
   "name": "web",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev -p 8080",
@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@imbios/next-pwa": "^1.1.1",
     "@types/node": "^18.15.0",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
