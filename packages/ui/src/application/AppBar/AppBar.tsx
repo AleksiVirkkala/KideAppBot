@@ -6,6 +6,7 @@ import { ElementType, FC } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { MenuButton } from './MenuButton';
 import { AppBarContent, AppBarShell } from './AppBarShell';
+import { AccessibleIcon } from '@radix-ui/react-accessible-icon';
 
 export interface NavigationOption {
   label: string;
@@ -18,7 +19,9 @@ const AppLogoLink = () => (
     href="/"
     className="flex items-center space-x-3 rounded-md px-2 focus:outline-none focus:ring-2 focus:ring-zinc-900/10"
   >
-    <BotLogo className="mb-1 block h-7 w-auto fill-indigo-500" />
+    <AccessibleIcon label="Bot Logo">
+      <BotLogo className="mb-1 block h-7 w-auto fill-indigo-500" />
+    </AccessibleIcon>
     <BotLogo.Text className="hidden sm:block" />
   </Link>
 );
