@@ -2,10 +2,10 @@
 
 import { BotLogo, GitHubLogo } from '../../assets/Logos';
 import Link from 'next/link';
-import { ElementType, FC } from 'react';
+import { ElementType, FC, useContext } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { MenuButton } from './MenuButton';
-import { AppBarContent, AppBarShell } from './AppBarShell';
+import { AppBarContext, AppBarShell } from './AppBarShell';
 import { AccessibleIcon } from '@radix-ui/react-accessible-icon';
 
 export interface NavigationOption {
@@ -105,30 +105,28 @@ export const AppBar = ({
   as,
   className
 }: AppBarProps) => {
-  const collapsibleContent: AppBarContent = () => (
-    <MobileNavigation options={navigationOptions} className="sm:hidden" />
-  );
+  const collapsibleContent = <MobileNavigation options={navigationOptions} className="sm:hidden" />;
+  const { isExpanded } = useContext(AppBarContext);
+
   return (
     <AppBarShell
       as={as}
       collapsibleContent={collapsibleContent}
       className={twMerge('backdrop-blur-sm', className)}
     >
-      {({ isExpanded }) => (
-        <div className="relative flex h-16 items-center justify-between">
-          <NavLeft>
-            <MenuButton isOpen={isExpanded} />
-          </NavLeft>
-          <NavMain>
-            {logo}
-            <DesktopNavigation options={navigationOptions} className="hidden sm:block" />
-          </NavMain>
-          <NavRight>
-            <VersionNumber>{versionNumber}</VersionNumber>
-            <GitHubLink />
-          </NavRight>
-        </div>
-      )}
+      <div className="relative flex h-16 items-center justify-between">
+        <NavLeft>
+          <MenuButton isOpen={isExpanded} />
+        </NavLeft>
+        <NavMain>
+          {logo}
+          <DesktopNavigation options={navigationOptions} className="hidden sm:block" />
+        </NavMain>
+        <NavRight>
+          <VersionNumber>{versionNumber}</VersionNumber>
+          <GitHubLink />
+        </NavRight>
+      </div>
     </AppBarShell>
   );
 };
