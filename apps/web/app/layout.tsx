@@ -15,11 +15,6 @@ const navigation = [
 
 const inter = Inter({ subsets: ['latin'] });
 
-export const metadata = {
-  title: 'KideAppBot',
-  description: 'Ticket bot for Kide.app'
-};
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full bg-gray-100">
@@ -32,3 +27,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
+export { metadata } from '@/utils/metadata';
