@@ -15,15 +15,17 @@ export interface NavigationOption {
 }
 
 const AppLogoLink = () => (
-  <Link
-    href="/"
-    className="flex items-center space-x-3 rounded-md px-2 focus:outline-none focus:ring-2 focus:ring-zinc-900/10"
-  >
-    <AccessibleIcon label="Bot Logo">
-      <BotLogo className="mb-1 ml-[0.2rem] block h-7 w-auto fill-indigo-500" />
-    </AccessibleIcon>
-    <BotLogo.Text className="hidden sm:block" />
-  </Link>
+  <AppBarShell.CloseTrigger>
+    <Link
+      href="/"
+      className="flex items-center space-x-3 rounded-md px-2 focus:outline-none focus:ring-2 focus:ring-zinc-900/10"
+    >
+      <AccessibleIcon label="Bot Logo">
+        <BotLogo className="mb-1 ml-[0.2rem] block h-7 w-auto fill-indigo-500" />
+      </AccessibleIcon>
+      <BotLogo.Text className="hidden sm:block" />
+    </Link>
+  </AppBarShell.CloseTrigger>
 );
 const GitHubLink = () => (
   <a
@@ -52,17 +54,21 @@ const VersionNumber: FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 const NavItem: FC<{ option: NavigationOption; className?: string }> = ({ option, className }) => (
-  <Link
-    href={option.href}
-    className={twMerge(
-      option.isActive ? 'bg-zinc-500/10' : 'text-zinc-700 hover:bg-zinc-500/5 hover:text-zinc-900',
-      'rounded-md px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-zinc-900/10',
-      className
-    )}
-    aria-current={option.isActive ? 'page' : undefined}
-  >
-    {option.label}
-  </Link>
+  <AppBarShell.CloseTrigger>
+    <Link
+      href={option.href}
+      className={twMerge(
+        option.isActive
+          ? 'bg-zinc-500/10'
+          : 'text-zinc-700 hover:bg-zinc-500/5 hover:text-zinc-900',
+        'rounded-md px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-zinc-900/10',
+        className
+      )}
+      aria-current={option.isActive ? 'page' : undefined}
+    >
+      {option.label}
+    </Link>
+  </AppBarShell.CloseTrigger>
 );
 
 const DesktopNavigation: FC<{ options: NavigationOption[]; className?: string }> = ({
