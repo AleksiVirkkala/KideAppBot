@@ -15,8 +15,8 @@ const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="py-safe h-full bg-gray-100">
-      <body className={`h-full ${inter.className}`}>
+    <html lang="en" className="py-safe h-full overflow-hidden bg-gray-100">
+      <body className={`h-full overflow-auto ${inter.className}`}>
         <AppShell>
           <AppShell.AppBar
             navigationOptions={navigation}
