@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@common/utils": "workspace:*",
     "@imbios/next-pwa": "^1.1.1",
     "@types/node": "^18.15.0",
     "@types/react": "18.2.6",

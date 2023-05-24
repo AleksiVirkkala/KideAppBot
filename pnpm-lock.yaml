@@ -77,6 +77,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@common/utils':
+        specifier: workspace:*
+        version: link:../../packages/common/utils
       '@imbios/next-pwa':
         specifier: ^1.1.1
         version: 1.1.1(@babel/core@7.21.8)(next@13.4.1)(webpack@5.82.0)

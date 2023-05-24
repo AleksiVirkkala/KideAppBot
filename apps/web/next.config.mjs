@@ -9,7 +9,7 @@ import NextjsConfig from 'nextjs-config';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   ...NextjsConfig,
-  transpilePackages: ['ui']
+  transpilePackages: ['ui', '@common/utils']
 };
 
 export default withPWA(nextConfig);
