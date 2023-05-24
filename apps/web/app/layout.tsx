@@ -3,9 +3,7 @@ export const runtime = 'edge';
 import 'tailwind-config/load.css';
 import { Inter } from 'next/font/google';
 import { AppShell } from 'ui';
-
-// TODO: Get this from package.json
-const versionNumber = '0.0.1';
+import { appVersion } from '@/utils/appInfo';
 
 // TODO: Get these in a better way
 const navigation = [
@@ -20,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="h-full bg-gray-100">
       <body className={`h-full ${inter.className}`}>
         <AppShell>
-          <AppShell.AppBar navigationOptions={navigation} versionNumber={versionNumber} />
+          <AppShell.AppBar navigationOptions={navigation} versionNumber={appVersion} />
           <AppShell.MainContainer>{children}</AppShell.MainContainer>
         </AppShell>
       </body>
