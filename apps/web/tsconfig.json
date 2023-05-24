@@ -1,7 +1,14 @@
 {
   "extends": "tsconfig/nextjs",
   "compilerOptions": {
-    "plugins": [{ "name": "next" }]
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
   "include": [
     ".eslintrc.cjs",
