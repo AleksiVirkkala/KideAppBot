@@ -20,7 +20,7 @@ const AppLogoLink = () => (
     className="flex items-center space-x-3 rounded-md px-2 focus:outline-none focus:ring-2 focus:ring-zinc-900/10"
   >
     <AccessibleIcon label="Bot Logo">
-      <BotLogo className="mb-1 block h-7 w-auto fill-indigo-500" />
+      <BotLogo className="mb-1 ml-[0.2rem] block h-7 w-auto fill-indigo-500" />
     </AccessibleIcon>
     <BotLogo.Text className="hidden sm:block" />
   </Link>
