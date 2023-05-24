@@ -1,4 +1,4 @@
-import * as Collapsible from '@radix-ui/react-collapsible';
+import { Collapsible, CollapsibleContent } from '@radix-ui/react-collapsible';
 import { Dispatch, SetStateAction, createContext, useContext, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { ExpandTransition } from '../../helpers/Motion/ExpandTransition';
@@ -33,12 +33,13 @@ export const AppBarShell = ({
   collapsibleContent
 }: AppBarShellProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
+
   const appBarRef = useRef<HTMLDivElement>(null);
   useOnClickOutside(appBarRef, () => setIsExpanded(false));
 
   return (
     <AppBarContext.Provider value={{ isExpanded, setIsExpanded }}>
-      <Collapsible.Root asChild open={isExpanded} ref={appBarRef} onOpenChange={setIsExpanded}>
+      <Collapsible asChild open={isExpanded} ref={appBarRef} onOpenChange={setIsExpanded}>
         <Wrapper className="sticky inset-x-0 top-0 z-50">
           {/* Static blocking content */}
           <div className={className}>
@@ -52,12 +53,12 @@ export const AppBarShell = ({
                 expanded={isExpanded}
                 className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8"
               >
-                <Collapsible.Content asChild>{collapsibleContent}</Collapsible.Content>
+                <CollapsibleContent asChild>{collapsibleContent}</CollapsibleContent>
               </ExpandTransition>
             )}
           </div>
         </Wrapper>
-      </Collapsible.Root>
+      </Collapsible>
     </AppBarContext.Provider>
   );
 };
