@@ -113,6 +113,9 @@ importers:
       ui:
         specifier: workspace:*
         version: link:../../packages/ui
+      zod:
+        specifier: ^3.20.6
+        version: 3.20.6
     devDependencies:
       autoprefixer:
         specifier: ^10.4.14
