@@ -45,7 +45,7 @@ const NavRight: FC<{ children: React.ReactNode }> = ({ children }) => (
   </div>
 );
 const VersionNumber: FC<{ children: React.ReactNode }> = ({ children }) => (
-  <span className="font-w font-mono text-sm text-zinc-700 opacity-50">{children}</span>
+  <span className="font-mono text-sm text-zinc-700 opacity-50">{children}</span>
 );
 
 const NavItem: FC<{ option: NavigationOption; className?: string }> = ({ option, className }) => (
