@@ -15,11 +15,17 @@ const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="h-full bg-gray-100">
+    <html lang="en" className="py-safe h-full bg-gray-100">
       <body className={`h-full ${inter.className}`}>
         <AppShell>
-          <AppShell.AppBar navigationOptions={navigation} versionNumber={appVersion} />
-          <AppShell.MainContainer>{children}</AppShell.MainContainer>
+          <AppShell.AppBar
+            navigationOptions={navigation}
+            versionNumber={appVersion}
+            className="px-safe"
+          />
+          <AppShell.MainContainer>
+            <div className="px-safe">{children}</div>
+          </AppShell.MainContainer>
         </AppShell>
       </body>
     </html>
