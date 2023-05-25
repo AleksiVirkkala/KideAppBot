@@ -11,3 +11,4 @@ export {
 } from './helpers/Content';
 export { BotLogo, GitHubLogo } from './assets/Logos';
 export { AppShell } from './application/AppShell';
+export { PageTransition } from './helpers/Animation';

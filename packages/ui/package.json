@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@common/utils": "workspace:*",
+    "@formkit/auto-animate": "1.0.0-beta.6",
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
     "@radix-ui/react-accessible-icon": "^1.0.2",
