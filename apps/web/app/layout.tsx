@@ -2,7 +2,7 @@ export const runtime = 'edge';
 
 import 'tailwind-config/load.css';
 import { Inter } from 'next/font/google';
-import { AppShell } from 'ui';
+import { AppShell, PageTransition } from 'ui';
 import { appVersion } from '@/utils/appInfo';
 
 // TODO: Get these in a better way
@@ -24,7 +24,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             className="px-safe"
           />
           <AppShell.MainContainer>
-            <div className="px-safe">{children}</div>
+            <PageTransition>
+              <div className="px-safe">{children}</div>
+            </PageTransition>
           </AppShell.MainContainer>
         </AppShell>
       </body>
