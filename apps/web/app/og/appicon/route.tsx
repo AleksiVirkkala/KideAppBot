@@ -2,19 +2,19 @@ export const runtime = 'edge';
 
 import { ImageResponse } from 'next/server';
 import { getSearchParams } from '@common/utils';
-import { ZodError, z } from 'zod';
 import { BotLogo } from 'ui';
+import { type } from 'arktype';
 
-const paramsSchema = z.object({
-  size: z.coerce.number().int().min(1).max(512),
-  version: z.coerce.string()
+const paramsType = type({
+  'size?': ['parsedNumber', '|>', type('1 <= integer <= 512')],
+  'version?': 'string'
 });
 
 const getParams = (request: Request) => {
   const params = getSearchParams(request.url);
   return {
     size: 512,
-    ...paramsSchema.partial().parse(params)
+    ...paramsType.assert(params)
   };
 };
 
@@ -45,8 +45,8 @@ export function GET(request: Request) {
   } catch (e) {
     console.log(e);
 
-    if (e instanceof ZodError) {
-      return new Response(`Failed to generate the image: ${e.message}`, {
+    if (e instanceof TypeError) {
+      return new Response(`${e.message}`, {
         status: 400
       });
     }

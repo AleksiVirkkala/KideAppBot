@@ -14,6 +14,7 @@
     "@types/node": "^18.15.0",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
+    "arktype": "1.0.14-alpha",
     "eslint": "^8.39.0",
     "eslint-config-next": "13.4.1",
     "next": "13.4.1",
@@ -21,8 +22,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "5.0.4",
-    "ui": "workspace:*",
-    "zod": "^3.20.6"
+    "ui": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^18.15.5",

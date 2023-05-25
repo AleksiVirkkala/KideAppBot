@@ -92,6 +92,9 @@ importers:
       '@types/react-dom':
         specifier: 18.2.4
         version: 18.2.4
+      arktype:
+        specifier: 1.0.14-alpha
+        version: 1.0.14-alpha
       eslint:
         specifier: ^8.39.0
         version: 8.39.0
@@ -116,9 +119,6 @@ importers:
       ui:
         specifier: workspace:*
         version: link:../../packages/ui
-      zod:
-        specifier: ^3.20.6
-        version: 3.20.6
     devDependencies:
       autoprefixer:
         specifier: ^10.4.14
@@ -5180,6 +5180,11 @@ packages:
     resolution: {integrity: sha512-R5iJ5lkuHybztUfuOAznmboyjWq8O6sqNqtK7CLOqdydi54VNbORp49mb14KbWgG1QD3JFO9hJdZ+y4KutfdOQ==}
     dependencies:
       deep-equal: 2.2.1
+
+  /arktype@1.0.14-alpha:
+    resolution: {integrity: sha512-theD5K4QrYCWMtQ52Masj169IgtMJ8Argld/MBS4lotEwR3b+GzfBvsqVJ1OIKhJDTdES02FLQTjcfRe00//mA==}
+    requiresBuild: true
+    dev: false
 
   /array-buffer-byte-length@1.0.0:
     resolution: {integrity: sha512-LPuwb2P+NrQw3XhxGc36+XSvuBPopovXYTR9Ew++Du9Yb/bx5AzBfrIsBoj0EZUifjQU+sHL21sseZ3jerWO/A==}
