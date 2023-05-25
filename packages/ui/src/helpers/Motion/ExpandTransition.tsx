@@ -1,55 +1,22 @@
-import {
-  AnimatePresence,
-  AnimatePresenceProps,
-  motion,
-  useReducedMotionConfig,
-  Variants
-} from 'framer-motion';
-import { FC } from 'react';
+import autoAnimate from '@formkit/auto-animate';
+import { FC, useEffect, useRef } from 'react';
 import { twMerge } from 'tailwind-merge';
-
-type Mode = AnimatePresenceProps['mode'];
 
 interface ExpandTransitionProps {
   children: React.ReactNode;
   expanded: boolean;
-  mode?: Mode;
   className?: string;
 }
 
-export const ExpandTransition: FC<ExpandTransitionProps> = ({
-  children,
-  expanded,
-  mode: modeProp,
-  className
-}) => {
-  const prefersReducedMotion = useReducedMotionConfig();
-  const mode: Mode = modeProp || (prefersReducedMotion ? 'popLayout' : undefined);
-
-  const variants: Variants = {
-    expanded: { opacity: 1, height: 'auto' },
-    collapsed: { opacity: 0, height: 0 }
-  };
-  const reducedMotionVariants: Variants = {
-    expanded: { opacity: 1 },
-    collapsed: { opacity: 0 }
-  };
+export const ExpandTransition: FC<ExpandTransitionProps> = ({ children, expanded, className }) => {
+  const parent = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current);
+  });
 
   return (
-    <>
-      <AnimatePresence mode={mode}>
-        {expanded && (
-          <motion.div
-            className={twMerge('overflow-hidden', className)}
-            initial="collapsed"
-            animate="expanded"
-            exit="collapsed"
-            variants={prefersReducedMotion ? reducedMotionVariants : variants}
-          >
-            {children}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+    <div ref={parent} className={twMerge('overflow-hidden', className)}>
+      {expanded && children}
+    </div>
   );
 };
