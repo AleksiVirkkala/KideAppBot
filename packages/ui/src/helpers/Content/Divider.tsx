@@ -1,11 +1,10 @@
-import { FC } from 'react';
-import { twMerge } from 'tailwind-merge';
+import tw from 'tailwind-styled-components';
 
 interface DividerProps {
-  className?: string;
   vertical?: boolean;
 }
 
-export const Divider: FC<DividerProps> = ({ className, vertical = false }) => {
-  return <div className={twMerge(vertical ? 'w-px' : 'h-px', 'bg-gray-200', className)} />;
-};
+export const Divider = tw.div<DividerProps>`
+  bg-gray-200
+  ${({ vertical }) => (vertical ? 'w-px' : 'h-px')}
+`;

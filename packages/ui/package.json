@@ -50,6 +50,7 @@
     "interactjs": "^1.10.17",
     "storybook": "^7.0.9",
     "tailwind-config": "workspace:*",
+    "tailwind-styled-components": "^2.2.0",
     "tsconfig": "workspace:*"
   }
 }
