@@ -7,7 +7,9 @@ import skeleton from '@skeletonlabs/skeleton/tailwind/skeleton.cjs';
 module.exports = {
 	darkMode: 'class',
 	content: [
-		'./src/**/*.{html,js,svelte,ts}',
+		'./src/**/**.{html,js,svelte,ts}',
+		'./.storybook/**/**.{html,js,svelte,ts}',
+		'./.test/**/**.{html,js,svelte,ts}',
 		join(require.resolve('@skeletonlabs/skeleton'), '../**/*.{html,js,svelte,ts}')
 	],
 	theme: {
