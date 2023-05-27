@@ -1,12 +1,12 @@
 {
-  "name": "ui",
+  "name": "ui-old",
   "version": "0.1.0",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "private": true,
   "scripts": {
-    "dev": "storybook dev -p 6006 --no-open",
-    "build": "storybook build"
+    "off-dev": "storybook dev -p 6006 --no-open",
+    "off-build": "storybook build"
   },
   "dependencies": {
     "@common/utils": "workspace:*",

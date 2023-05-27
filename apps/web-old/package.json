@@ -1,12 +1,12 @@
 {
-  "name": "web",
+  "name": "web-old",
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 8080",
-    "build": "next build",
-    "start": "next start -p 8080",
-    "lint": "next lint"
+    "off-dev": "next dev -p 8080",
+    "off-build": "next build",
+    "off-start": "next start -p 8080",
+    "off-lint": "next lint"
   },
   "dependencies": {
     "@common/utils": "workspace:*",
@@ -22,7 +22,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "5.0.4",
-    "ui": "workspace:*"
+    "ui-old": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^18.15.5",

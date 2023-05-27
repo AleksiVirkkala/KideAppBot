@@ -75,7 +75,7 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
 
-  apps/web:
+  apps/web-old:
     dependencies:
       '@common/utils':
         specifier: workspace:*
@@ -116,9 +116,9 @@ importers:
       typescript:
         specifier: 5.0.4
         version: 5.0.4
-      ui:
+      ui-old:
         specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../packages/ui-old
     devDependencies:
       autoprefixer:
         specifier: ^10.4.14
@@ -272,7 +272,7 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
 
-  packages/ui:
+  packages/ui-old:
     dependencies:
       '@common/utils':
         specifier: workspace:*
