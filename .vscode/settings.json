@@ -13,7 +13,8 @@
 		"web:ui",
 		"bot",
 		"common",
-		"configs"
+		"configs",
+		"svelte-og"
 	],
 	"tailwindCSS.includeLanguages": {
 		"typescript": "javascript", // if you are using typescript

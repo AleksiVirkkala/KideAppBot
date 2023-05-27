@@ -395,6 +395,57 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
 
+  packages/svelte-og:
+    devDependencies:
+      '@playwright/test':
+        specifier: ^1.28.1
+        version: 1.34.3
+      '@sveltejs/adapter-auto':
+        specifier: ^2.0.0
+        version: 2.1.0(@sveltejs/kit@1.19.0)
+      '@sveltejs/kit':
+        specifier: ^1.5.0
+        version: 1.19.0(svelte@3.59.1)(vite@4.3.8)
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^5.45.0
+        version: 5.56.0(@typescript-eslint/parser@5.56.0)(eslint@8.39.0)(typescript@5.0.4)
+      '@typescript-eslint/parser':
+        specifier: ^5.45.0
+        version: 5.56.0(eslint@8.39.0)(typescript@5.0.4)
+      eslint:
+        specifier: ^8.28.0
+        version: 8.39.0
+      eslint-config-prettier:
+        specifier: ^8.5.0
+        version: 8.8.0(eslint@8.39.0)
+      eslint-plugin-svelte:
+        specifier: ^2.26.0
+        version: 2.29.0(eslint@8.39.0)(svelte@3.59.1)
+      prettier:
+        specifier: ^2.8.0
+        version: 2.8.7
+      prettier-plugin-svelte:
+        specifier: ^2.8.1
+        version: 2.10.0(prettier@2.8.7)(svelte@3.59.1)
+      svelte:
+        specifier: ^3.54.0
+        version: 3.59.1
+      svelte-check:
+        specifier: ^3.0.1
+        version: 3.4.3(@babel/core@7.21.8)(postcss@8.4.23)(svelte@3.59.1)
+      tslib:
+        specifier: ^2.4.1
+        version: 2.5.2
+      typescript:
+        specifier: ^5.0.0
+        version: 5.0.4
+      vite:
+        specifier: ^4.3.0
+        version: 4.3.8(@types/node@18.15.0)
+      vitest:
+        specifier: ^0.25.3
+        version: 0.25.8
+
   packages/ui-old:
     dependencies:
       '@common/utils':
