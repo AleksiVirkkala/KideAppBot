@@ -5,7 +5,16 @@
 	"files.associations": {
 		"*.css": "tailwindcss"
 	},
-	"conventionalCommits.scopes": ["project", "api", "web", "ui", "bot", "common", "configs"],
+	"conventionalCommits.scopes": [
+		"project",
+		"api",
+		"web",
+		"web:app",
+		"web:ui",
+		"bot",
+		"common",
+		"configs"
+	],
 	"tailwindCSS.includeLanguages": {
 		"typescript": "javascript", // if you are using typescript
 		"typescriptreact": "javascript" // if you are using typescript with react
