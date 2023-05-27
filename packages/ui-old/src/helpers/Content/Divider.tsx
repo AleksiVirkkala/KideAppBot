@@ -1,7 +1,7 @@
 import tw from 'tailwind-styled-components';
 
 interface DividerProps {
-  vertical?: boolean;
+	vertical?: boolean;
 }
 
 export const Divider = tw.div<DividerProps>`

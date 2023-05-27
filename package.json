@@ -1,33 +1,33 @@
 {
-  "private": true,
-  "name": "kideappbot-monorepo",
-  "author": "Aleksi Virkkala",
-  "license": "UNLICENSED",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/aleksivirkkala/kideappbot.git"
-  },
-  "version": "3.0.0",
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "dotenv -- turbo run dev --concurrency 14",
-    "lint": "turbo run lint",
-    "clean": "turbo run clean",
-    "test": "turbo run test",
-    "format": "prettier --write \"**/*.{ts,tsx,md,mdx,svelte,js,cjs,mjs,jsx,json,html}\""
-  },
-  "devDependencies": {
-    "dotenv-cli": "^7.1.0",
-    "eslint": "^8.39.0",
-    "eslint-config-base": "workspace:*",
-    "pnpm": "^8.5.0",
-    "prettier": "^2.8.7",
-    "prettier-plugin-svelte": "^2.10.0",
-    "prettier-plugin-tailwindcss": "^0.3.0",
-    "turbo": "1.9.3"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "packageManager": "pnpm@8.5.0"
+	"private": true,
+	"name": "kideappbot-monorepo",
+	"author": "Aleksi Virkkala",
+	"license": "UNLICENSED",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/aleksivirkkala/kideappbot.git"
+	},
+	"version": "3.0.0",
+	"scripts": {
+		"build": "turbo run build",
+		"dev": "dotenv -- turbo run dev --concurrency 14",
+		"lint": "turbo run lint",
+		"clean": "turbo run clean",
+		"test": "turbo run test",
+		"format": "prettier --write \"**/*.{ts,tsx,md,mdx,svelte,js,cjs,mjs,jsx,json,html}\""
+	},
+	"devDependencies": {
+		"dotenv-cli": "^7.1.0",
+		"eslint": "^8.39.0",
+		"eslint-config-base": "workspace:*",
+		"pnpm": "^8.5.0",
+		"prettier": "^2.8.7",
+		"prettier-plugin-svelte": "^2.10.0",
+		"prettier-plugin-tailwindcss": "^0.3.0",
+		"turbo": "1.9.3"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"packageManager": "pnpm@8.5.0"
 }

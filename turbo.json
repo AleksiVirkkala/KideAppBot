@@ -1,28 +1,28 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": [
-    "**/.env.*local",
-    ".env",
-    "tsconfig.json",
-    "**/.eslintrc.*",
-    ".prettier.config.js"
-  ],
-  "globalEnv": ["NODE_ENV", "ALLOWED_ORIGINS", "PORT"],
-  "pipeline": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
-    },
-    "test": {
-      "outputs": ["coverage/**"]
-    },
-    "lint": {},
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "clean": {
-      "cache": false
-    }
-  }
+	"$schema": "https://turbo.build/schema.json",
+	"globalDependencies": [
+		"**/.env.*local",
+		".env",
+		"tsconfig.json",
+		"**/.eslintrc.*",
+		".prettier.config.js"
+	],
+	"globalEnv": ["NODE_ENV", "ALLOWED_ORIGINS", "PORT"],
+	"pipeline": {
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": ["dist/**"]
+		},
+		"test": {
+			"outputs": ["coverage/**"]
+		},
+		"lint": {},
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"clean": {
+			"cache": false
+		}
+	}
 }

@@ -1,39 +1,39 @@
 {
-  "name": "web-old",
-  "version": "0.2.0",
-  "private": true,
-  "scripts": {
-    "off-dev": "next dev -p 8080",
-    "off-build": "next build",
-    "off-start": "next start -p 8080",
-    "off-lint": "next lint"
-  },
-  "dependencies": {
-    "@common/utils": "workspace:*",
-    "@imbios/next-pwa": "^1.1.1",
-    "@types/node": "^18.15.0",
-    "@types/react": "18.2.6",
-    "@types/react-dom": "18.2.4",
-    "arktype": "1.0.14-alpha",
-    "eslint": "^8.39.0",
-    "eslint-config-next": "13.4.1",
-    "next": "13.4.1",
-    "nextjs-config": "workspace:*",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "typescript": "5.0.4",
-    "ui-old": "workspace:*"
-  },
-  "devDependencies": {
-    "@types/node": "^18.15.5",
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
-    "autoprefixer": "^10.4.14",
-    "eslint-config-base": "workspace:*",
-    "eslint-config-next": "^13.4.1",
-    "postcss": "^8.4.23",
-    "tailwind-config": "workspace:*",
-    "tailwindcss": "^3.3.2",
-    "tsconfig": "workspace:*"
-  }
+	"name": "web-old",
+	"version": "0.2.0",
+	"private": true,
+	"scripts": {
+		"off-dev": "next dev -p 8080",
+		"off-build": "next build",
+		"off-start": "next start -p 8080",
+		"off-lint": "next lint"
+	},
+	"dependencies": {
+		"@common/utils": "workspace:*",
+		"@imbios/next-pwa": "^1.1.1",
+		"@types/node": "^18.15.0",
+		"@types/react": "18.2.6",
+		"@types/react-dom": "18.2.4",
+		"arktype": "1.0.14-alpha",
+		"eslint": "^8.39.0",
+		"eslint-config-next": "13.4.1",
+		"next": "13.4.1",
+		"nextjs-config": "workspace:*",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"typescript": "5.0.4",
+		"ui-old": "workspace:*"
+	},
+	"devDependencies": {
+		"@types/node": "^18.15.5",
+		"@types/react": "^18.0.28",
+		"@types/react-dom": "^18.0.11",
+		"autoprefixer": "^10.4.14",
+		"eslint-config-base": "workspace:*",
+		"eslint-config-next": "^13.4.1",
+		"postcss": "^8.4.23",
+		"tailwind-config": "workspace:*",
+		"tailwindcss": "^3.3.2",
+		"tsconfig": "workspace:*"
+	}
 }

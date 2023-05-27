@@ -1,7 +1,7 @@
 import NextjsConfig from 'nextjs-config';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  ...NextjsConfig
+	...NextjsConfig
 };
 
 export default nextConfig;

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { LoginForm } from './LoginForm';
 
 const meta: Meta<typeof LoginForm> = {
-  component: LoginForm
+	component: LoginForm
 };
 
 export default meta;

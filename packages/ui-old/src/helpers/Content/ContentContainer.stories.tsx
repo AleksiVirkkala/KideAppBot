@@ -3,11 +3,11 @@ import { ContentContainer } from './ContentContainer';
 import { SampleContent } from './SampleContent';
 
 const meta: Meta<typeof ContentContainer> = {
-  component: ContentContainer,
-  args: {
-    className: 'bg-green-200',
-    children: <SampleContent />
-  }
+	component: ContentContainer,
+	args: {
+		className: 'bg-green-200',
+		children: <SampleContent />
+	}
 };
 
 export default meta;

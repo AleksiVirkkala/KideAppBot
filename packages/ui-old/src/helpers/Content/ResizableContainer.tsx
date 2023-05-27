@@ -6,11 +6,11 @@ import type { ResizeEvent } from '@interactjs/actions/resize/plugin';
 import { twMerge } from 'tailwind-merge';
 
 interface ResizableContainerProps {
-  children: React.ReactNode;
-  initialWidth?: number;
-  minWidth?: number;
-  fullSize?: boolean;
-  containerClassName?: string;
+	children: React.ReactNode;
+	initialWidth?: number;
+	minWidth?: number;
+	fullSize?: boolean;
+	containerClassName?: string;
 }
 
 /**
@@ -22,69 +22,69 @@ interface ResizableContainerProps {
  * Resizing the container will not trigger css breakpoints.
  */
 export const ResizableContainer: FC<ResizableContainerProps> = ({
-  children,
-  initialWidth,
-  minWidth = 100,
-  fullSize = false,
-  containerClassName
+	children,
+	initialWidth,
+	minWidth = 100,
+	fullSize = false,
+	containerClassName
 }) => {
-  const [isResizing, setIsResizing] = useState(false);
-  const containerRef = useRef<HTMLDivElement | null>(null);
+	const [isResizing, setIsResizing] = useState(false);
+	const containerRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const container = containerRef.current;
+	useEffect(() => {
+		if (!containerRef.current) return;
+		const container = containerRef.current;
 
-    if (initialWidth) container.style.width = `${initialWidth}px`;
+		if (initialWidth) container.style.width = `${initialWidth}px`;
 
-    const interactable = initInteract(container, minWidth)
-      .on('resizestart', () => setIsResizing(true))
-      .on('resizeend', () => setIsResizing(false));
+		const interactable = initInteract(container, minWidth)
+			.on('resizestart', () => setIsResizing(true))
+			.on('resizeend', () => setIsResizing(false));
 
-    return () => {
-      interactable.unset();
-    };
-  }, [initialWidth, minWidth]);
+		return () => {
+			interactable.unset();
+		};
+	}, [initialWidth, minWidth]);
 
-  return (
-    <div ref={containerRef} className="flex">
-      <div
-        className={twMerge(
-          'w-full overflow-hidden rounded-lg ring-1 ring-slate-900/10',
-          isResizing && 'pointer-events-none',
-          !fullSize && 'p-4',
-          containerClassName
-        )}
-      >
-        {children}
-      </div>
-      <div className="flex items-center px-2">
-        <div className="h-8 w-1.5 rounded-full bg-slate-400"></div>
-      </div>
-    </div>
-  );
+	return (
+		<div ref={containerRef} className="flex">
+			<div
+				className={twMerge(
+					'w-full overflow-hidden rounded-lg ring-1 ring-slate-900/10',
+					isResizing && 'pointer-events-none',
+					!fullSize && 'p-4',
+					containerClassName
+				)}
+			>
+				{children}
+			</div>
+			<div className="flex items-center px-2">
+				<div className="h-8 w-1.5 rounded-full bg-slate-400"></div>
+			</div>
+		</div>
+	);
 };
 
 const initInteract = (container: HTMLElement, minWidth: number) => {
-  return interact(container).resizable({
-    edges: { right: true },
-    listeners: {
-      move(event: ResizeEvent) {
-        Object.assign(event.target.style, {
-          width: `${event.rect.width}px`,
-          height: `${event.rect.height}px`
-        });
-      }
-    },
-    modifiers: [
-      // keep the edges inside the parent
-      interact.modifiers.restrictEdges({
-        outer: 'parent'
-      }),
-      // minimum size
-      interact.modifiers.restrictSize({
-        min: { width: minWidth, height: 50 }
-      })
-    ]
-  });
+	return interact(container).resizable({
+		edges: { right: true },
+		listeners: {
+			move(event: ResizeEvent) {
+				Object.assign(event.target.style, {
+					width: `${event.rect.width}px`,
+					height: `${event.rect.height}px`
+				});
+			}
+		},
+		modifiers: [
+			// keep the edges inside the parent
+			interact.modifiers.restrictEdges({
+				outer: 'parent'
+			}),
+			// minimum size
+			interact.modifiers.restrictSize({
+				min: { width: minWidth, height: 50 }
+			})
+		]
+	});
 };

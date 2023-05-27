@@ -1,11 +1,11 @@
 {
-  "extends": ["tsconfig/node-library.json"],
-  "compilerOptions": {
-    "rootDir": "src",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
-  },
-  "include": ["src"]
+	"extends": ["tsconfig/node-library.json"],
+	"compilerOptions": {
+		"rootDir": "src",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["src/*"]
+		}
+	},
+	"include": ["src"]
 }

@@ -5,14 +5,14 @@ import { Default } from '../helpers/Content/MainContainer.stories';
 import { Page } from './Page';
 
 const meta: Meta<typeof Page> = {
-  component: Page,
-  parameters: {
-    // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
-    layout: 'fullscreen'
-  },
-  args: {
-    children: Default.args.children
-  }
+	component: Page,
+	parameters: {
+		// More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
+		layout: 'fullscreen'
+	},
+	args: {
+		children: Default.args.children
+	}
 };
 
 export default meta;

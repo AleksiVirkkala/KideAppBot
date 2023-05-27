@@ -2,11 +2,11 @@ import { MainContainer } from '../helpers/Content';
 import { AppBar } from './AppBar';
 
 export interface AppShellProps {
-  children: React.ReactNode;
+	children: React.ReactNode;
 }
 
 export const AppShell = ({ children }: AppShellProps) => {
-  return <>{children}</>;
+	return <>{children}</>;
 };
 
 AppShell.AppBar = AppBar;

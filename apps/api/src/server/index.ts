@@ -9,34 +9,34 @@ import { AppRouter, appRouter } from './routes';
 import { createContext } from '@/server/trpc-shared';
 
 export const startServer = () => {
-  const serverPort = getServerPort();
+	const serverPort = getServerPort();
 
-  // http server
-  const { server, listen } = createHTTPServer({
-    middleware: cors({
-      origin: isDev() ? '*' : getAllowedOrigins(),
-      credentials: true
-    }),
+	// http server
+	const { server, listen } = createHTTPServer({
+		middleware: cors({
+			origin: isDev() ? '*' : getAllowedOrigins(),
+			credentials: true
+		}),
 
-    router: appRouter,
-    createContext
-  });
+		router: appRouter,
+		createContext
+	});
 
-  // ws server
-  const wss = new ws.WebSocketServer({ server });
-  const handler = applyWSSHandler<AppRouter>({
-    wss,
-    router: appRouter,
-    createContext
-  });
+	// ws server
+	const wss = new ws.WebSocketServer({ server });
+	const handler = applyWSSHandler<AppRouter>({
+		wss,
+		router: appRouter,
+		createContext
+	});
 
-  const { port } = listen(serverPort);
-  console.log(`Bot backend started on port ${port}`);
+	const { port } = listen(serverPort);
+	console.log(`Bot backend started on port ${port}`);
 
-  // TODO: Find out what event turborepo uses to restart the server
-  process.on('SIGTERM', () => {
-    console.log('SIGTERM');
-    handler.broadcastReconnectNotification();
-    wss.close();
-  });
+	// TODO: Find out what event turborepo uses to restart the server
+	process.on('SIGTERM', () => {
+		console.log('SIGTERM');
+		handler.broadcastReconnectNotification();
+		wss.close();
+	});
 };

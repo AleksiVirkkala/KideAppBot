@@ -4,8 +4,8 @@ import { botRouter } from './botRouter';
 import { router } from '../trpc-shared';
 
 export const routes = {
-  bot: botRouter,
-  misc: miscRouter
+	bot: botRouter,
+	misc: miscRouter
 };
 
 export const appRouter = router(routes);

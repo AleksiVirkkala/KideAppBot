@@ -10,19 +10,19 @@ import { useState, useEffect } from 'react';
  * @see {@link https://github.com/infiniteluke/react-reduce-motion/blob/master/src/targets/web/index.js}
  */
 export const useReducedMotion = () => {
-  const [matches, setMatch] = useState(
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  );
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const handleChange = () => {
-      setMatch(mq.matches);
-    };
-    handleChange();
-    mq.addEventListener('change', handleChange);
-    return () => {
-      mq.removeEventListener('change', handleChange);
-    };
-  }, []);
-  return matches;
+	const [matches, setMatch] = useState(
+		window.matchMedia('(prefers-reduced-motion: reduce)').matches
+	);
+	useEffect(() => {
+		const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+		const handleChange = () => {
+			setMatch(mq.matches);
+		};
+		handleChange();
+		mq.addEventListener('change', handleChange);
+		return () => {
+			mq.removeEventListener('change', handleChange);
+		};
+	}, []);
+	return matches;
 };

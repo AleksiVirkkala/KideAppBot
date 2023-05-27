@@ -3,21 +3,21 @@
 import type { LogType } from '@common/types';
 
 export class FatalBotError extends Error {
-  type: LogType;
+	type: LogType;
 
-  // TODO: Make LogType easier to understand
-  constructor(msg: string, type: LogType = 'e') {
-    super(msg);
-    this.type = type;
-    this.name = 'BotError';
-  }
+	// TODO: Make LogType easier to understand
+	constructor(msg: string, type: LogType = 'e') {
+		super(msg);
+		this.type = type;
+		this.name = 'BotError';
+	}
 }
 
 export class BotError extends FatalBotError {}
 
 export class NotImplementedError extends Error {
-  constructor(msg: string) {
-    super(msg);
-    this.name = 'NotImplementedError';
-  }
+	constructor(msg: string) {
+		super(msg);
+		this.name = 'NotImplementedError';
+	}
 }
