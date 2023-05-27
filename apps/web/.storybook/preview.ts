@@ -1,3 +1,4 @@
+import '../src/lib/utils/initSkeleton';
 import type { Preview } from '@storybook/svelte';
 import { viewports } from './viewports';
 
