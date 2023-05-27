@@ -19,9 +19,12 @@ importers:
       prettier:
         specifier: ^2.8.7
         version: 2.8.7
+      prettier-plugin-svelte:
+        specifier: ^2.10.0
+        version: 2.10.0(prettier@2.8.7)(svelte@3.59.1)
       prettier-plugin-tailwindcss:
         specifier: ^0.3.0
-        version: 0.3.0(prettier@2.8.7)
+        version: 0.3.0(prettier-plugin-svelte@2.10.0)(prettier@2.8.7)
       turbo:
         specifier: 1.9.3
         version: 1.9.3
@@ -11458,7 +11461,7 @@ packages:
       svelte: 3.59.1
     dev: true
 
-  /prettier-plugin-tailwindcss@0.3.0(prettier@2.8.7):
+  /prettier-plugin-tailwindcss@0.3.0(prettier-plugin-svelte@2.10.0)(prettier@2.8.7):
     resolution: {integrity: sha512-009/Xqdy7UmkcTBpwlq7jsViDqXAYSOMLDrHAdTMlVZOrKfM2o9Ci7EMWTMZ7SkKBFTG04UM9F9iM2+4i6boDA==}
     engines: {node: '>=12.17.0'}
     peerDependencies:
@@ -11511,6 +11514,7 @@ packages:
         optional: true
     dependencies:
       prettier: 2.8.7
+      prettier-plugin-svelte: 2.10.0(prettier@2.8.7)(svelte@3.59.1)
     dev: true
 
   /prettier@2.8.7:

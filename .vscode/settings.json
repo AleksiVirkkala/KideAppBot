@@ -1,22 +1,121 @@
 {
-  "typescript.tsdk": "node_modules/.pnpm/typescript@5.0.4/node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "files.associations": {
-    "*.css": "tailwindcss"
-  },
-  "conventionalCommits.scopes": ["project", "api", "web", "ui", "bot", "common", "configs"],
-  "tailwindCSS.includeLanguages": {
-    "typescript": "javascript", // if you are using typescript
-    "typescriptreact": "javascript" // if you are using typescript with react
-  },
-  "editor.quickSuggestions": {
-    "strings": true // forces VS Code to trigger completions when editing "string" content
-  },
-  "tailwindCSS.experimental.classRegex": [
-    "tw`([^`]*)", // tw`...`
-    "tw\\.[^`]+`([^`]*)`", // tw.xxx<xxx>`...`
-    "tw\\(.*?\\).*?`([^`]*)", // tw(Component)<xxx>`...`
-    "twMerge\\(.*?\\)" // tw(Component)<xxx>`...`
-  ]
+	"typescript.tsdk": "node_modules/.pnpm/typescript@5.0.4/node_modules/typescript/lib",
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"files.associations": {
+		"*.css": "tailwindcss"
+	},
+	"conventionalCommits.scopes": ["project", "api", "web", "ui", "bot", "common", "configs"],
+	"tailwindCSS.includeLanguages": {
+		"typescript": "javascript", // if you are using typescript
+		"typescriptreact": "javascript" // if you are using typescript with react
+	},
+	"editor.quickSuggestions": {
+		"strings": true // forces VS Code to trigger completions when editing "string" content
+	},
+	"tailwindCSS.experimental.classRegex": [
+		"tw`([^`]*)", // tw`...`
+		"tw\\.[^`]+`([^`]*)`", // tw.xxx<xxx>`...`
+		"tw\\(.*?\\).*?`([^`]*)", // tw(Component)<xxx>`...`
+		"twMerge\\(.*?\\)" // tw(Component)<xxx>`...`
+	],
+	"prettier.documentSelectors": ["**/*.svelte"],
+	"tailwindCSS.classAttributes": [
+		"class",
+		"accent",
+		"active",
+		"background",
+		"badge",
+		"bgBackdrop",
+		"bgDark",
+		"bgDrawer",
+		"bgLight",
+		"blur",
+		"border",
+		"button",
+		"buttonAction",
+		"buttonBack",
+		"buttonClasses",
+		"buttonComplete",
+		"buttonDismiss",
+		"buttonNeutral",
+		"buttonNext",
+		"buttonPositive",
+		"buttonTextCancel",
+		"buttonTextConfirm",
+		"buttonTextFirst",
+		"buttonTextLast",
+		"buttonTextNext",
+		"buttonTextPrevious",
+		"buttonTextSubmit",
+		"caretClosed",
+		"caretOpen",
+		"chips",
+		"color",
+		"cursor",
+		"display",
+		"element",
+		"fill",
+		"fillDark",
+		"fillLight",
+		"flex",
+		"gap",
+		"gridColumns",
+		"height",
+		"hover",
+		"justify",
+		"meter",
+		"padding",
+		"position",
+		"regionBackdrop",
+		"regionBody",
+		"regionCaption",
+		"regionCaret",
+		"regionCell",
+		"regionCone",
+		"regionContent",
+		"regionControl",
+		"regionDefault",
+		"regionDrawer",
+		"regionFoot",
+		"regionFootCell",
+		"regionFooter",
+		"regionHead",
+		"regionHeadCell",
+		"regionHeader",
+		"regionInterface",
+		"regionInterfaceText",
+		"regionLabel",
+		"regionLead",
+		"regionLegend",
+		"regionList",
+		"regionNavigation",
+		"regionPage",
+		"regionPanel",
+		"regionRowHeadline",
+		"regionRowMain",
+		"regionTab",
+		"regionTrail",
+		"ring",
+		"rounded",
+		"select",
+		"shadow",
+		"slotDefault",
+		"slotFooter",
+		"slotHeader",
+		"slotLead",
+		"slotMessage",
+		"slotMeta",
+		"slotPageContent",
+		"slotPageFooter",
+		"slotPageHeader",
+		"slotSidebarLeft",
+		"slotSidebarRight",
+		"slotTrail",
+		"spacing",
+		"text",
+		"track",
+		"width",
+		"zIndex"
+	]
 }
