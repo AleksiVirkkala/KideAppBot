@@ -25,7 +25,7 @@ export function GET(request: Request) {
 
     return new ImageResponse(
       (
-        <div tw="flex h-full w-full items-center justify-center flex-col bg-gray-50">
+        <div tw="flex h-full w-full flex-col items-center justify-center bg-gray-50">
           <div
             tw="flex"
             style={{

@@ -30,11 +30,11 @@ export function GET(request: Request) {
 
     return new ImageResponse(
       (
-        <div tw="bg-gray-100 h-full w-full flex flex-col items-center justify-center pb-12">
+        <div tw="flex h-full w-full flex-col items-center justify-center bg-gray-100 pb-12">
           <div tw="flex pl-6">
             <BotLogo fill="#6366f1" width="180" preserveAspectRatio="xMidYMid meet" />
           </div>
-          <div tw="pt-10 text-zinc-700/50 text-6xl">{appName}</div>
+          <div tw="pt-10 text-6xl text-zinc-700/50">{appName}</div>
         </div>
       ),
       {
