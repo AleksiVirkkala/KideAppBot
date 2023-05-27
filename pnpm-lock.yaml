@@ -98,6 +98,9 @@ importers:
       '@storybook/addon-links':
         specifier: ^7.0.18
         version: 7.0.18(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-viewport':
+        specifier: ^7.0.11
+        version: 7.0.18(react-dom@18.2.0)(react@18.2.0)
       '@storybook/blocks':
         specifier: ^7.0.18
         version: 7.0.18(react-dom@18.2.0)(react@18.2.0)
