@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "concurrently pnpm:dev:*",
-		"dev:web": "vite dev",
+		"dev:app": "vite dev",
 		"dev:storybook": "storybook dev -p 6006 --no-open",
 		"build": "vite build",
 		"preview": "vite preview",
