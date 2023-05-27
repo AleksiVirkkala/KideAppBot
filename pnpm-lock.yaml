@@ -179,6 +179,9 @@ importers:
       svelte-check:
         specifier: ^3.0.1
         version: 3.4.3(@babel/core@7.21.8)(postcss@8.4.23)(svelte@3.59.1)
+      svelte-og:
+        specifier: workspace:*
+        version: link:../../packages/svelte-og
       svelte-preprocess:
         specifier: ^5.0.4
         version: 5.0.4(@babel/core@7.21.8)(postcss@8.4.23)(svelte@3.59.1)(typescript@5.0.4)
