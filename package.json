@@ -14,7 +14,7 @@
     "lint": "turbo run lint",
     "clean": "turbo run clean",
     "test": "turbo run test",
-    "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md,mdx,svelte,js,cjs,mjs,jsx,json,html}\""
   },
   "devDependencies": {
     "dotenv-cli": "^7.1.0",
