@@ -2,11 +2,36 @@
 	export let message = 'Hello, world!';
 </script>
 
-<div>{message}</div>
+<div
+	style="
+        background-color: #404040;
+        display: flex;
+        color: #AFDBBA;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        align-items: stretch;
+        font-size: 64px;
+    "
+>
+	<div
+		style="
+            border: 8px dashed #AFDBBA;
+            width: 100%;
+            margin: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        "
+	>
+		{message}
+	</div>
+</div>
 
 <style lang="postcss">
 	div {
-		background-color: white;
-		@apply flex h-full w-full items-center justify-center text-7xl opacity-100;
+		border: 2px solid black;
+		@apply flex items-center justify-center opacity-100;
 	}
 </style>
