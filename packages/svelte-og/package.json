@@ -6,8 +6,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "tsup --watch",
-		"build": "tsup",
-		"test": "vitest run"
+		"build": "tsup"
 	},
 	"devDependencies": {
 		"@resvg/resvg-js": "^2.1.0",
