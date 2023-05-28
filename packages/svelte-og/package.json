@@ -5,24 +5,28 @@
 	"types": "dist/index.d.ts",
 	"private": true,
 	"scripts": {
-		"dev": "tsc --watch",
-		"build": "tsc",
+		"dev": "tsup --watch",
+		"build": "tsup",
 		"test": "vitest run"
 	},
 	"devDependencies": {
+		"@resvg/resvg-js": "^2.1.0",
+		"@types/node": "^18.15.0",
+		"satori": "^0.0.42",
+		"satori-html": "^0.3.2",
 		"svelte": "^3.54.0",
+		"tsconfig": "workspace:*",
 		"tslib": "^2.4.1",
+		"tsup": "^6.7.0",
+		"tsup-config-base": "workspace:*",
 		"typescript": "^5.0.0",
-		"vite": "^4.3.0",
-		"tsconfig": "workspace:*"
+		"vite": "^4.3.0"
 	},
 	"peerDependencies": {
+		"@resvg/resvg-js": "^2.1.0",
+		"satori": "^0.0.42",
+		"satori-html": "^0.2.0",
 		"svelte": "^3.54.0"
-	},
-	"dependencies": {
-		"@resvg/resvg-js": "^2.4.1",
-		"satori": "^0.9.1",
-		"satori-html": "^0.3.2"
 	},
 	"type": "module"
 }

@@ -56,7 +56,10 @@
 		"tslib": "^2.5.2",
 		"typescript": "^5.0.4",
 		"vite": "^4.3.9",
-		"vitest": "^0.31.1"
+		"vitest": "^0.31.1",
+		"@resvg/resvg-js": "^2.1.0",
+		"satori": "^0.9.1",
+		"satori-html": "^0.3.2"
 	},
 	"type": "module"
 }
