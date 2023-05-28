@@ -1,5 +1,5 @@
 import AppIcon from '$lib/components/og/AppIcon.svelte';
-import { SvelteOgResponse } from 'svelte-og';
+import { svelteOg } from '$lib/utils/svelteOg';
 import type { RequestHandler } from './$types';
 
 const height = 630;
@@ -7,7 +7,7 @@ const width = 600;
 
 export const GET: RequestHandler = async ({ url }) => {
 	const message = url.searchParams.get('message') ?? undefined;
-	return await SvelteOgResponse(
+	return await svelteOg(
 		{
 			component: AppIcon,
 			props: {
