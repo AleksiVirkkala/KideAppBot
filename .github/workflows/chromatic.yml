@@ -31,10 +31,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Build svelte-og
+        working-directory: packages/svelte-og
+        run: pnpm build
+
       # Deploy to Chromatic
       - name: Publish to Chromatic
         uses: chromaui/action@v1
         with:
-          workingDir: packages/ui
+          workingDir: apps/web
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          buildScriptName: build
