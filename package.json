@@ -10,7 +10,7 @@
 	"version": "3.0.0",
 	"scripts": {
 		"build": "turbo run build",
-		"dev": "dotenv -- turbo run dev --concurrency 15",
+		"dev": "dotenv -- turbo run dev --concurrency 16",
 		"lint": "turbo run lint",
 		"clean": "turbo run clean",
 		"test": "turbo run test",
