@@ -1,5 +1,5 @@
 import { initSvelteOg } from 'svelte-og';
-import NotoSans from '$lib/fonts/NotoSans-Regular.ttf';
+import NotoSans from '$lib/assets/fonts/NotoSans-Regular.ttf';
 
 export const svelteOg = initSvelteOg({
 	width: 600,
