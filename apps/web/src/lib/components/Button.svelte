@@ -9,5 +9,4 @@
 
 <button type="button" class="btn variant-filled rounded-lg" {style} on:click>
 	<slot />
-	<div class="">moi</div>
 </button>
