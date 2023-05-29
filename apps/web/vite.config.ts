@@ -9,5 +9,9 @@ export default defineConfig({
 	},
 	server: {
 		port: 8080
+	},
+	define: {
+		// Package.json can't be imported so we define global constant for version
+		__PKG_VERSION__: JSON.stringify(process.env.npm_package_version)
 	}
 });

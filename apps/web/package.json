@@ -1,6 +1,6 @@
 {
 	"name": "web",
-	"version": "0.0.1",
+	"version": "3.0.0-alpha",
 	"private": true,
 	"scripts": {
 		"dev": "concurrently pnpm:dev:*",
