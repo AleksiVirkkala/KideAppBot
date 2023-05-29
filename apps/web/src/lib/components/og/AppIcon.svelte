@@ -1,37 +1,13 @@
-<script>
-	export let message = 'Hello, world!';
+<script lang="ts">
+	import BotLogo from '$lib/assets/logos/BotLogo.svelte';
+	export let size = 512;
 </script>
 
-<div
-	style="
-        background-color: #404040;
-        display: flex;
-        color: #AFDBBA;
-        height: 100%;
-        width: 100%;
-        justify-content: center;
-        align-items: stretch;
-        font-size: 64px;
-    "
->
+<div class="flex h-full w-full flex-col items-center justify-center border-4 bg-gray-50">
 	<div
-		style="
-            border: 8px dashed #AFDBBA;
-            width: 100%;
-            margin: 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        "
+		class="flex"
+		style={`padding-left: ${34 * (size / 512)}px; padding-bottom: ${28 * (size / 512)}px;`}
 	>
-		{message}
+		<BotLogo width={size * 0.45} />
 	</div>
 </div>
-
-<style lang="postcss">
-	div {
-		border: 2px solid black;
-		@apply flex items-center justify-center opacity-100;
-	}
-</style>
