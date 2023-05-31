@@ -1,5 +1,5 @@
 <script>
-	import { twMerge } from '$lib/utils/twMerge';
+	import { twMerge } from '$lib/actions';
 	import { slide } from 'svelte/transition';
 
 	let className = '';

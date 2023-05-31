@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { twMerge } from '$lib/utils/twMerge';
-
+	import { twMerge } from '$lib/actions';
 	export let disableStripes = false;
 	export let label: string | undefined = undefined;
 	let className = '';
