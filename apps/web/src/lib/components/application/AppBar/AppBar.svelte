@@ -16,7 +16,7 @@
 	export let navOptions: NavigationOption[] = [];
 </script>
 
-<AppBarShell {expanded} background="backdrop-blur-sm">
+<AppBarShell bind:expanded background="backdrop-blur-sm">
 	<div class="relative flex items-center justify-between py-3">
 		<!-- Header left -->
 

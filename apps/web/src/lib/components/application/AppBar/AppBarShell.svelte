@@ -1,5 +1,5 @@
 <script>
-	import { twMerge } from '$lib/actions';
+	import { clickOutside, twMerge } from '$lib/actions';
 	import { slide } from 'svelte/transition';
 
 	let className = '';
@@ -10,7 +10,12 @@
 	export let background = 'transparent';
 </script>
 
-<header use:twMerge={className} class="sticky inset-x-0 top-0 z-50">
+<header
+	use:twMerge={className}
+	use:clickOutside
+	on:outclick={() => (expanded = false)}
+	class="sticky inset-x-0 top-0 z-50"
+>
 	<!-- Static content -->
 
 	<div use:twMerge={[appBarContent, background]}>
