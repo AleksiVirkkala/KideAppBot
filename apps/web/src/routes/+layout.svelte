@@ -1,9 +1,14 @@
 <script lang="ts">
-	import AppBar from '$lib/components/application/AppBar.svelte';
-	import { appDescription, appName } from '$lib/utils/appInfo';
 	import '$lib/utils/initSkeleton';
+	import { AppBar, type NavigationOption } from '$lib/components/application/AppBar';
+	import { appDescription, appName } from '$lib/utils/appInfo';
 	import { appleSplashScreenMeta, appleTouchIconMeta } from '$lib/utils/metadata';
 	import { AppShell } from '@skeletonlabs/skeleton';
+
+	const navOptions = [
+		{ label: 'Bot', href: '/bot', isActive: true },
+		{ label: 'Settings', href: '/settings', isActive: false }
+	] satisfies NavigationOption[];
 </script>
 
 <svelte:head>
@@ -27,7 +32,7 @@
 
 <AppShell>
 	<svelte:fragment slot="header">
-		<AppBar />
+		<AppBar {navOptions} />
 	</svelte:fragment>
 	<slot />
 </AppShell>
