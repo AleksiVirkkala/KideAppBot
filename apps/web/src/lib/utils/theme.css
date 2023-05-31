@@ -93,6 +93,8 @@
 	--color-surface-700: 101 99 108; /* ⬅ #65636c */
 	--color-surface-800: 80 79 86; /* ⬅ #504f56 */
 	--color-surface-900: 66 65 71; /* ⬅ #424147 */
+
+	touch-action: manipulation;
 }
 /* Headings */
 [data-theme='kideappbot'] h1,
