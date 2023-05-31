@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { twMerge } from '$lib/utils/twMerge';
-
 	export let width: number;
 	export let color = '#6366f1';
 	let className = '';
@@ -9,7 +7,7 @@
 
 <!-- I don't like this method but svg file import fails in satori -->
 <svg
-	use:twMerge={className}
+	class={className}
 	xmlns="http://www.w3.org/2000/svg"
 	{width}
 	viewBox="0 0 183 248.3"
