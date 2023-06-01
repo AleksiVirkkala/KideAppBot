@@ -3,6 +3,7 @@
 	import { AppBar, type NavigationOption } from '$lib/components/application/AppBar';
 	import { appDescription, appName } from '$lib/utils/appInfo';
 	import { appleSplashScreenMeta, appleTouchIconMeta } from '$lib/utils/metadata';
+	import autoAnimate from '@formkit/auto-animate';
 	import { page } from '$app/stores';
 
 	const navOptions = [
@@ -32,6 +33,6 @@
 
 <AppBar {navOptions} isActive={o => o.href === $page.url.pathname} />
 
-<main>
+<main use:autoAnimate>
 	<slot />
 </main>
