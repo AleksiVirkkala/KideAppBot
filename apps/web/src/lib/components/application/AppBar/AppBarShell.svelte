@@ -19,7 +19,7 @@
 	<!-- Static content -->
 
 	<div use:twMerge={[appBarContent, background]}>
-		<div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+		<div class="app-container">
 			<slot />
 		</div>
 	</div>
@@ -31,7 +31,7 @@
 	>
 		<!-- Expand content -->
 		{#if expanded}
-			<div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8" transition:slide>
+			<div class="app-container" transition:slide>
 				<slot name="expandContent" />
 			</div>
 		{/if}

@@ -1,0 +1,6 @@
+/* Using tailwind directives breaks skeleton */
+/* @tailwind components; */
+
+.app-container {
+	@apply mx-auto w-full max-w-7xl px-2 sm:px-6 lg:px-8;
+}
