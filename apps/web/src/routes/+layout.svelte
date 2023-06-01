@@ -6,13 +6,12 @@
 	import { page } from '$app/stores';
 	import autoAnimate from '@formkit/auto-animate';
 
-	import { modeCurrent } from '@skeletonlabs/skeleton';
+	import { modeOsPrefers } from '@skeletonlabs/skeleton';
 	import { derived } from 'svelte/store';
 
-	const themeColor = derived(modeCurrent, $modeCurrent =>
+	const themeColor = derived(modeOsPrefers, $modeCurrent =>
 		$modeCurrent ? 'rgb(237, 237, 238)' : 'rgb(66, 65, 71)'
 	);
-
 	const navOptions = [
 		{ label: 'Bot', href: '/' },
 		{ label: 'Settings', href: '/settings' }
