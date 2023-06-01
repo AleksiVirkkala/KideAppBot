@@ -14,6 +14,8 @@
 
 	export let expanded = false;
 	export let navOptions: NavigationOption[] = [];
+
+	const closeExpand = () => (expanded = false);
 </script>
 
 <AppBarShell bind:expanded background="backdrop-blur-sm">
@@ -36,7 +38,7 @@
 		<div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
 			<!-- Bot Logo -->
 
-			<a href="/" class="btn btn-sm flex items-center space-x-3 px-2 py-1">
+			<a href="/" class="btn btn-sm flex items-center space-x-3 px-2 py-1" on:click={closeExpand}>
 				<div class="mb-1 ml-1 h-7">
 					<BotLogo width={22} />
 				</div>
@@ -51,9 +53,11 @@
 				{#each navOptions as { href, isActive, label }}
 					<a
 						{href}
+						on:click={closeExpand}
 						class="btn btn-sm h-8 {isActive ? 'variant-glass-surface' : 'bg-surface-hover-token'}"
-						>{label}</a
 					>
+						{label}
+					</a>
 				{/each}
 			</nav>
 		</div>
@@ -71,6 +75,7 @@
 
 			<a
 				href="https://github.com/AleksiVirkkala/KideAppBot"
+				on:click={closeExpand}
 				aria-label="KideAppBot GitHub repository"
 				class="btn btn-icon btn-icon-sm"
 			>
@@ -84,10 +89,13 @@
 			{#each navOptions as { href, isActive, label }}
 				<a
 					{href}
+					on:click={closeExpand}
 					class="btn btn-sm block h-8 text-left {isActive
 						? 'variant-glass-surface'
-						: 'bg-surface-hover-token'}">{label}</a
+						: 'bg-surface-hover-token'}"
 				>
+					{label}
+				</a>
 			{/each}
 		</nav>
 	</svelte:fragment>
