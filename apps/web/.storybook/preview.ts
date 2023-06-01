@@ -1,4 +1,4 @@
-import '../src/lib/utils/initSkeleton';
+import '../src/lib/styles/init';
 import type { Preview } from '@storybook/svelte';
 import { viewports } from './viewports';
 import { themeGlobals, withTheme } from './withTheme';

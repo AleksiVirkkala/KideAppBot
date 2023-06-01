@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '$lib/utils/initSkeleton';
+	import '$lib/styles/init';
 	import { AppBar, type NavigationOption } from '$lib/components/application/AppBar';
 	import { appDescription, appName } from '$lib/utils/appInfo';
 	import { appleSplashScreenMeta, appleTouchIconMeta } from '$lib/utils/metadata';
