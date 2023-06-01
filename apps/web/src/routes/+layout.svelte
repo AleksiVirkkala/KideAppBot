@@ -14,7 +14,7 @@
 	);
 
 	const navOptions = [
-		{ label: 'Bot', href: '/bot' },
+		{ label: 'Bot', href: '/' },
 		{ label: 'Settings', href: '/settings' }
 	] satisfies NavigationOption[];
 </script>
