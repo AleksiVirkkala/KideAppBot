@@ -5,13 +5,8 @@
 	import { appleSplashScreenMeta, appleTouchIconMeta } from '$lib/utils/metadata';
 	import { page } from '$app/stores';
 	import autoAnimate from '@formkit/auto-animate';
+	import ThemeSetter from '$lib/utils/ThemeSetter.svelte';
 
-	import { modeOsPrefers } from '@skeletonlabs/skeleton';
-	import { derived } from 'svelte/store';
-
-	const themeColor = derived(modeOsPrefers, $modeCurrent =>
-		$modeCurrent ? 'rgb(237, 237, 238)' : 'rgb(66, 65, 71)'
-	);
 	const navOptions = [
 		{ label: 'Bot', href: '/' },
 		{ label: 'Settings', href: '/settings' }
@@ -22,7 +17,6 @@
 	<title>{appName}</title>
 	<meta name="description" content={appDescription} />
 	<meta name="application-name" content={appName} />
-	<meta name="theme-color" content={$themeColor} />
 	<!-- Enable Apple PWA -->
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-title" content={appName} />
@@ -46,3 +40,5 @@
 <main use:autoAnimate class="app-container flex flex-auto grow flex-col">
 	<slot />
 </main>
+
+<ThemeSetter />
