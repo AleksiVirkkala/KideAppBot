@@ -28,36 +28,3 @@
 		<p><code class="code">/src/routes/+page.svelte</code></p>
 	</div>
 </div>
-
-<style lang="postcss">
-	figure {
-		@apply relative flex flex-col;
-	}
-	figure svg,
-	.img-bg {
-		@apply h-64 w-64 md:h-80 md:w-80;
-	}
-	.img-bg {
-		@apply absolute z-[-1] rounded-full blur-[50px] transition-all;
-		animation: pulse 5s cubic-bezier(0, 0, 0, 0.5) infinite, glow 5s linear infinite;
-	}
-	@keyframes glow {
-		0% {
-			@apply bg-primary-400/50;
-		}
-		33% {
-			@apply bg-secondary-400/50;
-		}
-		66% {
-			@apply bg-tertiary-400/50;
-		}
-		100% {
-			@apply bg-primary-400/50;
-		}
-	}
-	@keyframes pulse {
-		50% {
-			transform: scale(1.5);
-		}
-	}
-</style>
