@@ -4,8 +4,8 @@
 	import SampleContent from '$lib/components/helpers/content/SampleContent.svelte';
 
 	const navOptions = [
-		{ label: 'Bot', href: '/bot', isActive: true },
-		{ label: 'Settings', href: '/settings', isActive: false }
+		{ label: 'Bot', href: '/bot' },
+		{ label: 'Settings', href: '/settings' }
 	] satisfies NavigationOption[];
 </script>
 
@@ -19,7 +19,7 @@
 
 <Template let:args>
 	<div class="h-[500px] overflow-auto">
-		<AppBar {navOptions} {...args} />
+		<AppBar {navOptions} {...args} isActive={o => o.href === '/bot'} />
 		{#each Array(5) as _, index (index)}
 			<SampleContent class="my-4" />
 		{/each}

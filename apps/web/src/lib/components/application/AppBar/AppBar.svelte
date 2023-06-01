@@ -2,8 +2,8 @@
 	export interface NavigationOption {
 		label: string;
 		href: string;
-		isActive: boolean;
 	}
+	export type isActiveCb = (option: NavigationOption) => boolean;
 </script>
 
 <script lang="ts">
@@ -14,6 +14,7 @@
 
 	export let expanded = false;
 	export let navOptions: NavigationOption[] = [];
+	export let isActive: isActiveCb = () => false;
 
 	const closeExpand = () => (expanded = false);
 </script>
@@ -50,13 +51,15 @@
 			<!-- Desktop Navigation -->
 
 			<nav class="ml-6 flex items-center space-x-4 max-sm:hidden">
-				{#each navOptions as { href, isActive, label }}
+				{#each navOptions as opt}
 					<a
-						{href}
+						href={opt.href}
 						on:click={closeExpand}
-						class="btn btn-sm h-8 {isActive ? 'variant-glass-surface' : 'bg-surface-hover-token'}"
+						class="btn btn-sm h-8 {isActive(opt)
+							? 'variant-glass-surface'
+							: 'bg-surface-hover-token'}"
 					>
-						{label}
+						{opt.label}
 					</a>
 				{/each}
 			</nav>
@@ -86,15 +89,15 @@
 
 	<svelte:fragment slot="expandContent">
 		<nav class="space-y-1 px-2 pb-3 pt-2 sm:hidden">
-			{#each navOptions as { href, isActive, label }}
+			{#each navOptions as opt}
 				<a
-					{href}
+					href={opt.href}
 					on:click={closeExpand}
-					class="btn btn-sm block h-8 text-left {isActive
+					class="btn btn-sm block h-8 text-left {isActive(opt)
 						? 'variant-glass-surface'
 						: 'bg-surface-hover-token'}"
 				>
-					{label}
+					{opt.label}
 				</a>
 			{/each}
 		</nav>

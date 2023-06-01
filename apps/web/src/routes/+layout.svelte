@@ -4,10 +4,11 @@
 	import { appDescription, appName } from '$lib/utils/appInfo';
 	import { appleSplashScreenMeta, appleTouchIconMeta } from '$lib/utils/metadata';
 	import { AppShell } from '@skeletonlabs/skeleton';
+	import { page } from '$app/stores';
 
 	const navOptions = [
-		{ label: 'Bot', href: '/bot', isActive: true },
-		{ label: 'Settings', href: '/settings', isActive: false }
+		{ label: 'Bot', href: '/bot' },
+		{ label: 'Settings', href: '/settings' }
 	] satisfies NavigationOption[];
 </script>
 
@@ -32,7 +33,7 @@
 
 <AppShell>
 	<svelte:fragment slot="header">
-		<AppBar {navOptions} />
+		<AppBar {navOptions} isActive={o => o.href === $page.url.pathname} />
 	</svelte:fragment>
 	<slot />
 </AppShell>
