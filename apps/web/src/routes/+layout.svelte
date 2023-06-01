@@ -3,7 +3,6 @@
 	import { AppBar, type NavigationOption } from '$lib/components/application/AppBar';
 	import { appDescription, appName } from '$lib/utils/appInfo';
 	import { appleSplashScreenMeta, appleTouchIconMeta } from '$lib/utils/metadata';
-	import { AppShell } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
 
 	const navOptions = [
@@ -31,9 +30,8 @@
 	{/each}
 </svelte:head>
 
-<AppShell>
-	<svelte:fragment slot="header">
-		<AppBar {navOptions} isActive={o => o.href === $page.url.pathname} />
-	</svelte:fragment>
+<AppBar {navOptions} isActive={o => o.href === $page.url.pathname} />
+
+<main>
 	<slot />
-</AppShell>
+</main>
