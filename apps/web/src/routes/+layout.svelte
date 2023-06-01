@@ -38,7 +38,11 @@
 	{/each}
 </svelte:head>
 
-<AppBar {navOptions} isActive={o => o.href === $page.url.pathname} class="shrink-0" />
+<AppBar
+	{navOptions}
+	isActive={o => o.href === $page.url.pathname}
+	class="shrink-0 pt-[env(safe-area-inset-top)]"
+/>
 
 <main use:autoAnimate class="app-container flex flex-auto grow flex-col">
 	<slot />
