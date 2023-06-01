@@ -17,9 +17,12 @@
 	export let isActive: isActiveCb = () => false;
 
 	const closeExpand = () => (expanded = false);
+
+	let className = '';
+	export { className as class };
 </script>
 
-<AppBarShell bind:expanded background="backdrop-blur-sm">
+<AppBarShell class={className} bind:expanded background="backdrop-blur-sm">
 	<div class="relative flex items-center justify-between py-3">
 		<!-- Header left -->
 
