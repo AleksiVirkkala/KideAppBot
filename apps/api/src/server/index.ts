@@ -30,6 +30,15 @@ export const startServer = () => {
 		createContext
 	});
 
+	if (isDev()) {
+		wss.on('connection', ws => {
+			console.log(`➕➕ Connection (${wss.clients.size})`);
+			ws.once('close', () => {
+				console.log(`➖➖ Connection (${wss.clients.size})`);
+			});
+		});
+	}
+
 	const { port } = listen(serverPort);
 	console.log(`Bot backend started on port ${port}`);
 
