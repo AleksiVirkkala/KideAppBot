@@ -33,10 +33,12 @@ export const startServer = () => {
 	const { port } = listen(serverPort);
 	console.log(`Bot backend started on port ${port}`);
 
-	// TODO: Find out what event turborepo uses to restart the server
-	process.on('SIGTERM', () => {
-		console.log('SIGTERM');
+	const stopServer = () => {
 		handler.broadcastReconnectNotification();
 		wss.close();
-	});
+		server.close();
+	};
+
+	process.on('SIGTERM', stopServer);
+	process.on('SIGINT', stopServer);
 };
