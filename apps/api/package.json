@@ -12,7 +12,7 @@
 	},
 	"license": "UNLICENSED",
 	"dependencies": {
-		"@trpc/server": "^10.18.0",
+		"@trpc/server": "^10.28.2",
 		"@common/types": "workspace:*",
 		"@common/utils": "workspace:*",
 		"cors": "^2.8.5",
