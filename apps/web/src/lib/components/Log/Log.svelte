@@ -1,10 +1,20 @@
 <script lang="ts">
-	import { twMerge } from '$lib/actions';
+	import { afterUpdate, beforeUpdate } from 'svelte';
 
-	let className = '';
-	export { className as class };
+	let logElement: HTMLUListElement;
+
+	afterUpdate(() => {
+		scrollToBottom(logElement);
+	});
+
+	const scrollToBottom = async (el: Element) => {
+		el.scroll({ top: el.scrollHeight, behavior: 'smooth' });
+	};
 </script>
 
-<ul use:twMerge={className} class="card hide-scrollbar overflow-y-scroll p-4">
+<ul
+	bind:this={logElement}
+	class="card variant-ghost-surface hide-scrollbar h-1 min-h-[300px] grow overflow-y-scroll p-4 text-center"
+>
 	<slot />
 </ul>

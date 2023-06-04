@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Meta, Story, Template } from '@storybook/addon-svelte-csf';
 	import Log from './Log.svelte';
-	import LogItem, { type LogEntry } from './LogItem.svelte';
+	import LogItem from './LogItem.svelte';
+	import type { LogEntry } from '@common/types';
 
 	const logs: LogEntry[] = [
 		{

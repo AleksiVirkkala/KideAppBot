@@ -1,15 +1,9 @@
 <script context="module" lang="ts">
-	export type LogType = 'regular' | 'title' | 'bullet' | 'empty';
-
-	export interface LogEntry {
-		type: LogType;
-		icon?: string;
-		title?: string;
-		content?: string;
-	}
 </script>
 
 <script lang="ts">
+	import type { LogType } from '@common/types';
+
 	export let type: LogType = 'regular';
 	export let icon: string | undefined = undefined;
 	export let title: string | undefined = undefined;
