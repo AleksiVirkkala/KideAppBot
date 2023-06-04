@@ -37,7 +37,7 @@
 	class="shrink-0 pt-[env(safe-area-inset-top)]"
 />
 
-<main use:autoAnimate class="app-container flex flex-auto grow flex-col">
+<main use:autoAnimate class="app-container flex flex-auto flex-col">
 	<slot />
 </main>
 
