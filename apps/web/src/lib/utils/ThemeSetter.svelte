@@ -13,9 +13,6 @@
 		// Update the store if OS preference changes
 		const onChange = () => osDarkTheme.set(mq.matches);
 		mq.addEventListener('change', onChange);
-
-		// Debugging
-		osDarkTheme.subscribe(newTheme => console.log('Swapped to theme:', newTheme));
 	});
 
 	const themeColor = derived(osDarkTheme, $osDarkTheme =>
