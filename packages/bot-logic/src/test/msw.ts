@@ -9,7 +9,7 @@ import {
 	eventOnSale,
 	eventSalesNotStarted,
 	eventVariantsFirstMissing
-} from '../private/pageData';
+} from '@aleksivirkkala/kideappbot-private/pageData';
 
 export const reqHandlerVariantsMissing: RestResponseResolver = (req, res, ctx) => {
 	return res.once(ctx.status(200), ctx.json(eventVariantsFirstMissing.pageDataNoVariants));

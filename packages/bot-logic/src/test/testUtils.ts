@@ -1,5 +1,5 @@
 import { Variant } from '@/types/KideAppTypes';
-import { eventFull } from '@/private/pageData';
+import { eventFull } from '@aleksivirkkala/kideappbot-private/pageData';
 import {
 	AsyncResponseResolverReturnType,
 	MockedResponse,

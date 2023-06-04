@@ -233,6 +233,9 @@ importers:
 
   packages/bot-logic:
     dependencies:
+      '@aleksivirkkala/kideappbot-private':
+        specifier: 1.0.0
+        version: 1.0.0
       '@common/constants':
         specifier: workspace:*
         version: link:../common/constants
@@ -245,9 +248,6 @@ importers:
       axios:
         specifier: ^1.3.4
         version: 1.3.4
-      kideappbot-private:
-        specifier: github:AleksiVirkkala/KideAppBot-Private
-        version: github.com/AleksiVirkkala/KideAppBot-Private/c02e3dd9a708c8306ed8e0b4a53a57370011bede
       node-fetch:
         specifier: ^3.3.0
         version: 3.3.0
@@ -404,6 +404,10 @@ importers:
         version: 4.3.8(@types/node@18.15.0)
 
 packages:
+
+  /@aleksivirkkala/kideappbot-private@1.0.0:
+    resolution: {integrity: sha512-yCjrwVO6bKCjH/4K5yDzEgqvlH8G94Q9FbtXgMsIIgEHRFUzsyAoX+/6CimiCLSbJc5wFCFUuJmcmdXEEoshiA==, tarball: https://npm.pkg.github.com/download/@aleksivirkkala/kideappbot-private/1.0.0/67302d08275af489ba81ece5a6453844bf3e18c0}
+    dev: false
 
   /@alloc/quick-lru@5.2.0:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -10691,9 +10695,3 @@ packages:
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
     dev: true
-
-  github.com/AleksiVirkkala/KideAppBot-Private/c02e3dd9a708c8306ed8e0b4a53a57370011bede:
-    resolution: {commit: c02e3dd9a708c8306ed8e0b4a53a57370011bede, repo: git+ssh://git@github.com/AleksiVirkkala/KideAppBot-Private.git, type: git}
-    name: kideappbot-private
-    version: 1.0.0
-    dev: false

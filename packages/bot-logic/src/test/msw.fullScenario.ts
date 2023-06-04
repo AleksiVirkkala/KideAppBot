@@ -1,5 +1,5 @@
 import { RestResponseResolver } from './testUtils';
-import { eventFull } from '@/private/pageData';
+import { eventFull } from '@aleksivirkkala/kideappbot-private/pageData';
 
 const variantsMissing: RestResponseResolver = (req, res, ctx) => {
 	return res.once(ctx.status(200), ctx.json(eventFull.product.noVariants));

@@ -1,3 +1,0 @@
-[submodule "packages/bot-logic/src/private"]
-	path = packages/bot-logic/src/private
-	url = git@github.com:AleksiVirkkala/KideAppBot-Private.git

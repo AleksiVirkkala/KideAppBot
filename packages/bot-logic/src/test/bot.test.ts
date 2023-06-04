@@ -25,7 +25,7 @@ import {
 	eventSalesNotStarted,
 	eventVariantsFirstMissing,
 	fakeReservations
-} from '@/private/pageData';
+} from '@aleksivirkkala/kideappbot-private/pageData';
 
 server; // Makes the app actually import the server and works correctly this way
 
