@@ -1,14 +1,20 @@
 // TODO: Why does FatalBotError extend BotError and not the other way around?
 
-import type { LogType } from '@common/types';
+import type { LogType, LogEntry } from '@common/types';
 
 export class FatalBotError extends Error {
-	type: LogType;
+	log: LogEntry;
 
 	// TODO: Make LogType easier to understand
-	constructor(msg: string, type: LogType = 'e') {
-		super(msg);
-		this.type = type;
+	constructor(options: LogEntry | string) {
+		let logEntry: LogEntry;
+		if (typeof options === 'string') {
+			logEntry = { icon: '❌', title: options };
+		} else {
+			logEntry = options;
+		}
+		super(logEntry.content);
+		this.log = logEntry;
 		this.name = 'BotError';
 	}
 }

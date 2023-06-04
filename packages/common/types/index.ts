@@ -1,13 +1,16 @@
 // TODO: We should export the backend api-type here
 // export type { AppRouter } from '@/server';
 
-// TODO: These are pretty much as unclear as they can be :D
-export type LogType = 'b' | 'l' | 'e' | 's' | 'w' | 'f' | 't';
+export type LogType = 'regular' | 'title' | 'bullet' | 'empty';
 
-export interface Log {
-	msg?: string;
-	value?: string;
+export interface LogEntry {
 	type?: LogType;
+	icon?: string;
+	title?: string;
+	content?: string;
+}
+
+export interface LogMessage extends LogEntry {
 	replace?: boolean;
 }
 

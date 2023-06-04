@@ -2,7 +2,7 @@ import { BotError, FatalBotError } from '@/utils/errorUtils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { getTotalPriceFromReservations, getTotalQuantityFromReservations } from '@/utils';
 import { ReservationBody, Variant } from '@/types/KideAppTypes';
-import { Log } from '@common/types';
+import { LogMessage } from '@common/types';
 import {
 	reqHandler500,
 	reqHandlerSalesEnded,
@@ -34,7 +34,7 @@ const KIDE_TOKEN = 'asdfasdf';
 describe('bot tests', () => {
 	describe('utility tests', () => {
 		let bot: KideAppBot;
-		let logCb: (log: Log) => void;
+		let logCb: (log: LogMessage) => void;
 
 		beforeEach(() => {
 			logCb = vi.fn();
@@ -61,10 +61,10 @@ describe('bot tests', () => {
 		describe('Logging', () => {
 			describe('fullLog', () => {
 				it('Should call the callback correctly', () => {
-					const testLog: Log = {
-						msg: 'Test log',
-						type: 'e',
-						value: '4',
+					const testLog: LogMessage = {
+						title: 'Test log',
+						type: 'bullet',
+						content: '4',
 						replace: true
 					};
 					bot['fullLog'](testLog);
@@ -78,12 +78,11 @@ describe('bot tests', () => {
 			});
 			describe('log', () => {
 				it('Should call the callback correctly', () => {
-					const testLog = {
-						msg: 'Test log',
-						type: 'e',
-						replace: true
-					} as const;
-					bot['log'](testLog.msg, testLog.type, testLog.replace);
+					const testLog: LogMessage = {
+						title: 'Test log',
+						type: 'bullet'
+					};
+					bot['log'](testLog.title, testLog.type);
 					expect(logCb).toHaveBeenCalledOnce();
 					expect(logCb).toHaveBeenCalledWith(testLog);
 				});

@@ -2,7 +2,7 @@
  * Bot that works together with the backend
  */
 
-import { Log, LogType } from '@common/types';
+import { LogMessage, LogType } from '@common/types';
 import { accurateInterval, secondsToPrettierPrint, timeout } from '@common/utils';
 import { BotError, FatalBotError, NotImplementedError } from '@/utils/errorUtils';
 import { Variant, ReservationsPostResponse, PageResponse } from '@/types/KideAppTypes';
@@ -39,18 +39,22 @@ export abstract class BotBase {
 			const reservationResponses = await this.reserveTicketVariants(variants);
 			this.logReservations(reservationResponses);
 		} catch (err) {
-			if (!err) this.log('Undefined error', 'e');
+			if (!err)
+				this.fullLog({
+					icon: '🤷',
+					title: 'Undefined error'
+				});
 			else if (err instanceof BotError) {
 				this.fullLog({
-					msg: err.message,
+					title: err.message,
 					// TODO
 					// type: err.type,
 					force: true
 				});
 			} else if (err instanceof Error) {
 				this.fullLog({
-					msg: err.message,
-					type: 'e',
+					icon: '🤷',
+					title: err.message,
 					force: true
 				});
 			} else {
@@ -67,9 +71,7 @@ export abstract class BotBase {
 		const productData = await this.getProductData(eventUrl);
 		const { timeUntilSalesStart } = productData.model.product;
 
-		this.log();
-		this.log('Checking response', 't');
-		this.log();
+		this.log('Checking response', 'title');
 
 		// --- Wait until sales start ----------------------------
 
@@ -79,7 +81,10 @@ export abstract class BotBase {
 			this.startTime = Date.now();
 		}
 
-		this.log('Sales have started, finding ticket variants...', 'l');
+		this.fullLog({
+			icon: '🎟️',
+			title: 'Sales have started, finding ticket variants...'
+		});
 
 		const { variants } = productData.model;
 
@@ -104,7 +109,7 @@ export abstract class BotBase {
 				return await this.tryReserveTicketVariant(variant);
 			} catch (e) {
 				if (e instanceof BotError) {
-					this.log(e.message, e.type);
+					this.fullLog(e.log);
 				}
 			}
 		});
@@ -130,34 +135,29 @@ export abstract class BotBase {
 		this.onIsActiveChanged = handler;
 	}
 
-	protected onLog: (log: Log) => void = () => {
+	protected onLog: (log: LogMessage) => void = () => {
 		throw new NotImplementedError("onLog hasn't been set");
 	};
-	public setOnLog(handler: (log: Log) => void) {
+	public setOnLog(handler: (log: LogMessage) => void) {
 		this.onLog = handler;
 	}
 
 	// Logging methods
 	protected log(msg?: string, type?: LogType, replace?: boolean) {
-		this.fullLog({ msg, type, replace });
+		this.fullLog({ title: msg, type, replace });
 	}
 
 	protected fullLog({
-		msg,
-		value,
 		type,
+		icon,
+		title,
+		content,
 		replace,
 		force
-	}: {
-		msg?: string;
-		value?: string;
-		type?: LogType;
-		replace?: boolean;
-		force?: boolean;
-	}) {
+	}: LogMessage & { force?: boolean }) {
 		this.stopIfRequested();
 		if (!force && this.silentLog) return;
-		this.onLog({ msg, value, type, replace });
+		this.onLog({ type, icon, title, content, replace });
 	}
 
 	// TODO: Diagnose if works properly
@@ -165,7 +165,10 @@ export abstract class BotBase {
 		if (this.stopRequested) {
 			this.stopRequested = false;
 			this.stopBot();
-			throw new FatalBotError('Process terminated by user', 't');
+			throw new FatalBotError({
+				title: 'Process terminated by user',
+				type: 'title'
+			});
 		}
 	}
 
@@ -177,8 +180,7 @@ export abstract class BotBase {
 
 	public stopBot(msg?: string) {
 		if (!this.botIsActive) return;
-		this.log();
-		this.log(msg, 't');
+		this.log(msg, 'title');
 		this.botIsActive = false;
 		this.silentLog = false;
 	}
@@ -189,34 +191,30 @@ export abstract class BotBase {
 			throw new BotError('No variants available');
 		}
 
-		this.log();
-
 		variants.forEach((variant, i) => {
 			this.fullLog({
-				msg: i + 1 + '.',
-				value: variant.name
+				title: `${i + 1}`,
+				content: variant.name
 			});
 			this.fullLog({
-				msg: 'Availability: ',
-				value: variant.availability + ' kpl',
-				type: 'b'
+				title: 'Availability',
+				content: variant.availability + ' kpl',
+				type: 'bullet'
 			});
 			this.fullLog({
-				msg: 'Max-order: ',
-				value: variant.productVariantMaximumReservableQuantity + ' kpl',
-				type: 'b'
+				title: 'Max-order',
+				content: variant.productVariantMaximumReservableQuantity + ' kpl',
+				type: 'bullet'
 			});
 		});
-
-		this.log();
 	}
 
 	// Other helper methods
 	protected async timeoutLog(seconds: number) {
 		this.fullLog({
-			msg: 'Time until sales start... ',
-			value: secondsToPrettierPrint(seconds),
-			type: 'l'
+			icon: '⏳',
+			title: 'Time until sales start...',
+			content: secondsToPrettierPrint(seconds)
 		});
 		await this.timeoutLogHelper(seconds);
 	}
@@ -228,9 +226,9 @@ export abstract class BotBase {
 			accurateInterval(stop => {
 				try {
 					this.fullLog({
-						msg: 'Time until sales start... ',
-						value: secondsToPrettierPrint(--seconds),
-						type: 'l',
+						icon: ' ⏳',
+						title: 'Time until sales start...',
+						content: secondsToPrettierPrint(--seconds),
 						replace: true
 					});
 					if (seconds <= 0) {
@@ -249,8 +247,8 @@ export abstract class BotBase {
 		const currTime = Date.now();
 		const elapsedMs = currTime - (this.startTime || 0);
 		this.fullLog({
-			msg: 'Time elapsed:',
-			value: elapsedMs + ' ms'
+			title: 'Time elapsed',
+			content: elapsedMs + ' ms'
 		});
 	}
 
@@ -264,21 +262,22 @@ export abstract class BotBase {
 			throw new BotError("Couldn't reserve any tickets");
 		}
 
-		this.log();
-		this.log('Items in shopping cart', 't');
-		this.log();
+		this.fullLog({
+			title: 'Items in shopping cart',
+			type: 'title'
+		});
 
 		reservations.forEach(res => {
 			this.fullLog({
-				msg: 'Variant:',
-				value: res.variantName + ' - ' + res.reservedQuantity + ' kpl',
-				type: 's'
+				icon: '✅',
+				title: 'Variant',
+				content: res.variantName + ' - ' + res.reservedQuantity + ' kpl'
 			});
 		});
-		this.log();
 		this.fullLog({
-			msg: '🎫 Total quantity:',
-			value: totalQuantity.toString()
+			icon: '🎫',
+			title: 'Total quantity',
+			content: totalQuantity.toString()
 		});
 		const totalPriceStr = totalPrice + '';
 		const formattedPrice =
@@ -287,8 +286,9 @@ export abstract class BotBase {
 			totalPriceStr.slice(totalPriceStr.length - 2) +
 			'€';
 		this.fullLog({
-			msg: '💲 Total price:',
-			value: formattedPrice
+			icon: '💲',
+			title: 'Total price',
+			content: formattedPrice
 		});
 	}
 
@@ -320,9 +320,9 @@ export abstract class BotBase {
 				if (e instanceof BotError) {
 					// TODO: Should this handle only certain error messages?
 					this.fullLog({
-						msg: e.message,
-						value: new Date().toISOString(), // TODO check if this is correct
-						type: 'e',
+						icon: '🚫',
+						title: e.message,
+						content: new Date().toISOString(), // TODO check if this is correct
 						force: true
 					});
 					await timeout(TIMEOUTS.PAGE_FETCH_FAILED);
@@ -335,25 +335,30 @@ export abstract class BotBase {
 	}
 
 	async getProductData(eventUrl: string) {
-		this.log('Parsing input', 't');
+		this.fullLog({
+			title: 'Parsing input',
+			type: 'title'
+		});
 
 		const productPageId = this.parsePageId(eventUrl);
 
-		this.log();
 		this.fullLog({
-			msg: 'Parsed pageId: ',
-			value: productPageId,
-			type: 's'
+			icon: '✅',
+			title: 'Parsed pageId',
+			content: productPageId
 		});
-		this.log('Fetching page info...', 'f');
+		this.fullLog({
+			icon: '🛰️',
+			title: 'Fetching page info...'
+		});
 
 		try {
 			const data = await this.fetchProductData(productPageId);
 
 			this.fullLog({
-				msg: 'Received response',
-				value: data.model.product.name,
-				type: 's'
+				icon: '✅',
+				title: 'Received response',
+				content: data.model.product.name
 			});
 
 			// --- If not on sale, no need to go forward -------------
@@ -388,26 +393,29 @@ export abstract class BotBase {
 
 		// ---- Logging --------------------------------------
 
-		this.log('Reserving ticket', 't');
-		this.log();
+		this.fullLog({
+			title: 'Reserving ticket',
+			type: 'title'
+		});
 
 		this.fullLog({
-			msg: 'Variant',
-			value: variant.name
+			title: 'Variant',
+			content: variant.name
 		});
 		this.fullLog({
-			msg: 'inventoryId:',
-			value: inventoryId.toString(),
-			type: 'b'
+			title: 'inventoryId',
+			content: inventoryId.toString(),
+			type: 'bullet'
 		});
 		this.fullLog({
-			msg: 'Amount:',
-			value: quantity.toString(),
-			type: 'b'
+			title: 'Amount',
+			content: quantity.toString(),
+			type: 'bullet'
 		});
-		this.log();
-		this.log('Sending reservation...', 'l');
-		this.log();
+		this.fullLog({
+			icon: '📨',
+			title: 'Sending reservation...'
+		});
 
 		// ---- Reservation loop -----------------------------
 
