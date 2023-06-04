@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { autoModeWatcher } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
 	import { derived, writable } from 'svelte/store';
@@ -15,6 +16,10 @@
 		mq.addEventListener('change', onChange);
 	});
 
+	if (browser) {
+		autoModeWatcher();
+	}
+
 	const themeColor = derived(osDarkTheme, $osDarkTheme =>
 		$osDarkTheme ? 'rgb(66, 65, 71)' : 'rgb(237, 237, 238)'
 	);
@@ -22,5 +27,4 @@
 
 <svelte:head>
 	<meta name="theme-color" content={$themeColor} />
-	{@html `<script>${autoModeWatcher.toString()} autoModeWatcher();</script>`}
 </svelte:head>
