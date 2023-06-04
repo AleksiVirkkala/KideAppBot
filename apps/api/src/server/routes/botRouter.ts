@@ -5,7 +5,7 @@ import KideAppBot from 'kideappbot';
 
 import { EventEmitter } from 'events';
 import jwtDecode, { InvalidTokenError } from 'jwt-decode';
-import { Log } from '@common/types';
+import { LogMessage } from '@common/types';
 import { TRPCError } from '@trpc/server';
 // create a global event emitter (could be replaced by redis, etc)
 const ee = new EventEmitter();
@@ -88,8 +88,8 @@ export const botRouter = router({
 		)
 		.subscription(({ input }) => {
 			const { token } = input;
-			return observable<Log>(emit => {
-				ee.on(`newLog-${token}`, (log: Log) => {
+			return observable<LogMessage>(emit => {
+				ee.on(`newLog-${token}`, (log: LogMessage) => {
 					emit.next(log);
 				});
 				return () => {
