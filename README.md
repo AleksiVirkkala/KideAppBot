@@ -4,6 +4,8 @@ Ticket reservation bot for **[Kide.app](https://kide.app/)**
 
 Bot is available here: **[KideAppBot.com](https://kideappbot.com)**
 
+![app-presentation](/.github/images/app-presentation.png)
+
 - Once setup, only event url is needed
 - Reserves smartly maximum amount of tickets of each ticket variant for given event (see [activity diagram](#activity-diagram) for details)
 - Handles automatically waiting for ticket sale to begin if it hasn't yet
