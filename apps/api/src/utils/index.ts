@@ -1,5 +1,7 @@
-export function getAllowedOrigins(): string[] {
-	return process.env.ALLOWED_ORIGINS?.split(',') ?? [];
+import { isDev } from '@common/utils';
+
+export function getAllowedOrigin(): string {
+	return isDev() ? '*' : process.env.ALLOWED_ORIGIN ?? '';
 }
 
 export const getServerPort = (): number => {

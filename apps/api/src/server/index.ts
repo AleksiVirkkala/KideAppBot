@@ -1,5 +1,5 @@
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
-import { getAllowedOrigins, getServerPort } from '@/utils';
+import { getAllowedOrigin, getServerPort } from '@/utils';
 import cors from 'cors';
 import { isDev } from '@common/utils';
 
@@ -14,7 +14,7 @@ export const startServer = () => {
 	// http server
 	const { server, listen } = createHTTPServer({
 		middleware: cors({
-			origin: isDev() ? '*' : getAllowedOrigins(),
+			origin: getAllowedOrigin(),
 			credentials: true
 		}),
 

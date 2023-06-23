@@ -7,7 +7,7 @@
 		"**/.eslintrc.*",
 		".prettier.config.js"
 	],
-	"globalEnv": ["NODE_ENV", "ALLOWED_ORIGINS", "PORT"],
+	"globalEnv": ["NODE_ENV", "ALLOWED_ORIGIN", "PORT"],
 	"pipeline": {
 		"build": {
 			"dependsOn": ["^build"],
