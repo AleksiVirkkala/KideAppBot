@@ -5,23 +5,22 @@
 import { LogMessage, LogType } from '@common/types';
 import { accurateInterval, secondsToPrettierPrint, timeout } from '@common/utils';
 import { BotError, FatalBotError, NotImplementedError } from '@/utils/errorUtils';
-import { Variant, ReservationsPostResponse, PageResponse } from '@/types/KideAppTypes';
+import {
+	Variant,
+	ReservationsPostResponse,
+	PageResponse,
+	ReservationBody
+} from '@/types/KideAppTypes';
 import {
 	getUniqueReservations,
 	getTotalQuantityFromReservations,
 	getTotalPriceFromReservations,
 	tryGetNewReservationQuantity
 } from '@/utils';
-import { KIDE_APP_URL_BASE, TIMEOUTS } from '@common/constants';
-import { AxiosError } from 'axios';
-import { FetchProductDataFn, TryReserveFn } from '@/types/cbTypes';
+import { KIDE_APP_API_URL_BASE, KIDE_APP_URL_BASE, TIMEOUTS } from '@common/constants';
+import axios, { AxiosError } from 'axios';
 
-export abstract class BotBase {
-	// These must be implemented by the child class
-	abstract tryReserve: TryReserveFn;
-	abstract fetchProductData: FetchProductDataFn;
-
-	// State
+export class KideAppBot {
 	protected _botIsActive = false;
 	protected silentLog = false;
 	protected startTime: number | null = null;
@@ -64,6 +63,33 @@ export abstract class BotBase {
 
 		this.stopBot('Process finished succesfully');
 		this.logElapsedTime();
+	}
+
+	protected async tryReserve(inventoryId: string, quantity: number, token: string) {
+		const API_RESERVATION_ENDPOINT = 'https://api.kide.app/api/reservations';
+		const body: ReservationBody = {
+			toCreate: [
+				{
+					inventoryId: inventoryId,
+					quantity: quantity
+				}
+			],
+			toCancel: null
+		};
+		const headers = {
+			'Content-Type': 'application/json;charset=UTF-8',
+			accept: 'application/json, text/plain, */*',
+			authorization: 'Bearer ' + token
+		};
+
+		return await axios.post<ReservationsPostResponse>(API_RESERVATION_ENDPOINT, body, { headers });
+	}
+	protected async fetchProductData(pageId: string) {
+		const { data, status } = await axios.get<PageResponse>(KIDE_APP_API_URL_BASE + pageId);
+		if (status !== 200) {
+			throw new BotError('Request Failed');
+		}
+		return data;
 	}
 
 	protected async getTicketVariants(eventUrl: string) {
