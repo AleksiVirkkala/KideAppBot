@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { afterUpdate, beforeUpdate } from 'svelte';
+	import { afterUpdate } from 'svelte';
 
 	let logElement: HTMLUListElement;
 
@@ -14,7 +14,7 @@
 
 <ul
 	bind:this={logElement}
-	class="card variant-ghost-surface hide-scrollbar h-1 min-h-[300px] grow overflow-y-scroll p-4 text-center"
+	class="card hide-scrollbar ring-surface-400-500-token bg-surface-200-700-token h-1 min-h-[300px] grow overflow-y-scroll p-4 text-center"
 >
 	<slot />
 </ul>
