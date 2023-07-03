@@ -32,7 +32,7 @@ This app works with kide.app and therefore requires your kide.app bearer token t
 
 ## Usage
 
-- **NOTE: This new version sends your bearer token to my server that then uses it to reserve tickets from KideApp.** I will never store your bearer token nor use it for anything else than reserving the tickets. By using the bot you agree to this
+- **NOTE: This version sends your bearer token to my server that then uses it to reserve tickets from KideApp.** I will never store your bearer token nor use it for anything else than reserving the tickets. By using the bot you agree to this.
 
 1. Head to **[KideAppBot.com](https://kideappbot.com)**
 2. find your bearer token
@@ -43,15 +43,15 @@ This app works with kide.app and therefore requires your kide.app bearer token t
    - The value will be saved to local storage which means that you won't have to set it again as long as the url stays the same and you are using that same device.
 4. Copy event url from <https://kide.app/>
    - Each event should start with <https://kide.app/events/>
-5. Press _"Run"_ button and watch the bot go
+5. Press _"Start"_ button and watch the bot go
 
 ## Technical details
 
 This is the second major version of the bot. It is a monorepo that uses PNPM workspaces and turborepo to manage the project. It has a frontend and a backend. They communicate through TRPC Subscriptions using websockets. The project is made modular using PNPM workspaces which means that different parts of the application are split to their own reusable packages.
 
 - Monorepo using [PNPM workspaces](https://pnpm.io/workspaces) + [turborepo](https://turbo.build/repo/docs/reference/command-line-reference)
-- Frontend: SvelteKit + Skeleton
-- Backend build with [TRPC](https://trpc.io/) + Typescript
+- Frontend: [SvelteKit](https://kit.svelte.dev/) + [Skeleton](https://www.skeleton.dev/)
+- Backend: [TRPC](https://trpc.io/) + [Typescript](https://www.typescriptlang.org/)
 - Realtime communication between Frontend and Backend using [TRPC WebSocket subscriptions](https://trpc.io/docs/subscriptions)
 
 ### Running locally
@@ -62,7 +62,7 @@ Note: If you only want to use the bot this section is not necessary!
    - requires PNPM package manager
 2. Run from root directory with `pnpm dev`
 3. Navigate to <http://localhost:8080/> with browser
-4. Follow the instructions in the **[easy way](#easy-way)**
+4. Follow the instructions in the **[usage](#usage)**
 
 ### Deep dive
 
