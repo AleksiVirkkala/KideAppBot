@@ -38,6 +38,10 @@ jobs:
         working-directory: packages/svelte-og
         run: pnpm build
 
+      - name: Build web
+        working-directory: apps/web
+        run: pnpm build
+
       # Deploy to Chromatic
       - name: Publish to Chromatic
         uses: chromaui/action@v1
