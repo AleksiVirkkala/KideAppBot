@@ -6,6 +6,8 @@ package
 .env
 .env.*
 !.env.example
+.vercel
+.sveltekit
 
 # Ignore files for PNPM, NPM and YARN
 pnpm-lock.yaml
