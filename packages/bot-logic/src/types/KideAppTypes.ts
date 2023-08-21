@@ -68,6 +68,7 @@ export interface Reservation {
 }
 
 export interface ReservationBody {
+	expectCart: true;
 	toCreate: [
 		{
 			inventoryId: string;

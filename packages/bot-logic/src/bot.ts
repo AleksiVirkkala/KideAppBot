@@ -68,6 +68,7 @@ export class KideAppBot {
 	protected async tryReserve(inventoryId: string, quantity: number, token: string) {
 		const API_RESERVATION_ENDPOINT = 'https://api.kide.app/api/reservations';
 		const body: ReservationBody = {
+			expectCart: true,
 			toCreate: [
 				{
 					inventoryId: inventoryId,
