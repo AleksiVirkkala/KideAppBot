@@ -176,6 +176,9 @@ importers:
       highlight.js:
         specifier: ^11.8.0
         version: 11.8.0
+      highlight.run:
+        specifier: ^7.4.0
+        version: 7.4.0
       postcss:
         specifier: ^8.4.24
         version: 8.4.24
@@ -6766,6 +6769,10 @@ packages:
   /highlight.js@11.8.0:
     resolution: {integrity: sha512-MedQhoqVdr0U6SSnWPzfiadUcDHfN/Wzq25AkXiQv9oiOO/sG0S7XkvpFIqWBl9Yq1UYyYOOVORs5UW2XlPyzg==}
     engines: {node: '>=12.0.0'}
+    dev: true
+
+  /highlight.run@7.4.0:
+    resolution: {integrity: sha512-jH39VXdIhVYoWny14+Se2/8SENbvHF2mbgmH51+3dO8GhwR3UZNT+bA2V6N7fmgt6ef7M9thRTrh59aKM2rpqQ==}
     dev: true
 
   /hosted-git-info@2.8.9:
