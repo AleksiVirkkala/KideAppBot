@@ -34,6 +34,10 @@ export function isKnownReservationError(
 
 export function tryGetNewReservationQuantity(e: AxiosError, currentQnt: number) {
 	if (!isKnownReservationError(e)) {
+		// The token is probably stale / invalid
+		if (e.response?.status === 401) {
+			throw new BotError('Unauthorized. Get a new token from kide.app and try again.');
+		}
 		throw new BotError('Unhandled network error while reserving tickets');
 	}
 	if (currentQnt <= 1) {
