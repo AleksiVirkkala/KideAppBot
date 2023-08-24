@@ -3,6 +3,7 @@
  */
 
 import { LogMessage, LogType } from '@common/types';
+import jwtDecode, { InvalidTokenError } from 'jwt-decode';
 import { accurateInterval, secondsToPrettierPrint, timeout } from '@common/utils';
 import { BotError, FatalBotError, NotImplementedError } from '@/utils/errorUtils';
 import {
@@ -33,6 +34,7 @@ export class KideAppBot {
 		this.startTime = Date.now();
 
 		try {
+			this.verifyToken(this.token);
 			const variants = await this.getTicketVariants(eventUrl);
 			this.logTicketVariants(variants);
 			const reservationResponses = await this.reserveTicketVariants(variants);
@@ -329,6 +331,16 @@ export class KideAppBot {
 		}
 
 		return eventUrl.substring(KIDE_APP_URL_BASE.length);
+	}
+
+	protected verifyToken(token: string) {
+		try {
+			jwtDecode(token);
+		} catch (e) {
+			if (e instanceof InvalidTokenError) {
+				throw new FatalBotError('Invalid bearer token');
+			}
+		}
 	}
 
 	// TODO

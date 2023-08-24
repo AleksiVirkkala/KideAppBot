@@ -2,12 +2,9 @@ import { z } from 'zod';
 import { observable } from '@trpc/server/observable';
 import { procedure, router } from '@/server/trpc-shared';
 import KideAppBot from 'kideappbot';
-
 import { EventEmitter } from 'events';
-import jwtDecode, { InvalidTokenError } from 'jwt-decode';
 import { LogMessage } from '@common/types';
-import { TRPCError } from '@trpc/server';
-// create a global event emitter (could be replaced by redis, etc)
+
 const ee = new EventEmitter();
 const botInstances: Record<string, KideAppBot> = {};
 
@@ -49,17 +46,6 @@ export const botRouter = router({
 		)
 		.mutation(async ({ input }) => {
 			const { token, eventUrl } = input;
-
-			try {
-				jwtDecode(token);
-			} catch (e) {
-				if (e instanceof InvalidTokenError) {
-					throw new TRPCError({
-						code: 'BAD_REQUEST',
-						message: 'Invalid Bearer Token'
-					});
-				}
-			}
 
 			if (botInstances[token]) {
 				botInstances[token].requestStop();
