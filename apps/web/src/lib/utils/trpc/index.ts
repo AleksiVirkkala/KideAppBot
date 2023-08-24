@@ -6,7 +6,8 @@ import {
 	httpBatchLink,
 	createWSClient,
 	wsLink,
-	splitLink
+	splitLink,
+	loggerLink
 } from '@trpc/client';
 
 // This file is run in both the browser and the server, thus we need to check if we are in the browser or not
@@ -18,6 +19,7 @@ const httpLink = httpBatchLink({
 
 // wsLink can only be called on the client, therefore we need to check if we are in the browser or not
 const links = [
+	loggerLink(),
 	browser
 		? splitLink({
 				condition(op) {
