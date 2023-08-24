@@ -7,7 +7,7 @@
 		"type": "git",
 		"url": "https://github.com/aleksivirkkala/kideappbot.git"
 	},
-	"version": "3.1.0",
+	"version": "3.2.0",
 	"scripts": {
 		"build": "turbo run build",
 		"dev": "dotenv -- turbo run dev --concurrency 16",
