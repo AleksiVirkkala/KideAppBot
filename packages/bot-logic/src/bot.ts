@@ -40,18 +40,13 @@ export class KideAppBot {
 			const reservationResponses = await this.reserveTicketVariants(variants);
 			this.logReservations(reservationResponses);
 		} catch (err) {
-			if (!err)
+			if (!err) {
 				this.fullLog({
 					icon: '🤷',
 					title: 'Undefined error'
 				});
-			else if (err instanceof BotError) {
-				this.fullLog({
-					title: err.message,
-					// TODO
-					// type: err.type,
-					force: true
-				});
+			} else if (err instanceof BotError) {
+				this.fullLog(err.log);
 			} else if (err instanceof Error) {
 				this.fullLog({
 					icon: '🤷',
