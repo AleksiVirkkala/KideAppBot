@@ -51,11 +51,11 @@ describe('bot tests', () => {
 			});
 			it('Should fail with invalid url base', () => {
 				const pageUrl = `https://kide.ap/events/4cfa05ca-cd95-4829-b656-57d8fadef1a5`;
-				expect(() => bot['parsePageId'](pageUrl)).toThrow(FatalBotError);
+				expect(() => bot['parsePageId'](pageUrl)).toThrow(BotError);
 			});
 			it('Should fail if event id is missing', () => {
 				const pageUrl = `https://kide.app/events/`;
-				expect(() => bot['parsePageId'](pageUrl)).toThrow(FatalBotError);
+				expect(() => bot['parsePageId'](pageUrl)).toThrow(BotError);
 			});
 		});
 		describe('Logging', () => {
@@ -118,7 +118,7 @@ describe('bot tests', () => {
 		describe('getProductData', () => {
 			it('Should fail with invalid url', async () => {
 				const eventApiUrl = eventOnSale.apiUrl;
-				expect(bot.getProductData(eventApiUrl)).rejects.toThrow(FatalBotError);
+				expect(bot.getProductData(eventApiUrl)).rejects.toThrow(BotError);
 			});
 			it('Should get the correct product data', async () => {
 				const eventUrl = eventOnSale.eventUrl;
@@ -127,7 +127,7 @@ describe('bot tests', () => {
 			});
 			it('Should throw correct error if status is not 200', async () => {
 				const eventUrl = eventNon200.eventUrl;
-				expect(bot.getProductData(eventUrl)).rejects.toThrow(FatalBotError);
+				expect(bot.getProductData(eventUrl)).rejects.toThrow(BotError);
 			});
 		});
 		describe('getProductDataWithVariants', () => {
@@ -200,7 +200,7 @@ describe('bot tests', () => {
 					await bot['getTicketVariants'](eventUrl);
 					expect.fail('Should not reach this line');
 				} catch (e) {
-					expect(e).toBeInstanceOf(FatalBotError);
+					expect(e).toBeInstanceOf(BotError);
 				}
 			});
 		});

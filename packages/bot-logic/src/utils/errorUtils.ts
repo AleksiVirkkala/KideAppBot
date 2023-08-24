@@ -1,8 +1,8 @@
 // TODO: Why does FatalBotError extend BotError and not the other way around?
 
-import type { LogType, LogEntry } from '@common/types';
+import type { LogEntry } from '@common/types';
 
-export class FatalBotError extends Error {
+export class BotError extends Error {
 	log: LogEntry;
 
 	// TODO: Make LogType easier to understand
@@ -19,7 +19,7 @@ export class FatalBotError extends Error {
 	}
 }
 
-export class BotError extends FatalBotError {}
+export class FatalBotError extends BotError {}
 
 export class NotImplementedError extends Error {
 	constructor(msg: string) {

@@ -132,6 +132,9 @@ export class KideAppBot {
 			try {
 				return await this.tryReserveTicketVariant(variant);
 			} catch (e) {
+				if (e instanceof FatalBotError) {
+					throw e;
+				}
 				if (e instanceof BotError) {
 					this.fullLog(e.log);
 				}
@@ -351,6 +354,9 @@ export class KideAppBot {
 					return productData;
 				}
 			} catch (e) {
+				if (e instanceof FatalBotError) {
+					throw e;
+				}
 				if (e instanceof BotError) {
 					// TODO: Should this handle only certain error messages?
 					this.fullLog({
