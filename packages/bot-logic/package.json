@@ -34,5 +34,6 @@
 		"tsup-config-base": "workspace:*",
 		"typescript": "^5.0.4",
 		"vitest": "^0.29.8"
-	}
+	},
+	"type": "module"
 }

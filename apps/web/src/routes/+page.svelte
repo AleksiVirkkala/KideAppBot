@@ -1,17 +1,24 @@
-<script>
+<script lang="ts">
+	import type { LogMessage } from '@common/types';
+	import KideAppBot from 'kideappbot';
 	import { Log } from '$lib/components/Log';
-	import { isRunning, startBot, logs } from '$lib/utils/trpc';
-	import { tokenIsSet } from '$lib/stores/token';
+	import { token, tokenIsSet } from '$lib/stores/token';
 	import LogItem from '$lib/components/Log/LogItem.svelte';
 	import Icon from '@iconify/svelte';
 	import { browser } from '$app/environment';
 
+	let isRunning = false;
+	let logs: LogMessage[] = [];
+
 	let url = '';
-	$: disabled = !$tokenIsSet || $isRunning;
+	$: disabled = !$tokenIsSet || isRunning;
 
 	const start = () => {
-		logs.set([]);
-		startBot(url);
+		logs = [];
+		const bot = new KideAppBot($token);
+		bot.setOnIsActiveChanged(isActive => (isRunning = isActive));
+		bot.setOnLog(log => (logs = [...logs, log]));
+		bot.runBot(url);
 	};
 </script>
 
@@ -50,7 +57,7 @@
 	<!-- Logs -->
 
 	<Log>
-		{#each $logs as log}
+		{#each logs as log}
 			<LogItem {...log} />
 		{/each}
 	</Log>
