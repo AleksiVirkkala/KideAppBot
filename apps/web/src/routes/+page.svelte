@@ -26,6 +26,25 @@
 	<h2 class="h2">Info</h2>
 	<p>The bot will add maximum amount of tickets to your kide.app cart based on given event url.</p>
 
+	<aside class="alert variant-glass-error">
+		<Icon icon="mdi:robot-dead" width="unset" class="w-12" />
+		<div class="alert-message">
+			<h3 class="h3">There's a problem</h3>
+			<p>
+				Kide.app has made changes to their api to prevent botting. This has caused all bots to stop
+				working... For now.
+			</p>
+		</div>
+		<!-- Link to more information about kide.app bot prevention update -->
+		<a
+			class="alert-actions btn variant-ghost"
+			href="https://github.com/aleksivirkkala/kideappbot#%EF%B8%8F-new-bot-prevention-measurements-%EF%B8%8F"
+		>
+			<Icon icon="mdi:external-link" width="auto" />
+			<span>Read more</span>
+		</a>
+	</aside>
+
 	<!-- Show error if token is not set and we are in browser environment (don't prerender error) -->
 
 	{#if browser && !$tokenIsSet}
