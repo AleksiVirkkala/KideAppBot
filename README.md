@@ -1,9 +1,5 @@
 # Kide.app Ticket Bot
 
-**Important!** Kide.app has made changes to their api to prevent botting. This has caused all bots to stop working... For now. **[Read more here](#%EF%B8%8F-new-bot-prevention-measurements-%EF%B8%8F)**.
-
----
-
 Ticket reservation bot for **[Kide.app](https://kide.app/)**
 
 Bot is available here: **[KideAppBot.com](https://kideappbot.com)**
@@ -21,8 +17,6 @@ Runs locally in your browser
 
 - [Kide.app Ticket Bot](#kideapp-ticket-bot)
   - [Table of contents](#table-of-contents)
-  - [❗️ New bot prevention measurements ❗️](#️-new-bot-prevention-measurements-️)
-    - [Research for solution](#research-for-solution)
   - [Introduction](#introduction)
   - [Usage](#usage)
   - [Technical details](#technical-details)
@@ -31,19 +25,6 @@ Runs locally in your browser
   - [Contribution](#contribution)
   - [Troubleshooting](#troubleshooting)
     - [Finding your bearer token](#finding-your-bearer-token)
-
-## ❗️ New bot prevention measurements ❗️
-
-On october 2023 Kide.app made changes to their ticket reservation api to make botting tickets harder. Only difference seems to be that it is now required to pass `x-requested-id` header when making reservation. Unfortunately it is unclear where the value for this header comes from.
-
-### Research for solution
-
-| Observation                                                                                                                                                                               | Assumption                                                                      |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| The header value can not be found in DOM nor inside network requests                                                                                                                      | The value is probably calculated in the browser                                 |
-| The header value stays the same between different requests and sessions when reserving tickets for the same ticket variant. However the value is different for different ticket variants. | It seems that the variant id might be used at least partly to calculate this id |
-
-Right now, that's all I know. **If you have more ideas on how to figure out this value, I'd be glad to add them to this list and give you credit.** Once we find the answer, I can add it to the bot.
 
 ## Introduction
 
