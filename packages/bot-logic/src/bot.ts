@@ -16,7 +16,8 @@ import {
 	getUniqueReservations,
 	getTotalQuantityFromReservations,
 	getTotalPriceFromReservations,
-	tryGetNewReservationQuantity
+	tryGetNewReservationQuantity,
+	calculateXRequestedId
 } from '@/utils';
 import { KIDE_APP_API_URL_BASE, KIDE_APP_URL_BASE, TIMEOUTS } from '@common/constants';
 import axios, { AxiosError } from 'axios';
@@ -77,7 +78,8 @@ export class KideAppBot {
 		const headers = {
 			'Content-Type': 'application/json;charset=UTF-8',
 			accept: 'application/json, text/plain, */*',
-			authorization: 'Bearer ' + token
+			authorization: 'Bearer ' + token,
+			'x-requested-id': calculateXRequestedId(inventoryId)
 		};
 
 		return await axios.post<ReservationsPostResponse>(API_RESERVATION_ENDPOINT, body, { headers });

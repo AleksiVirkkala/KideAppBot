@@ -74,3 +74,25 @@ export function tryGetNewReservationQuantity(e: AxiosError, currentQnt: number) 
 			throw new BotError(`Unknown error type: ${type}`);
 	}
 }
+
+export function calculateXRequestedId(inventoryId: string): string {
+	// Remove dashes from the inventory ID
+	const strippedId = inventoryId.replace(/-/g, '');
+	// An extra ID that will be XOR'd with the inventory ID
+	const EXTRA_ID = '2ad64e4b26c84fbabba58181de76f7b0';
+
+	// Initialize an empty string to store the final result
+	let encodedString = '';
+
+	// Loop through each character of the stripped inventory ID
+	for (let i = 0; i < strippedId.length; i++) {
+		// XOR the ASCII codes of the characters from strippedId and EXTRA_ID
+		const xorResult = strippedId.charCodeAt(i) ^ EXTRA_ID.charCodeAt(i);
+
+		// Append the character corresponding to the XOR result to the encoded string
+		encodedString += String.fromCharCode(xorResult);
+	}
+
+	// Convert the encoded string to Base64 and return the first 10 characters
+	return btoa(encodedString).substring(0, 10);
+}
