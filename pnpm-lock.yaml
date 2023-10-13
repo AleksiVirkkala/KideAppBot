@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -96,8 +100,11 @@ importers:
         specifier: ^2.1.0
         version: 2.4.1
       '@skeletonlabs/skeleton':
-        specifier: ^1.6.2
-        version: 1.6.2
+        specifier: ^2.3.0
+        version: 2.3.0(svelte@3.59.1)
+      '@skeletonlabs/tw-plugin':
+        specifier: ^0.2.2
+        version: 0.2.2(tailwindcss@3.3.2)
       '@storybook/addon-essentials':
         specifier: ^7.0.18
         version: 7.0.18(react-dom@18.2.0)(react@18.2.0)
@@ -2525,11 +2532,21 @@ packages:
     resolution: {integrity: sha512-XJfwUVUKDHF5ugKwIcxEgc9k8b7HbznCp6eUfWgu710hMPNIO4aw4/zB5RogDQz8nd6gyCDpU9O/m6qYEWY6yQ==}
     dev: true
 
-  /@skeletonlabs/skeleton@1.6.2:
-    resolution: {integrity: sha512-Xp+gCAgxEfzwa6lUzeFHhIiTzPe7wKAWZJzo0UnNJfgMCuJy4Txu2bDXz6ZCyu9+B6+i8lShFPxPuENqTfP14w==}
+  /@skeletonlabs/skeleton@2.3.0(svelte@3.59.1):
+    resolution: {integrity: sha512-qXzm1ETXJ7uCmeX/OWp5IK7kRRYLmTqcTv0uM/GXrwuYn/CZ4CZtGP31amVtsphVLWBBKWf4uzIZgg+2KKzd4w==}
+    peerDependencies:
+      svelte: ^3.56.0 || ^4.0.0
     dependencies:
       esm-env: 1.0.0
-      svelte: 3.58.0
+      svelte: 3.59.1
+    dev: true
+
+  /@skeletonlabs/tw-plugin@0.2.2(tailwindcss@3.3.2):
+    resolution: {integrity: sha512-Q1GPWXh+9Ing1378pPFu2uryfJYtHx+6CQjH5fnV043DYf1Ui2OozJPB9HsTsRCV2bcX5nksHJlgUAz2pypY9A==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0'
+    dependencies:
+      tailwindcss: 3.3.2
     dev: true
 
   /@storybook/addon-actions@7.0.18(react-dom@18.2.0)(react@18.2.0):
@@ -9522,11 +9539,6 @@ packages:
       strip-indent: 3.0.0
       svelte: 3.59.1
       typescript: 5.0.4
-    dev: true
-
-  /svelte@3.58.0:
-    resolution: {integrity: sha512-brIBNNB76mXFmU/Kerm4wFnkskBbluBDCjx/8TcpYRb298Yh2dztS2kQ6bhtjMcvUhd5ynClfwpz5h2gnzdQ1A==}
-    engines: {node: '>= 8'}
     dev: true
 
   /svelte@3.59.1:

@@ -1,7 +1,8 @@
 import { join } from 'path';
 import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
-import skeleton from '@skeletonlabs/skeleton/tailwind/skeleton.cjs';
+import { skeleton } from '@skeletonlabs/tw-plugin';
+import { kideAppBotTheme } from './theme';
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -15,5 +16,13 @@ module.exports = {
 	theme: {
 		extend: {}
 	},
-	plugins: [forms, typography, ...skeleton()]
+	plugins: [
+		forms,
+		typography,
+		skeleton({
+			themes: {
+				custom: [kideAppBotTheme]
+			}
+		})
+	]
 };
