@@ -33,7 +33,7 @@
 			<Icon icon="heroicons:exclamation-triangle-solid" width="unset" class="w-12" />
 			<div class="alert-message">
 				<h3 class="h3">Warning</h3>
-				<p>To use the bot you have to set your bearer token in the application settings.</p>
+				<p>To use the bot you have to sign in in the application settings.</p>
 			</div>
 			<!-- Navigation button to settings -->
 			<a class="alert-actions btn variant-ghost" href="/settings">

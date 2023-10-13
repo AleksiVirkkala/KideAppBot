@@ -6,11 +6,21 @@
 	import { page } from '$app/stores';
 	import autoAnimate from '@formkit/auto-animate';
 	import ThemeSetter from '$lib/utils/ThemeSetter.svelte';
+	import { Toast, initializeStores } from '@skeletonlabs/skeleton';
+	import { tokenIsSet } from '$lib/stores/token';
+	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
+
+	initializeStores();
 
 	const navOptions = [
 		{ label: 'Bot', href: '/' },
 		{ label: 'Settings', href: '/settings' }
 	] satisfies NavigationOption[];
+
+	if (browser && !$tokenIsSet) {
+		goto('/settings');
+	}
 </script>
 
 <svelte:head>
@@ -30,6 +40,8 @@
 		<link {rel} {media} {href} />
 	{/each}
 </svelte:head>
+
+<Toast />
 
 <AppBar
 	{navOptions}

@@ -1,6 +1,6 @@
 {
 	"name": "web",
-	"version": "4.0.0",
+	"version": "4.1.0",
 	"private": true,
 	"scripts": {
 		"dev": "concurrently pnpm:dev:*",
@@ -50,6 +50,8 @@
 		"eslint-plugin-svelte": "^2.29.0",
 		"highlight.js": "^11.8.0",
 		"highlight.run": "^7.4.0",
+		"jose": "^4.15.3",
+		"jwt-decode": "^3.1.2",
 		"kideappbot": "workspace:*",
 		"postcss": "^8.4.24",
 		"prettier": "^2.8.8",
