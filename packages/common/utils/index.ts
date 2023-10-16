@@ -59,4 +59,5 @@ export function secondsToPrettierPrint(timestamp: number) {
 	return hours + ':' + minutes + ':' + seconds;
 }
 
+export * from './dateUtils';
 export * from './webUtils';

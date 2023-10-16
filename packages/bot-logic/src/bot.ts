@@ -4,7 +4,7 @@
 
 import { LogMessage, LogType } from '@common/types';
 import jwtDecode, { InvalidTokenError } from 'jwt-decode';
-import { accurateInterval, secondsToPrettierPrint, timeout } from '@common/utils';
+import { getTimeLeft, timeout } from '@common/utils';
 import { BotError, FatalBotError, NotImplementedError } from '@/utils/errorUtils';
 import {
 	Variant,
@@ -95,17 +95,17 @@ export class KideAppBot {
 	protected async getTicketVariants(eventUrl: string) {
 		// TODO: There is currently no retry for fetching product data
 		const productData = await this.getProductData(eventUrl);
-		const { timeUntilSalesStart } = productData.model.product;
+		const { timeUntilSalesStart, dateSalesFrom } = productData.model.product;
 
 		this.log('Checking response', 'title');
 
 		// --- Wait until sales start ----------------------------
 
 		if (timeUntilSalesStart > 0) {
-			// TODO make better
-			await this.timeoutLog(timeUntilSalesStart - 1);
-			this.startTime = Date.now();
+			const dateSalesStart = new Date(dateSalesFrom);
+			await this.waitUntilSalesStart(dateSalesStart);
 		}
+		this.startTime = Date.now();
 
 		this.fullLog({
 			icon: '🎟️',
@@ -209,7 +209,7 @@ export class KideAppBot {
 
 	public stopBot(msg?: string) {
 		if (!this.botIsActive) return;
-		this.log(msg, 'title');
+		if (msg) this.log(msg, 'title');
 		this.botIsActive = false;
 		this.silentLog = false;
 	}
@@ -238,38 +238,23 @@ export class KideAppBot {
 		});
 	}
 
-	// Other helper methods
-	protected async timeoutLog(seconds: number) {
-		this.fullLog({
-			icon: '⏳',
-			title: 'Time until sales start...',
-			content: secondsToPrettierPrint(seconds)
-		});
-		await this.timeoutLogHelper(seconds);
-	}
+	protected async waitUntilSalesStart(dateSalesStart: Date) {
+		const timeBotStarts = dateSalesStart.getTime() - 1000; // Start 1 second before
 
-	protected async timeoutLogHelper(seconds: number) {
-		if (seconds === 0) return;
+		while (Date.now() < timeBotStarts) {
+			const timeLeft = getTimeLeft(dateSalesStart);
+			const { days, hours, minutes, seconds } = timeLeft;
+			const timeLeftStr = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
-		return new Promise((resolve, reject) => {
-			accurateInterval(stop => {
-				try {
-					this.fullLog({
-						icon: ' ⏳',
-						title: 'Time until sales start...',
-						content: secondsToPrettierPrint(--seconds),
-						replace: true
-					});
-					if (seconds <= 0) {
-						stop();
-						resolve(undefined);
-					}
-				} catch (e) {
-					stop();
-					reject(e);
-				}
-			}, 1000);
-		});
+			this.fullLog({
+				icon: ' ⏳',
+				title: 'Time until sales start...',
+				content: timeLeftStr,
+				replace: true
+			});
+
+			await timeout(1000);
+		}
 	}
 
 	protected logElapsedTime() {

@@ -179,7 +179,7 @@ describe('bot tests', () => {
 				);
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
-				const spy = vi.spyOn(bot, 'timeoutLog');
+				const spy = vi.spyOn(bot, 'waitUntilSalesStart');
 				const eventUrl = eventSalesNotStarted.eventUrl;
 				const expectedVariants = eventSalesNotStarted.pageDataVariants.model.variants;
 				const variants = await bot['getTicketVariants'](eventUrl);

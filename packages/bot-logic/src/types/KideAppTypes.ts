@@ -28,6 +28,7 @@ export interface PageResponse {
 		product: {
 			name: string;
 			timeUntilSalesStart: number;
+			dateSalesFrom: string;
 			salesEnded: boolean;
 		};
 		variants: Variant[];
