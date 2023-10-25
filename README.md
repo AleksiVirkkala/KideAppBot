@@ -23,20 +23,24 @@ Runs locally in your browser
     - [Running locally](#running-locally)
     - [Deep dive](#deep-dive)
   - [Contribution](#contribution)
+  - [Troubleshooting](#troubleshooting)
+    - [Finding your bearer token](#finding-your-bearer-token)
 
 ## Introduction
 
 It has always been hard to get tickets to student parties in Tampere Finland. I built the first version of this bot in Septempber 2020 to test my coding skills by building a PWA application that acts as a bot that reserves maximum amount of tickets for a given event. The app went viral which lead me to make part of its private.
 
-This app works with kide.app and therefore requires your Kide.app credentials to work. Apart from that, only event url is needed. I'm planning to make this even more straightforward in the future. As it is a Progressive Web Application it means that you can run it on almost any device that has a browser.
+This app works with kide.app and therefore requires your Kide.app bearer token to work. Apart from that, only event url is needed. I'm planning to make this even more straightforward in the future. As it is a Progressive Web Application it means that you can run it on almost any device that has a browser.
 
 ## Usage
 
-1. Head to **[KideAppBot.com](https://kideappbot.com)**
-2. Sign in with your **[Kide.app](https://kide.app)** credentials
-3. Copy event url from **[Kide.app](https://kide.app)**
-   - Each event should start with <https://kide.app/events/>
-4. Press **Start** button and watch the bot go 💨
+1. Get your [Kide.app](https://kide.app) bearer token. **[See instructions](#finding-your-bearer-token)**
+2. Head to **[KideAppBot.com](https://kideappbot.com)**
+3. Set your kide.app bearer token in **[app settings](https://kideappbot.com/settings)**
+   - The token will be saved to local storage which means that you won't have to set it again as long as you're using the same device and the token hasn't expired
+4. Copy event url you want tickets to from **[Kide.app](https://kide.app/events)**
+   - Each event should start with `https://kide.app/events/`
+5. Press **Start** button and watch the bot go 💨
 
 ## Technical details
 
@@ -72,3 +76,14 @@ Activity diagram:
 Feel free to contribute! I'm workign on open sourcing as much as possible and making the project in general maintainable and well documented.
 
 The project uses Conventional Commits, see: [conventionalcommits.com](https://www.conventionalcommits.org/en/v1.0.0/)
+
+## Troubleshooting
+
+### Finding your bearer token
+
+1. Navigate to **[Kide.app](https://kide.app)**, sign in, right click anywhere on the page and select `inspect`
+2. Select `Application` tab
+3. Open `Local Storage` and under it `https://kide.app`
+4. Your bearer token will be _Value_ of _Key_ `authorization.token`. Exclude apostrophes
+
+![Bearer token steps](/.github/images/bearertoken.png)

@@ -39,10 +39,6 @@ export const tokenIsExpired = derived(decodedToken, $decodedToken => {
 	return $decodedToken && $decodedToken.expDate < now;
 });
 
-decodedToken.subscribe(decoded => {
-	// Reset the token if token is invalid
-	if (!decoded) token.set('');
-});
 tokenIsExpired.subscribe(expired => {
 	// User should sign in again if token is expired
 	if (expired) token.set('');
