@@ -79,7 +79,7 @@ export function calculateXRequestedId(inventoryId: string): string {
 	// Remove dashes from the inventory ID
 	const strippedId = inventoryId.replace(/-/g, '');
 	// An extra ID that will be XOR'd with the inventory ID
-	const EXTRA_ID = '2ad64e4b26c84fbabba58181de76f7b0';
+	const EXTRA_ID = '3a7ceab52edd4b7ba69e3e120be4793f';
 
 	// Initialize an empty string to store the final result
 	let encodedString = '';
@@ -94,5 +94,5 @@ export function calculateXRequestedId(inventoryId: string): string {
 	}
 
 	// Convert the encoded string to Base64 and return the first 10 characters
-	return btoa(encodedString).substring(0, 10);
+	return btoa(encodedString).substring(0, 8);
 }

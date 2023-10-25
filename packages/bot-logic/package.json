@@ -1,6 +1,6 @@
 {
 	"name": "kideappbot",
-	"version": "2.4.0",
+	"version": "2.5.0",
 	"private": true,
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
