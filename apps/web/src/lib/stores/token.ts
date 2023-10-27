@@ -17,6 +17,9 @@ export const token: Writable<string> = localStorageStore('token', '');
 export const tokenIsSet = derived(token, $token => !!$token);
 
 export const decodedToken = derived(token, $token => {
+	if ($token.startsWith('"') || $token.endsWith('"')) {
+		return null;
+	}
 	try {
 		const { exp, sub } = decodeJwt($token);
 		if (!exp || !sub) return null;
