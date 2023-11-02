@@ -6,6 +6,7 @@
 	import LogItem from '$lib/components/Log/LogItem.svelte';
 	import Icon from '@iconify/svelte';
 	import { browser } from '$app/environment';
+	import { PUBLIC_API_URL_HTTP } from '$env/static/public';
 
 	let isRunning = false;
 	let logs: LogMessage[] = [];
@@ -15,7 +16,7 @@
 
 	const start = () => {
 		logs = [];
-		const bot = new KideAppBot($token);
+		const bot = new KideAppBot({ token: $token, extraIdApiUrl: `${PUBLIC_API_URL_HTTP}/extraid` });
 		bot.setOnIsActiveChanged(isActive => (isRunning = isActive));
 		bot.setOnLog(log => (logs = [...logs, log]));
 		bot.runBot(url);

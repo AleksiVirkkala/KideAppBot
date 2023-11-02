@@ -3,5 +3,5 @@ import { config } from 'tsup-config-base';
 
 export default defineConfig({
 	...config,
-	format: 'esm'
+	format: ['cjs', 'esm']
 });

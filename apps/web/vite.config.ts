@@ -12,6 +12,7 @@ export default defineConfig({
 	},
 	define: {
 		// Package.json can't be imported so we define global constant for version
-		__PKG_VERSION__: JSON.stringify(process.env.npm_package_version)
+		__PKG_VERSION__: JSON.stringify(process.env.npm_package_version),
+		'process.env': {}
 	}
 });

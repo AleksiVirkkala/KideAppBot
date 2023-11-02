@@ -75,11 +75,9 @@ export function tryGetNewReservationQuantity(e: AxiosError, currentQnt: number) 
 	}
 }
 
-export function calculateXRequestedId(inventoryId: string): string {
+export function calculateXRequestedId(inventoryId: string, extraId: string): string {
 	// Remove dashes from the inventory ID
 	const strippedId = inventoryId.replace(/-/g, '');
-	// An extra ID that will be XOR'd with the inventory ID
-	const EXTRA_ID = 'c352aecab2c7432d95c1cb08241ed583';
 
 	// Initialize an empty string to store the final result
 	let encodedString = '';
@@ -87,7 +85,7 @@ export function calculateXRequestedId(inventoryId: string): string {
 	// Loop through each character of the stripped inventory ID
 	for (let i = 0; i < strippedId.length; i++) {
 		// XOR the ASCII codes of the characters from strippedId and EXTRA_ID
-		const xorResult = strippedId.charCodeAt(i) ^ EXTRA_ID.charCodeAt(i);
+		const xorResult = strippedId.charCodeAt(i) ^ extraId.charCodeAt(i);
 
 		// Append the character corresponding to the XOR result to the encoded string
 		encodedString += String.fromCharCode(xorResult);

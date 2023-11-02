@@ -6,6 +6,7 @@ import { LogMessage, LogType } from '@common/types';
 import jwtDecode, { InvalidTokenError } from 'jwt-decode';
 import { getTimeLeft, timeout } from '@common/utils';
 import { BotError, FatalBotError, NotImplementedError } from '@/utils/errorUtils';
+import { getLatestExtraID } from '@/utils/reverser';
 import {
 	Variant,
 	ReservationsPostResponse,
@@ -19,23 +20,41 @@ import {
 	tryGetNewReservationQuantity,
 	calculateXRequestedId
 } from '@/utils';
-import { KIDE_APP_API_URL_BASE, KIDE_APP_URL_BASE, TIMEOUTS } from '@common/constants';
+import {
+	KIDE_APP_API_URL_BASE,
+	KIDE_APP_URL_BASE,
+	TIMEOUTS,
+	LATEST_EXTRA_ID
+} from '@common/constants';
 import axios, { AxiosError } from 'axios';
 
+interface BotOptions {
+	token: string;
+	/**
+	 * URL to fetch extra ID from
+	 *
+	 * If set will fetch the ID from the given URL instead of calculating locally.
+	 * The api should return the extra ID as a string to a GET request.
+	 */
+	extraIdApiUrl?: string;
+}
+
 export class KideAppBot {
+	protected extraId = LATEST_EXTRA_ID;
 	protected _botIsActive = false;
 	protected silentLog = false;
 	protected startTime: number | null = null;
 	protected stopRequested = false;
 
-	constructor(protected token: string) {}
+	constructor(protected options: BotOptions) {}
 
 	public async runBot(eventUrl: string) {
 		this.botIsActive = true;
 		this.startTime = Date.now();
 
 		try {
-			this.verifyToken(this.token);
+			this.verifyToken(this.options.token);
+			await this.setupExtraId();
 			const variants = await this.getTicketVariants(eventUrl);
 			this.logTicketVariants(variants);
 			const reservationResponses = await this.reserveTicketVariants(variants);
@@ -63,6 +82,34 @@ export class KideAppBot {
 		this.logElapsedTime();
 	}
 
+	protected async setupExtraId() {
+		try {
+			this.fullLog({
+				icon: '🆔',
+				title: 'Fetching extra ID...'
+			});
+			const latestExtraId = await getLatestExtraID(this.options.extraIdApiUrl);
+			this.extraId = latestExtraId;
+			this.fullLog({
+				icon: '✅',
+				title: 'Received extra ID',
+				content: latestExtraId
+			});
+		} catch (e) {
+			console.error(e);
+			if (e instanceof Error) {
+				this.fullLog({
+					icon: '🚫',
+					title: 'Failed to fetch extra ID. Reservations may fail',
+					content: e.message,
+					force: true
+				});
+				// As a backup return latest known extraID
+				this.extraId = LATEST_EXTRA_ID;
+			}
+		}
+	}
+
 	protected async tryReserve(inventoryId: string, quantity: number, token: string) {
 		const API_RESERVATION_ENDPOINT = 'https://api.kide.app/api/reservations';
 		const body: ReservationBody = {
@@ -79,7 +126,7 @@ export class KideAppBot {
 			'Content-Type': 'application/json;charset=UTF-8',
 			accept: 'application/json, text/plain, */*',
 			authorization: 'Bearer ' + token,
-			'x-requested-id': calculateXRequestedId(inventoryId)
+			'x-requested-id': calculateXRequestedId(inventoryId, this.extraId)
 		};
 
 		return await axios.post<ReservationsPostResponse>(API_RESERVATION_ENDPOINT, body, { headers });
@@ -448,7 +495,7 @@ export class KideAppBot {
 
 		while (!timeLimitExceeded) {
 			try {
-				const { data } = await this.tryReserve(variant.inventoryId, quantity, this.token);
+				const { data } = await this.tryReserve(variant.inventoryId, quantity, this.options.token);
 				return data;
 			} catch (e) {
 				if (!(e instanceof AxiosError)) {

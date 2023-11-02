@@ -13,7 +13,7 @@ export class BotError extends Error {
 		} else {
 			logEntry = options;
 		}
-		super(logEntry.content);
+		super(logEntry.title);
 		this.log = logEntry;
 		this.name = 'BotError';
 	}

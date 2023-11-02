@@ -1,6 +1,6 @@
 {
 	"name": "api",
-	"version": "3.2.0",
+	"version": "4.0.0",
 	"private": true,
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -12,21 +12,20 @@
 	},
 	"license": "UNLICENSED",
 	"dependencies": {
-		"@trpc/server": "^10.28.2",
 		"@common/types": "workspace:*",
 		"@common/utils": "workspace:*",
+		"@types/express": "^4.17.20",
 		"cors": "^2.8.5",
+		"express": "^4.18.2",
 		"kideappbot": "workspace:*",
-		"ws": "^8.13.0",
 		"zod": "^3.20.6"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.13",
-		"@types/ws": "^8.5.4",
 		"eslint-config-base": "workspace:*",
 		"tsconfig": "workspace:*",
-		"tsup-config-base": "workspace:*",
 		"tsup": "^6.7.0",
+		"tsup-config-base": "workspace:*",
 		"typescript": "^5.0.4"
 	}
 }
