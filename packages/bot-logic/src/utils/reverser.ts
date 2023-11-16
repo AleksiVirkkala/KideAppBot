@@ -63,7 +63,7 @@ async function deobfuscate(code: string) {
 }
 
 function extractExtraID(deobfuscatedCode: string) {
-	const splitted = deobfuscatedCode.split("'event.originalEvent.isTrusted') === true ? '");
+	const splitted = deobfuscatedCode.split(".isTrusted ? '");
 	const extraID = splitted[1].split("'")[0];
 	return extraID;
 }
