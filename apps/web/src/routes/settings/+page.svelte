@@ -1,29 +1,7 @@
 <script lang="ts">
 	import { token, decodedToken } from '$lib/stores/token';
 	import { calculateDateCountFromNow } from '$lib/utils/dateUtils';
-	import { loginUser } from '$lib/utils/kideUtils';
 	import Icon from '@iconify/svelte';
-	import { getToastStore } from '@skeletonlabs/skeleton';
-
-	const toastStore = getToastStore();
-
-	let email = '';
-	let password = '';
-
-	const handleSubmit = async (event: SubmitEvent) => {
-		event.preventDefault();
-		const result = await loginUser({ email, password });
-		if (!result.success) {
-			result;
-			toastStore.trigger({
-				background: 'variant-filled-error',
-				hideDismiss: true,
-				message: result.error
-			});
-			return;
-		}
-		token.set(result.token);
-	};
 </script>
 
 <div class="flex grow flex-col space-y-4 pb-2 pt-4 md:space-y-8 md:pb-6 md:pt-8">
@@ -54,7 +32,7 @@
 	{:else}
 		<h2 class="h2">You are signed in</h2>
 		<p>If you want to sign in with a different account, please sign out first.</p>
-		<div class="flex flex-col gap-5 md:flex-row md:items-end" on:submit={handleSubmit}>
+		<div class="flex flex-col gap-5 md:flex-row md:items-end">
 			<label class="label grow">
 				<span>Email</span>
 				<input class="input" type="email" readonly value={$decodedToken.userEmail} />
