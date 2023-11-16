@@ -1,3 +1,5 @@
+import { decodeJwt, errors } from 'jose';
+
 interface Credentials {
 	email: string;
 	password: string;
@@ -33,4 +35,16 @@ export const loginUser = async ({ email, password }: Credentials): Promise<Resul
 		success: true,
 		token: data.access_token
 	};
+};
+
+export const isValidJwt = (token: string) => {
+	try {
+		decodeJwt(token);
+		return true;
+	} catch (error) {
+		if (error instanceof errors.JOSEError) {
+			return false;
+		}
+		throw error;
+	}
 };

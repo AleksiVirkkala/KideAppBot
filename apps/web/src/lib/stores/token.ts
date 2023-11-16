@@ -1,6 +1,8 @@
 import { localStorageStore } from '@skeletonlabs/skeleton';
 import { derived, type Writable } from 'svelte/store';
 import { decodeJwt, errors } from 'jose';
+import { isValidJwt } from '$lib/utils/kideUtils';
+import { reverseString } from '$lib/utils/common';
 
 export interface AuthTokenPayload {
 	aud: string;
@@ -14,9 +16,15 @@ export interface AuthTokenPayload {
 
 export const token: Writable<string> = localStorageStore('token', '');
 
-export const tokenIsSet = derived(token, $token => !!$token);
+export const normalizedToken = derived(token, $token => {
+	if (isValidJwt($token)) return $token;
+	if (isValidJwt(reverseString($token))) return reverseString($token);
+	return '';
+});
 
-export const decodedToken = derived(token, $token => {
+export const tokenIsSet = derived(normalizedToken, $token => !!$token);
+
+export const decodedToken = derived(normalizedToken, $token => {
 	if ($token.startsWith('"') || $token.endsWith('"')) {
 		return null;
 	}

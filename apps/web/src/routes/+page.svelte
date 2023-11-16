@@ -2,7 +2,7 @@
 	import type { LogMessage } from '@common/types';
 	import KideAppBot from 'kideappbot';
 	import { Log } from '$lib/components/Log';
-	import { token, tokenIsSet } from '$lib/stores/token';
+	import { normalizedToken, tokenIsSet } from '$lib/stores/token';
 	import LogItem from '$lib/components/Log/LogItem.svelte';
 	import Icon from '@iconify/svelte';
 	import { browser } from '$app/environment';
@@ -16,7 +16,10 @@
 
 	const start = () => {
 		logs = [];
-		const bot = new KideAppBot({ token: $token, extraIdApiUrl: `${PUBLIC_API_URL_HTTP}/extraid` });
+		const bot = new KideAppBot({
+			token: $normalizedToken,
+			extraIdApiUrl: `${PUBLIC_API_URL_HTTP}/extraid`
+		});
 		bot.setOnIsActiveChanged(isActive => (isRunning = isActive));
 		bot.setOnLog(log => (logs = [...logs, log]));
 		bot.runBot(url);

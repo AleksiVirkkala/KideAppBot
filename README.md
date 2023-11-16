@@ -84,6 +84,11 @@ The project uses Conventional Commits, see: [conventionalcommits.com](https://ww
 1. Navigate to **[Kide.app](https://kide.app)**, sign in, right click anywhere on the page and select `inspect`
 2. Select `Application` tab
 3. Open `Local Storage` and under it `https://kide.app`
-4. Your bearer token will be _Value_ of _Key_ `authorization.token`. Exclude apostrophes
+4. Copy the _Value_ of _Key_ `authorization.token`
+   - Example value: `"WARNING: Copying and giving this value to any person/service severely compromises your account and may lead to you losing it permanently! <TOKEN>"`
+   - **You should be aware of the text above and always be cautious when using your token!**
+5. Copy your **token** from previously copied text
+   - The token is the last part of this text indicated by `<TOKEN>` in above example
+   - For you it is a long combination of random letters and numbers. Example: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c`
 
 ![Bearer token steps](/.github/images/bearertoken.png)
