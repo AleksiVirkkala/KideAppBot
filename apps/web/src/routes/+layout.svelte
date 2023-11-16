@@ -6,11 +6,11 @@
 	import { page } from '$app/stores';
 	import autoAnimate from '@formkit/auto-animate';
 	import ThemeSetter from '$lib/utils/ThemeSetter.svelte';
+	import { Accordion, AccordionItem } from '@skeletonlabs/skeleton';
 	import { tokenIsSet } from '$lib/stores/token';
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-
-
+	import Icon from '@iconify/svelte';
 
 	const navOptions = [
 		{ label: 'Bot', href: '/' },
@@ -47,6 +47,25 @@
 />
 
 <main use:autoAnimate class="app-container flex flex-auto flex-col">
+	<aside class="variant-soft-error text-surface-900-50-token mt-4 rounded-2xl">
+		<Accordion>
+			<AccordionItem>
+				<svelte:fragment slot="summary">
+					<div class="flex items-center gap-2 p-1">
+						<Icon icon="heroicons:exclamation-triangle-solid" width="unset" class="w-10 shrink-0" />
+						<h3 class="h3">Warning</h3>
+					</div>
+				</svelte:fragment>
+				<svelte:fragment slot="content">
+					<div class="mt-[-6px] px-3 pb-2">
+						Kide.app has began to make changes to prevent botting. Send a message on GitHub if
+						you're experiencing problems.
+					</div>
+				</svelte:fragment>
+			</AccordionItem>
+		</Accordion>
+	</aside>
+
 	<slot />
 </main>
 
