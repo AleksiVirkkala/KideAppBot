@@ -126,7 +126,7 @@ export class KideAppBot {
 			'Content-Type': 'application/json;charset=UTF-8',
 			accept: 'application/json, text/plain, */*',
 			authorization: 'Bearer ' + token,
-			'X-Requested-Token-28': calculateXRequestedId(inventoryId, this.extraId)
+			'X-Requested-Token-0c': calculateXRequestedId(inventoryId, this.extraId)
 		};
 
 		return await axios.post<ReservationsPostResponse>(API_RESERVATION_ENDPOINT, body, { headers });
