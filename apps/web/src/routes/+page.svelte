@@ -18,7 +18,7 @@
 		logs = [];
 		const bot = new KideAppBot({
 			token: $normalizedToken,
-			extraIdApiUrl: `${PUBLIC_API_URL_HTTP}/extraid`
+			extraIdApiUrl: `/api/extraid`
 		});
 		bot.setOnIsActiveChanged(isActive => (isRunning = isActive));
 		bot.setOnLog(log => (logs = [...logs, log]));
