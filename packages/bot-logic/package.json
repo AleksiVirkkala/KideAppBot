@@ -1,6 +1,6 @@
 {
 	"name": "kideappbot",
-	"version": "2.7.2",
+	"version": "2.8.0",
 	"private": true,
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -18,7 +18,8 @@
 	"author": "Aleksi Virkkala",
 	"license": "UNLICENSED",
 	"dependencies": {
-		"@aleksivirkkala/kideappbot-private": "1.0.0",
+		"@babel/parser": "^7.26.3",
+		"@babel/types": "^7.26.3",
 		"@common/constants": "workspace:*",
 		"@common/types": "workspace:*",
 		"@common/utils": "workspace:*",
@@ -29,16 +30,16 @@
 	},
 	"devDependencies": {
 		"@types/node": "^18.15.0",
-		"@vitest/coverage-c8": "^0.29.2",
+		"@vitest/coverage-c8": "^0.33.0",
 		"eslint-config-base": "workspace:*",
 		"module-alias": "^2.2.2",
-		"msw": "^1.2.0",
+		"msw": "^2.6.8",
 		"nodemon": "^2.0.21",
 		"tsconfig": "workspace:*",
 		"tsup": "^6.7.0",
 		"tsup-config-base": "workspace:*",
 		"typescript": "^5.0.4",
-		"vitest": "^0.29.8"
+		"vitest": "^2.1.8"
 	},
 	"type": "module"
 }

@@ -6,7 +6,7 @@ import { LogMessage, LogType } from '@common/types';
 import jwtDecode, { InvalidTokenError } from 'jwt-decode';
 import { getTimeLeft, timeout } from '@common/utils';
 import { BotError, FatalBotError, NotImplementedError } from '@/utils/errorUtils';
-import { getLatestExtraID } from '@/utils/reverser';
+import { ExtraProperties, getLatestExtraProperties } from '@/utils/reverser';
 import {
 	Variant,
 	ReservationsPostResponse,
@@ -40,7 +40,10 @@ interface BotOptions {
 }
 
 export class KideAppBot {
-	protected extraId = LATEST_EXTRA_ID;
+	protected extraProperties: ExtraProperties = {
+		extraId: LATEST_EXTRA_ID,
+		xRequestedTokenKey: 'X-Requested-Token-a02'
+	};
 	protected _botIsActive = false;
 	protected silentLog = false;
 	protected startTime: number | null = null;
@@ -88,12 +91,16 @@ export class KideAppBot {
 				icon: '🆔',
 				title: 'Fetching extra ID...'
 			});
-			const latestExtraId = await getLatestExtraID(this.options.extraIdApiUrl);
-			this.extraId = latestExtraId;
+			this.extraProperties = await getLatestExtraProperties(this.options.extraIdApiUrl);
+			this.fullLog({
+				icon: '✅',
+				title: 'Received extra header key',
+				content: this.extraProperties.xRequestedTokenKey
+			});
 			this.fullLog({
 				icon: '✅',
 				title: 'Received extra ID',
-				content: latestExtraId
+				content: this.extraProperties.extraId
 			});
 		} catch (e) {
 			console.error(e);
@@ -104,8 +111,6 @@ export class KideAppBot {
 					content: e.message,
 					force: true
 				});
-				// As a backup return latest known extraID
-				this.extraId = LATEST_EXTRA_ID;
 			}
 		}
 	}
@@ -126,7 +131,10 @@ export class KideAppBot {
 			'Content-Type': 'application/json;charset=UTF-8',
 			accept: 'application/json, text/plain, */*',
 			authorization: 'Bearer ' + token,
-			'X-Requested-Token-c69': calculateXRequestedId(inventoryId, this.extraId)
+			[this.extraProperties.xRequestedTokenKey]: calculateXRequestedId(
+				inventoryId,
+				this.extraProperties.extraId
+			)
 		};
 
 		return await axios.post<ReservationsPostResponse>(API_RESERVATION_ENDPOINT, body, { headers });

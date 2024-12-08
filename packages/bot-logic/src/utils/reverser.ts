@@ -1,15 +1,20 @@
 import axios from 'axios';
 import { Deobfuscator } from 'deobfuscator';
 import { BotError } from './errorUtils';
+import { parse } from '@babel/parser';
+import { Node } from '@babel/types';
 
 // ###### UTILS ######
 
-function containsHexCode(str: string) {
+function containsHexCode(str: string, minHexCodes = 1) {
 	// Regular expression to match the hexadecimal pattern
-	const hexPattern = /(_0x|0x)[0-9a-fA-F]+/g;
+	const hexMatches = str.match(/(_0x|0x)[0-9a-fA-F]+/g);
+	return hexMatches && hexMatches.length > minHexCodes;
+}
 
-	// Search the string for the pattern
-	return hexPattern.test(str);
+export interface ExtraProperties {
+	xRequestedTokenKey: string;
+	extraId: string;
 }
 
 // #### MAIN ####
@@ -42,52 +47,118 @@ async function getLatestBodyScriptContent() {
 	return axios.get(scriptUrl).then(res => res.data);
 }
 
-function extractObfuscatedCode(code: string) {
-	const splitted = code.split(';');
-	const start = splitted.findIndex(line => containsHexCode(line) && line.startsWith('function'));
+async function extractObfuscatedCodeAreas(code: string) {
+	const functions = extractFunctions(code);
 
-	const end = splitted.findIndex(
-		line => containsHexCode(line) && /\(.*window\[.*'in'\]=window\[.*'in'\]/.test(line)
-	);
+	// Find functions that look obfuscated
+	const targetAreas: { start: number; end: number; content: string }[] = [];
+	functions.forEach(({ start, end, content }) => {
+		const isObfuscated = containsHexCode(content, 4);
+		if (isObfuscated) {
+			targetAreas.push({ start, end, content });
+		}
+	});
 
-	// Get the lines between the start and end index
-	const lines = splitted.slice(start, end + 1);
-	const combined = lines.join(';');
+	// Combine ranges that are close to each other
+	const mergedTargetAreas = targetAreas.reduce<typeof targetAreas>((acc, curr) => {
+		const last = acc[acc.length - 1];
+		if (last && curr.start - last.end < 100) {
+			last.end = curr.end;
+			last.content += curr.content;
+		} else {
+			acc.push(curr);
+		}
+		return acc;
+	}, []);
 
-	return combined;
+	if (mergedTargetAreas.length === 0) {
+		throw new Error('Could not find any obfuscated code');
+	}
+	return mergedTargetAreas;
 }
 
-async function deobfuscate(code: string) {
+export async function deobfuscate(code: string) {
 	const deobfuscator = new Deobfuscator();
 	return deobfuscator.deobfuscateSource(code);
 }
 
-function extractExtraID(deobfuscatedCode: string) {
+function extractRequestedTokenKey(deobfuscatedCode: string) {
+	const splitted = deobfuscatedCode.split('X-Requested-Token');
+	const extraIdKey = `X-Requested-Token${splitted[1].split("'")[0]}`;
+	return extraIdKey;
+}
+
+function extractExtraId(deobfuscatedCode: string) {
 	const splitted = deobfuscatedCode.split(".isTrusted ? '");
 	const extraID = splitted[1].split("'")[0];
 	return extraID;
 }
 
-export async function getLatestExtraIdLocal() {
+export async function getLatestExtraPropertiesLocal(): Promise<ExtraProperties> {
 	const scriptContent = await getLatestBodyScriptContent();
-	const obfuscatedCode = extractObfuscatedCode(scriptContent);
-	const deobfuscatedCode = await deobfuscate(obfuscatedCode);
-	const extraID = extractExtraID(deobfuscatedCode);
-	return extraID;
+	const obfuscatedCode = await extractObfuscatedCodeAreas(scriptContent);
+	const deobfuscatedCodes = await Promise.all(
+		obfuscatedCode.map(({ content }) => deobfuscate(content))
+	);
+
+	const xRequestedTokenKey = extractRequestedTokenKey(deobfuscatedCodes.join('\n'));
+	const extraId = extractExtraId(deobfuscatedCodes.join('\n'));
+
+	return { xRequestedTokenKey, extraId };
 }
 
-export async function getLatestExtraIdFromAPI(apiUrl: string) {
+export async function getLatestExtraPropertiesFromAPI(apiUrl: string): Promise<ExtraProperties> {
 	return axios.get(apiUrl).then(res => res.data);
 }
 
-export async function getLatestExtraID(apiUrl?: string) {
+export async function getLatestExtraProperties(apiUrl?: string) {
 	const isBrowser = 'window' in globalThis;
 
 	if (apiUrl) {
-		return getLatestExtraIdFromAPI(apiUrl);
+		return getLatestExtraPropertiesFromAPI(apiUrl);
 	}
 	if (isBrowser) {
 		throw new BotError('apiUrl is required when running in browser, because of CORS');
 	}
-	return getLatestExtraIdLocal();
+	return getLatestExtraPropertiesLocal();
+}
+
+function extractFunctions(code: string) {
+	try {
+		// Parse the JavaScript code
+		const ast = parse(code, {
+			sourceType: 'module',
+			plugins: ['jsx', 'typescript', 'decorators-legacy']
+		});
+
+		// Get all top-level statements
+		const topLevelNodes = ast.program.body;
+
+		// Filter out variable declarations and extract the code
+		const topLevelItems = topLevelNodes
+			.filter(
+				(node: Node) =>
+					// Exclude variable declarations (const, let, var)
+					node.type !== 'VariableDeclaration' &&
+					// Exclude import statements
+					node.type !== 'ImportDeclaration' &&
+					// Exclude export declarations
+					!node.type.startsWith('Export')
+			)
+			.map((node: Node) => {
+				// Get the original code for this node
+				const start = node.start!;
+				const end = node.end!;
+				return {
+					start,
+					end,
+					content: code.slice(start, end).trim()
+				};
+			});
+
+		return topLevelItems;
+	} catch (error) {
+		console.error('Error parsing JavaScript code:', error);
+		return [];
+	}
 }

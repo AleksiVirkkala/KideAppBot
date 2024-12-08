@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 import { isDev } from '@common/utils';
-import { getLatestExtraID } from 'kideappbot';
+import { getLatestExtraProperties } from 'kideappbot';
 
 const app = express();
 const port = parseInt(process.env.PORT ?? '3000', 10);
@@ -14,7 +14,7 @@ app.use(
 );
 
 app.get('/extraid', async (req, res) => {
-	const id = await getLatestExtraID();
+	const id = await getLatestExtraProperties();
 	res.send(id);
 });
 
